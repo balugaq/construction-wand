@@ -6,6 +6,8 @@ import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class Messages {
     public static final String PREFIX = "pylon.constructionwand.message.";
 
@@ -21,6 +23,13 @@ public class Messages {
     public static final String KEY_SET_LOC1 = PREFIX + "common.set-loc1";
     // arg: %loc% - Humanized loc: ex: "X:1 | Y:1 | Z:1"
     public static final String KEY_SET_LOC2 = PREFIX + "common.set-loc2";
+
+    // arg: %loc% - Humanized loc
+    // arg: %total% - Total blocks selected: ex: "X:1 | Y:1 | Z:1 ( 10 Blocks )"
+    public static final String KEY_SET_LOC1_WITH_RANGE = PREFIX + "common.set-loc1-with-range";
+    // arg: %loc% - Humanized loc
+    // arg: %total% - Total blocks selected: ex: "X:1 | Y:1 | Z:1 ( 10 Blocks )"
+    public static final String KEY_SET_LOC2_WITH_RANGE = PREFIX + "common.set-loc2-with-range";
 
     // arg: %material% - Translated material: ex: "Dirt" in English, "泥土" in Chinese
     public static final String KEY_SET_MATERIAL = PREFIX + "common.set-material";
@@ -43,6 +52,12 @@ public class Messages {
     @NotNull
     public static TranslatableComponent argsWithed(@NotNull String key, @NotNull String argName, int arg) {
         return Component.translatable(key, PylonArgument.of(argName, arg));
+    }
+
+    // todo: use a better way to do this...
+    @NotNull
+    public static TranslatableComponent argsWithed(@NotNull String key, @NotNull String argName1, @NotNull String arg1, @NotNull String argName2, long arg2) {
+        return Component.translatable(key, List.of(PylonArgument.of(argName1, arg1), PylonArgument.of(argName2, arg2)));
     }
 
     @NotNull

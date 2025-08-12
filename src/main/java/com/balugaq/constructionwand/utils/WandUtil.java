@@ -415,7 +415,7 @@ public class WandUtil {
         int amount = ItemProvider.getItemAmount(player, material, ItemProvider.INF);
         AtomicInteger filled = new AtomicInteger(0);
         WorldUtils.doWorldEdit(loc1, loc2, location -> {
-            if (filled.get() > amount) {
+            if (filled.get() >= amount) {
                 return;
             }
 

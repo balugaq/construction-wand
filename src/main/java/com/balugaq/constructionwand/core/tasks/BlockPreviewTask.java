@@ -6,7 +6,6 @@ import com.balugaq.constructionwand.api.items.BreakingWand;
 import com.balugaq.constructionwand.api.items.BuildingWand;
 import com.balugaq.constructionwand.core.managers.DisplayManager;
 import com.balugaq.constructionwand.implementation.ConstructionWandPlugin;
-import com.balugaq.constructionwand.utils.Debug;
 import com.balugaq.constructionwand.utils.WandUtil;
 import io.github.pylonmc.pylon.core.item.PylonItem;
 import lombok.Getter;
@@ -18,11 +17,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
-import java.util.function.Consumer;
 
 public class BlockPreviewTask extends BukkitRunnable {
     @Getter

@@ -3,7 +3,6 @@ package com.balugaq.constructionwand.core.tasks;
 import com.balugaq.constructionwand.api.items.FillWand;
 import com.balugaq.constructionwand.core.managers.DisplayManager;
 import com.balugaq.constructionwand.implementation.ConstructionWandPlugin;
-import com.balugaq.constructionwand.utils.Debug;
 import com.balugaq.constructionwand.utils.ParticleUtil;
 import com.balugaq.constructionwand.utils.WorldUtils;
 import io.github.pylonmc.pylon.core.item.PylonItem;
@@ -15,10 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.function.Consumer;
 
 public class FillWandSUITask extends BukkitRunnable {
     @Getter
@@ -51,7 +46,7 @@ public class FillWandSUITask extends BukkitRunnable {
             if (loc1.getWorld() != loc2.getWorld()) {
                 continue;
             }
-            
+
             if (WorldUtils.totalBlocks(loc1, loc2) > fw.getLimitBlocks()) {
                 continue;
             }

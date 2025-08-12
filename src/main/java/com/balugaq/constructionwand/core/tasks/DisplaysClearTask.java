@@ -2,18 +2,14 @@ package com.balugaq.constructionwand.core.tasks;
 
 import com.balugaq.constructionwand.core.managers.DisplayManager;
 import com.balugaq.constructionwand.implementation.ConstructionWandPlugin;
-import com.balugaq.constructionwand.utils.Debug;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Display;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 public class DisplaysClearTask extends BukkitRunnable {
     @Getter

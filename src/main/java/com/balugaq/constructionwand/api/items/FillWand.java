@@ -177,11 +177,22 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
             Location location = block.getLocation();
             if (leftClick) {
                 // Set loc1
-                player.sendMessage(Messages.argsWithed(
-                        Messages.KEY_SET_LOC1,
-                        "loc",
-                        humanizeLoc(location)
-                ));
+                Location loc2 = resolveStr2Loc(PersistentUtil.get(wand, PersistentDataType.STRING, LOC2_KEY));
+                if (loc2 != null) {
+                    player.sendMessage(Messages.argsWithed(
+                            Messages.KEY_SET_LOC1_WITH_RANGE,
+                            "loc",
+                            humanizeLoc(location),
+                            "total",
+                            WorldUtils.totalBlocks(location, loc2)
+                    ));
+                } else {
+                    player.sendMessage(Messages.argsWithed(
+                            Messages.KEY_SET_LOC1,
+                            "loc",
+                            humanizeLoc(location)
+                    ));
+                }
                 PersistentUtil.set(wand, PersistentDataType.STRING, LOC1_KEY, resolveLoc2str(location));
                 resolveWandLore(wand);
                 return;
@@ -211,11 +222,22 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                     return;
                 } else {
                     // Set loc2
-                    player.sendMessage(Messages.argsWithed(
-                            Messages.KEY_SET_LOC2,
-                            "loc",
-                            humanizeLoc(location)
-                    ));
+                    Location loc1 = resolveStr2Loc(PersistentUtil.get(wand, PersistentDataType.STRING, LOC1_KEY));
+                    if (loc1 != null) {
+                        player.sendMessage(Messages.argsWithed(
+                                Messages.KEY_SET_LOC2_WITH_RANGE,
+                                "loc",
+                                humanizeLoc(location),
+                                "total",
+                                WorldUtils.totalBlocks(loc1, location)
+                        ));
+                    } else {
+                        player.sendMessage(Messages.argsWithed(
+                                Messages.KEY_SET_LOC2,
+                                "loc",
+                                humanizeLoc(location)
+                        ));
+                    }
                     PersistentUtil.set(wand, PersistentDataType.STRING, LOC2_KEY, resolveLoc2str(location));
                     resolveWandLore(wand);
                     return;
