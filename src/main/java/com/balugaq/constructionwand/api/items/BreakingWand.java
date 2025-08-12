@@ -25,6 +25,10 @@ public class BreakingWand extends PylonItem implements Wand {
 
     @Override
     public void onUsedToClickBlock(@NotNull PlayerInteractEvent event) {
+        if (isCooldowning(event.getPlayer())) {
+            return;
+        }
+
         WandUtil.breakBlocks(ConstructionWandPlugin.getInstance(), event, isDisabled(), this.limitBlocks, this.blockStrict, this.opOnly);
     }
 

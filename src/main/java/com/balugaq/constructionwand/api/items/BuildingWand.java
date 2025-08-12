@@ -25,6 +25,10 @@ public class BuildingWand extends PylonItem implements Wand {
 
     @Override
     public void onUsedToClickBlock(@NotNull PlayerInteractEvent event) {
+        if (isCooldowning(event.getPlayer())) {
+            return;
+        }
+
         WandUtil.placeBlocks(ConstructionWandPlugin.getInstance(), event, isDisabled(), limitBlocks, blockStrict, opOnly);
     }
 

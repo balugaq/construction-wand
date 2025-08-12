@@ -236,7 +236,7 @@ public class WandUtil {
         }
 
         int playerHas = ItemProvider.getItemAmount(player, material, limitBlocks);
-        if (playerHas <= 0) {
+        if (playerHas == 0) {
             return;
         }
 
