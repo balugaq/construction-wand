@@ -4,7 +4,6 @@ import com.balugaq.constructionwand.api.interfaces.IManager;
 import com.balugaq.constructionwand.api.items.BreakingWand;
 import com.balugaq.constructionwand.api.items.BuildingWand;
 import com.balugaq.constructionwand.api.items.FillWand;
-import com.balugaq.constructionwand.api.items.Wand;
 import com.balugaq.constructionwand.utils.KeyUtil;
 import io.github.pylonmc.pylon.core.content.guide.PylonGuide;
 import io.github.pylonmc.pylon.core.guide.pages.base.SimpleStaticGuidePage;

@@ -1,5 +1,8 @@
 package com.balugaq.constructionwand.implementation;
 
+import com.balugaq.constructionwand.api.providers.ItemProvider;
+import com.balugaq.constructionwand.api.providers.PlayerInventoryItemProvider;
+import com.balugaq.constructionwand.api.providers.ShulkerBoxItemProvider;
 import com.balugaq.constructionwand.core.managers.ConfigManager;
 import com.balugaq.constructionwand.core.managers.DisplayManager;
 import com.balugaq.constructionwand.core.managers.ListenerManager;
@@ -46,6 +49,9 @@ public class ConstructionWandPlugin extends JavaPlugin implements PylonAddon {
         Debug.log("Loading config");
         configManager = new ConfigManager(this);
         configManager.setup();
+
+        ItemProvider.PROVIDERS.add(new PlayerInventoryItemProvider());
+        ItemProvider.PROVIDERS.add(new ShulkerBoxItemProvider());
 
         Debug.log("Loading display manager");
         displayManager = new DisplayManager(this);

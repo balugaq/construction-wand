@@ -8,6 +8,7 @@ import com.balugaq.constructionwand.utils.WandUtil;
 import com.balugaq.constructionwand.utils.WorldUtils;
 import io.github.pylonmc.pylon.core.i18n.PylonArgument;
 import io.github.pylonmc.pylon.core.item.PylonItem;
+import io.github.pylonmc.pylon.core.item.base.PylonInteractor;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ItemLore;
 import io.papermc.paper.persistence.PersistentDataContainerView;
@@ -32,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 @Getter
-public class FillWand extends PylonItem implements Wand {
+public class FillWand extends PylonItem implements Wand, PylonInteractor {
     public static final NamespacedKey LOC1_KEY = KeyUtil.newKey("loc1");
     public static final NamespacedKey LOC2_KEY = KeyUtil.newKey("loc2");
     public static final NamespacedKey MATERIAL_KEY = KeyUtil.newKey("material");
@@ -44,8 +45,105 @@ public class FillWand extends PylonItem implements Wand {
         super(stack);
     }
 
+    @SuppressWarnings("UnstableApiUsage")
+    public static void resolveWandLore(@NotNull ItemStack wand) {
+        ItemLore.Builder lore = ItemLore.lore();
+        lore.addLines(List.of(Component.translatable("pylon.constructionwand.item." + PylonItem.fromStack(wand).getKey() + ".lore")));
+        PersistentDataContainerView view = wand.getPersistentDataContainer();
+
+        String loc1 = view.get(LOC1_KEY, PersistentDataType.STRING);
+        String loc2 = view.get(LOC2_KEY, PersistentDataType.STRING);
+        String material = view.get(MATERIAL_KEY, PersistentDataType.STRING);
+
+        if (loc1 != null || loc2 != null || material != null) {
+            lore.addLine(Component.text(""));
+        }
+
+        if (loc1 != null) {
+            lore.addLine(Messages.argsWithed(
+                            Messages.KEY_LOC1,
+                            "loc",
+                            humanizeLoc(resolveStr2Loc(loc1))
+                    )
+            );
+        }
+
+        if (loc2 != null) {
+            lore.addLine(Messages.argsWithed(
+                            Messages.KEY_LOC2,
+                            "loc",
+                            humanizeLoc(resolveStr2Loc(loc2))
+                    )
+            );
+        }
+
+        if (material != null) {
+            lore.addLine(Messages.argsWithed(
+                            Messages.KEY_MATERIAL,
+                            "material",
+                            humanizeMaterialName(resolveStr2material(material))
+                    )
+            );
+        }
+
+        wand.setData(DataComponentTypes.LORE, lore);
+    }
+
+    @Contract("null -> null")
+    public static Material resolveStr2material(@Nullable String str) {
+        if (str == null) return null;
+        return Material.matchMaterial(str);
+    }
+
+    @Contract("null -> null; !null -> !null")
+    public static String resolveMaterial2str(@Nullable Material material) {
+        if (material == null) {
+            return null;
+        }
+
+        return material.name();
+    }
+
+    // str: world_name;x;y;z
+    @SuppressWarnings("SequencedCollectionMethodCanBeUsed")
+    @Contract("null -> null; !null -> !null")
+    public static Location resolveStr2Loc(@Nullable String str) {
+        if (str == null) return null;
+
+        String[] parts = str.split(";");
+        if (parts.length != 4) {
+            return new Location(Bukkit.getWorlds().get(0), 0, 0, 0);
+        }
+
+        try {
+            World world = Bukkit.getWorld(parts[0]);
+            int x = Integer.parseInt(parts[1]);
+            int y = Integer.parseInt(parts[2]);
+            int z = Integer.parseInt(parts[3]);
+            return new Location(world, x, y, z);
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("Invalid location string", e);
+        }
+    }
+
+    // str: world_name;x;y;z
+    @NotNull
+    public static String resolveLoc2str(@NotNull Location location) {
+        return location.getWorld().getName() + ";" + location.getBlockX() + ";" + location.getBlockY() + ";" + location.getBlockZ();
+    }
+
+    @NotNull
+    public static String humanizeLoc(@NotNull Location location) {
+        return "X: " + location.getBlockX() + " | Y: " + location.getBlockY() + " | Z: " + location.getBlockZ();
+    }
+
+    @NotNull
+    public static TranslatableComponent humanizeMaterialName(@NotNull Material material) {
+        return Component.translatable("block.minecraft." + resolveMaterial2str(material).toLowerCase());
+    }
+
     @Override
-    public void onUsedToClickBlock(@NotNull PlayerInteractEvent event) {
+    public void onUsedToRightClick(@NotNull PlayerInteractEvent event) {
         if (isDisabled()) {
             return;
         }
@@ -70,10 +168,6 @@ public class FillWand extends PylonItem implements Wand {
         boolean rightClick = action.isRightClick();
         boolean shift = event.getPlayer().isSneaking();
 
-        // 左键onBlock loc1
-        // 右键onBlock loc2
-        // 右键空气 fill
-        // shift右键onBlock 设置material
         if (clickOnBlock) {
             Block block = event.getClickedBlock();
             if (block == null) {
@@ -159,6 +253,13 @@ public class FillWand extends PylonItem implements Wand {
                 }
 
                 int filled = WandUtil.fillBlocks(ConstructionWandPlugin.getInstance(), event, loc1, loc2, material, getLimitBlocks());
+                if (filled == 0) {
+                    player.sendMessage(Messages.argsWithed(
+                            Messages.KEY_NO_ENOUGH_ITEMS,
+                            "material",
+                            humanizeMaterialName(material)
+                    ));
+                }
                 player.sendMessage(Messages.argsWithed(
                         Messages.KEY_FILLED_BLOCKS,
                         "blocks",
@@ -182,101 +283,5 @@ public class FillWand extends PylonItem implements Wand {
     @Override
     public boolean isBlockStrict() {
         return false;
-    }
-
-    @SuppressWarnings("UnstableApiUsage")
-    public static void resolveWandLore(@NotNull ItemStack wand) {
-        ItemLore.Builder lore = ItemLore.lore();
-        lore.addLines(List.of(Component.translatable("pylon.constructionwand.item.fill-wand.lore")));
-        PersistentDataContainerView view = wand.getPersistentDataContainer();
-
-        String loc1 = view.get(LOC1_KEY, PersistentDataType.STRING);
-        String loc2 = view.get(LOC2_KEY, PersistentDataType.STRING);
-        String material = view.get(MATERIAL_KEY, PersistentDataType.STRING);
-
-        if (loc1 != null || loc2 != null || material != null) {
-            lore.addLine(Component.text(""));
-        }
-
-        if (loc1 != null) {
-            lore.addLine(Messages.argsWithed(
-                    Messages.KEY_LOC1,
-                    "loc",
-                    humanizeLoc(resolveStr2Loc(loc1))
-                )
-            );
-        }
-
-        if (loc2 != null) {
-            lore.addLine(Messages.argsWithed(
-                    Messages.KEY_LOC2,
-                    "loc",
-                    humanizeLoc(resolveStr2Loc(loc2))
-                )
-            );
-        }
-
-        if (material != null) {
-            lore.addLine(Messages.argsWithed(
-                    Messages.KEY_MATERIAL,
-                    "material",
-                    humanizeMaterialName(resolveStr2material(material))
-                )
-            );
-        }
-
-        wand.setData(DataComponentTypes.LORE, lore);
-    }
-
-    @Contract("null -> null")
-    public static Material resolveStr2material(@Nullable String str) {
-        if (str == null) return null;
-        return Material.matchMaterial(str);
-    }
-
-    @Contract("null -> null; !null -> !null")
-    public static String resolveMaterial2str(@Nullable Material material) {
-        if (material == null) {
-            return null;
-        }
-
-        return material.name();
-    }
-
-    // str: world_name;x;y;z
-    @SuppressWarnings("SequencedCollectionMethodCanBeUsed")
-    @Contract("null -> null; !null -> !null")
-    public static Location resolveStr2Loc(@Nullable String str) {
-        if (str == null) return null;
-
-        String[] parts = str.split(";");
-        if (parts.length != 4) {
-            return new Location(Bukkit.getWorlds().get(0), 0, 0, 0);
-        }
-
-        try {
-            World world = Bukkit.getWorld(parts[0]);
-            int x = Integer.parseInt(parts[1]);
-            int y = Integer.parseInt(parts[2]);
-            int z = Integer.parseInt(parts[3]);
-            return new Location(world, x, y, z);
-        } catch (NumberFormatException e) {
-            throw new RuntimeException("Invalid location string", e);
-        }
-    }
-
-    // str: world_name;x;y;z
-    @NotNull
-    public static String resolveLoc2str(@NotNull Location location) {
-        return location.getWorld().getName() + ";" + location.getBlockX() + ";" + location.getBlockY() + ";" + location.getBlockZ();
-    }
-
-    public static String humanizeLoc(@NotNull Location location) {
-        return "X: " + location.getBlockX() + " | Y: " + location.getBlockY() + " | Z: " + location.getBlockZ();
-    }
-
-    @NotNull
-    public static TranslatableComponent humanizeMaterialName(@NotNull Material material) {
-        return Component.translatable("block.minecraft." + resolveMaterial2str(material).toLowerCase());
     }
 }

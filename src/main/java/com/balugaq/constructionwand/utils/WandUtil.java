@@ -17,7 +17,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -298,6 +297,7 @@ public class WandUtil {
         }
 
         ItemProvider.consumeItems(player, material, consumed);
+        player.updateInventory();
     }
 
     public static void breakBlocks(@NotNull Plugin plugin, @NotNull PlayerInteractEvent event, boolean disabled, int limitBlocks, boolean blockStrict, boolean opOnly) {
@@ -429,6 +429,7 @@ public class WandUtil {
             block.setType(material);
             filled.incrementAndGet();
         });
+        player.updateInventory();
 
         return filled.get();
     }

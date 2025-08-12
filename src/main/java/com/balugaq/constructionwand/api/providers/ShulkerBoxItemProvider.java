@@ -12,7 +12,6 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Map;
 
 public class ShulkerBoxItemProvider implements ItemProvider {
     /**
@@ -28,8 +27,8 @@ public class ShulkerBoxItemProvider implements ItemProvider {
     /**
      * Counts the amount of items the player has
      *
-     * @param player   The player
-     * @param material The item material, item must be a pure vanilla item.
+     * @param player        The player
+     * @param material      The item material, item must be a pure vanilla item.
      * @param requireAmount The max amount to consume
      * @return The amount of items the player has
      */
@@ -83,20 +82,21 @@ public class ShulkerBoxItemProvider implements ItemProvider {
 
     /**
      * Consume items when player uses filling wand / building wand
+     * Call `player.updateInventory()` after calling this method.
      *
      * @param player   The player
      * @param material The item material, item must be a pure vanilla item.
      * @param amount   The amount to consume
      * @return The amount of items consumed
      */
+    @SuppressWarnings("UnstableApiUsage")
     @Override
     public int consumeItem(@NotNull Player player, @NotNull Material material, int amount) {
         if (player.getGameMode() == GameMode.CREATIVE) {
             return amount;
         }
 
-        // In this case, amount = left;
-        int scheduleConsume = amount;
+        int total = 0;
         ItemStack target = new ItemStack(material, 1);
         for (ItemStack itemStack : player.getInventory().getContents()) {
             if (itemStack == null || itemStack.getType() == Material.AIR) {
@@ -126,19 +126,27 @@ public class ShulkerBoxItemProvider implements ItemProvider {
                     int exist = stack.getAmount();
                     if (amount >= exist) {
                         stack.setAmount(0);
+                        total += exist;
                         amount -= exist;
                     } else {
                         stack.setAmount(exist - amount);
+                        total += amount;
                         amount = 0;
                     }
 
                     if (amount == 0) {
-                        return scheduleConsume;
+                        break;
                     }
                 }
             }
+
+            itemStack.setData(DataComponentTypes.CONTAINER, ItemContainerContents.containerContents(stacks));
+
+            if (amount == 0) {
+                break;
+            }
         }
 
-        return scheduleConsume - amount;
+        return total;
     }
 }

@@ -1,0 +1,3 @@
+limit-blocks: 32768
+op-only: true
+cooldown: 100 # ms

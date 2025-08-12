@@ -12,7 +12,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,7 +35,7 @@ public class ConfigManager implements IManager {
         DEBUG = plugin.getConfig().getBoolean("debug");
     }
 
-    public static <T> @NotNull T getSettingOrThrow(NamespacedKey nk, String key, Class<T> clazz) {
+    public static <T> @NotNull T getSettingOrThrow(@NotNull NamespacedKey nk, @NotNull String key, @NotNull Class<T> clazz) {
         Map<String, ?> cache = CACHE.get(nk);
         if (cache == null) {
             T value = Settings.get(nk).getOrThrow(key, clazz);
@@ -103,8 +102,7 @@ public class ConfigManager implements IManager {
         }
     }
 
-    @ParametersAreNonnullByDefault
-    private void checkKey(FileConfiguration existingConfig, FileConfiguration resourceConfig, String key) {
+    private void checkKey(@NotNull FileConfiguration existingConfig, @NotNull FileConfiguration resourceConfig, @NotNull String key) {
         final Object currentValue = existingConfig.get(key);
         final Object newValue = resourceConfig.get(key);
         if (newValue instanceof ConfigurationSection section) {

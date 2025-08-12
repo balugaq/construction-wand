@@ -8,8 +8,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
-
 public class PlayerInventoryItemProvider implements ItemProvider {
     /**
      * The plugin that this item provider is from
@@ -24,8 +22,8 @@ public class PlayerInventoryItemProvider implements ItemProvider {
     /**
      * Counts the amount of items the player has
      *
-     * @param player   The player
-     * @param material The item material, item must be a pure vanilla item.
+     * @param player        The player
+     * @param material      The item material, item must be a pure vanilla item.
      * @param requireAmount The max amount to consume
      * @return The amount of items the player has
      */
@@ -58,6 +56,7 @@ public class PlayerInventoryItemProvider implements ItemProvider {
 
     /**
      * Consume items when player uses filling wand / building wand
+     * Call `player.updateInventory()` after calling this method.
      *
      * @param player   The player
      * @param material The item material, item must be a pure vanilla item.
@@ -70,11 +69,33 @@ public class PlayerInventoryItemProvider implements ItemProvider {
             return amount;
         }
 
-        Map<Integer, ItemStack> fail = player.getInventory().removeItem(new ItemStack(material, amount));
-        if (fail.isEmpty()) {
-            return amount;
+        int total = 0;
+        ItemStack target = new ItemStack(material, 1);
+        for (ItemStack itemStack : player.getInventory().getContents()) {
+            if (itemStack == null || itemStack.getType() == Material.AIR) {
+                continue;
+            }
+
+            if (!itemStack.isSimilar(target)) {
+                continue;
+            }
+
+            int count = itemStack.getAmount();
+            if (count <= amount) {
+                itemStack.setAmount(0);
+                total += count;
+                amount -= count;
+            } else {
+                itemStack.setAmount(count - amount);
+                total += amount;
+                amount = 0;
+            }
+
+            if (amount == 0) {
+                return total;
+            }
         }
 
-        return  amount - fail.get(0).getAmount();
+        return total;
     }
 }
