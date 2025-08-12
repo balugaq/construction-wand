@@ -75,10 +75,10 @@ public class ConstructionWandPlugin extends JavaPlugin implements PylonAddon {
 
     @Override
     public void onDisable() {
-        wandSetup.shutdown();
-        displayManager.shutdown();
-        listenerManager.shutdown();
-        Debug.log("Disabled BuildingWand!");
+        if (wandSetup != null) wandSetup.shutdown();
+        if (displayManager != null) displayManager.shutdown();
+        if (listenerManager != null) listenerManager.shutdown();
+        Debug.log("Disabled ConstructionWand!");
     }
 
     @Override

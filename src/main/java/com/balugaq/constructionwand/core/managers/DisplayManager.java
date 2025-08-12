@@ -32,11 +32,11 @@ public class DisplayManager implements IManager {
     @Override
     public void setup() {
         // Entities needs to running on the main thread
-        Bukkit.getScheduler().runTaskTimer(plugin, BlockPreviewTask::new, 1, 1);
-        Bukkit.getScheduler().runTaskTimer(plugin, DisplaysClearTask::new, 1, 20 * 60 * 5); // 5 minutes
+        Bukkit.getScheduler().runTaskTimer(plugin, () -> new BlockPreviewTask().run(), 1, 1);
+        Bukkit.getScheduler().runTaskTimer(plugin, () -> new DisplaysClearTask().run(), 1, 20 * 60 * 5); // 5 minutes
 
         // Particles are asyncable
-        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, FillWandSUITask::new, 0, 10);
+        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> new FillWandSUITask().run(), 0, 10);
     }
 
     @Override

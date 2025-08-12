@@ -11,7 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public interface ItemProvider {
     List<ItemProvider> PROVIDERS = new CopyOnWriteArrayList<>();
-    int INF = 4096;
+    int INF = 40960;
 
     /**
      * Register an item provider, be used when player uses filling wand / building wand

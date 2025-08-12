@@ -34,8 +34,6 @@ public class BlockPreviewTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        Debug.log(this);
-
         if (!manager.isRunning()) {
             this.cancel();
             return;

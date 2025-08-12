@@ -234,19 +234,16 @@ public class WandUtil {
 
         Material material = lookingAtBlock.getType();
         if (isMaterialDisabledToBuild(material)) {
-            Debug.log("Place blocks: Material is disabled to build");
             return;
         }
 
         int playerHas = ItemProvider.getItemAmount(player, material, limitBlocks);
         if (playerHas == 0) {
-            Debug.log("Place blocks: Player has no " + material);
             return;
         }
 
         BlockFace originalFacing = player.getTargetBlockFace(6, FluidCollisionMode.NEVER);
         if (originalFacing == null) {
-            Debug.log("Place blocks: Looking at block face is null");
             return;
         }
 
@@ -296,7 +293,6 @@ public class WandUtil {
         }, 2); // The lagger the server is, the more delay it should take.
 
         if (player.getGameMode() == GameMode.CREATIVE) {
-            Debug.log("Place blocks: Player is in creative mode");
             return;
         }
 
@@ -337,7 +333,6 @@ public class WandUtil {
 
         BlockFace originalFacing = player.getTargetBlockFace(6, FluidCollisionMode.NEVER);
         if (originalFacing == null) {
-            Debug.log("Break blocks: Looking at block face is null");
             return;
         }
 
@@ -417,23 +412,23 @@ public class WandUtil {
             return -1;
         }
 
+        int amount = ItemProvider.getItemAmount(player, material, ItemProvider.INF);
         AtomicInteger filled = new AtomicInteger(0);
         WorldUtils.doWorldEdit(loc1, loc2, location -> {
+            if (filled.get() > amount) {
+                return;
+            }
+
             Block block = location.getBlock();
             if (!block.getType().isAir()) {
                 // neither AIR nor CAVE_AIR
                 return;
             }
 
-            int amount = ItemProvider.getItemAmount(player, material, 1);
-            if (amount == 0) {
-                return;
-            }
-
-            ItemProvider.consumeItems(player, material, amount);
             block.setType(material);
             filled.incrementAndGet();
         });
+        ItemProvider.consumeItems(player, material, filled.get());
         player.updateInventory();
 
         return filled.get();

@@ -265,8 +265,6 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                         "blocks",
                         filled
                 ));
-                PersistentUtil.remove(wand, LOC1_KEY);
-                PersistentUtil.remove(wand, LOC2_KEY);
                 resolveWandLore(wand);
                 return;
             }
