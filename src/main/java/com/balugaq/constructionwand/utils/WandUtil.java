@@ -1,6 +1,8 @@
 package com.balugaq.constructionwand.utils;
 
 import com.balugaq.constructionwand.api.enums.Interaction;
+import com.balugaq.constructionwand.api.events.FakeBlockBreakEvent;
+import com.balugaq.constructionwand.api.events.FakeBlockPlaceEvent;
 import com.balugaq.constructionwand.api.providers.ItemProvider;
 import com.destroystokyo.paper.MaterialTags;
 import org.bukkit.Axis;
@@ -23,6 +25,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -257,7 +260,7 @@ public class WandUtil {
         for (Location location : buildingLocations) {
             Block block = location.getBlock();
             if (block.getType() == Material.AIR || block.getType() == Material.WATER || block.getType() == Material.LAVA) {
-                BlockPlaceEvent blockPlaceEvent = new BlockPlaceEvent(
+                FakeBlockPlaceEvent blockPlaceEvent = new FakeBlockPlaceEvent(
                         block,
                         block.getState(),
                         block.getRelative(lookingFacing.getOppositeFace()),
@@ -366,7 +369,7 @@ public class WandUtil {
                 continue;
             }
 
-            BlockBreakEvent e2 = new BlockBreakEvent(location.getBlock(), player);
+            FakeBlockBreakEvent e2 = new FakeBlockBreakEvent(location.getBlock(), player);
             Bukkit.getPluginManager().callEvent(e2);
             if (!e2.isCancelled()) {
                 locationsToBreak.add(e2);
@@ -395,6 +398,39 @@ public class WandUtil {
                 state.update(true, true);
             }
         }, 2);
+    }
+
+    @Range(from = -1, to = Integer.MAX_VALUE)
+    public static int fillBlocks(@NotNull Plugin plugin, @NotNull PlayerInteractEvent event, @NotNull Location loc1, @NotNull Location loc2, @NotNull Material material, int limitBlocks) {
+        Player player = event.getPlayer();
+
+        if (player.getGameMode() == GameMode.SPECTATOR) {
+            return -1;
+        }
+
+        if (WorldUtils.totalBlocks(loc1, loc2) > limitBlocks) {
+            return -1;
+        }
+
+        AtomicInteger filled = new AtomicInteger(0);
+        WorldUtils.doWorldEdit(loc1, loc2, location -> {
+            Block block = location.getBlock();
+            if (!block.getType().isAir()) {
+                // neither AIR nor CAVE_AIR
+                return;
+            }
+
+            int amount = ItemProvider.getItemAmount(player, material, 1);
+            if (amount == 0) {
+                return;
+            }
+
+            ItemProvider.consumeItems(player, material, amount);
+            block.setType(material);
+            filled.incrementAndGet();
+        });
+
+        return filled.get();
     }
 
     public static boolean isMaterialDisabledToBreak(@NotNull Material material) {

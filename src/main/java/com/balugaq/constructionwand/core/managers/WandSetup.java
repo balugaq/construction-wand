@@ -3,6 +3,8 @@ package com.balugaq.constructionwand.core.managers;
 import com.balugaq.constructionwand.api.interfaces.IManager;
 import com.balugaq.constructionwand.api.items.BreakingWand;
 import com.balugaq.constructionwand.api.items.BuildingWand;
+import com.balugaq.constructionwand.api.items.FillWand;
+import com.balugaq.constructionwand.api.items.Wand;
 import com.balugaq.constructionwand.utils.KeyUtil;
 import io.github.pylonmc.pylon.core.content.guide.PylonGuide;
 import io.github.pylonmc.pylon.core.guide.pages.base.SimpleStaticGuidePage;
@@ -27,7 +29,8 @@ public class WandSetup implements IManager {
         return KeyUtil.newKey(key);
     }
 
-    public static void registerBuildingWand(
+    public static void registerWand(
+            @NotNull Class<? extends PylonItem> clazz,
             @NotNull NamespacedKey key,
             @NotNull Material material,
             @Nullable String... recipe) {
@@ -35,21 +38,44 @@ public class WandSetup implements IManager {
         if (recipe != null) {
             registerRecipe(key, item, recipe);
         }
-        PylonItem.register(BuildingWand.class, item);
+        PylonItem.register(clazz, item);
         MAIN.addItem(key);
+    }
+
+    public static void registerBuildingWand(
+            @NotNull NamespacedKey key,
+            @NotNull Material material,
+            @Nullable String... recipe) {
+        registerWand(
+                BuildingWand.class,
+                key,
+                material,
+                recipe
+        );
     }
 
     public static void registerBreakingWand(
             @NotNull NamespacedKey key,
             @NotNull Material material,
             @Nullable String... recipe) {
-        ItemStack item = ItemStackBuilder.pylonItem(material, key).build();
-        if (recipe != null) {
-            registerRecipe(key, item, recipe);
-        }
+        registerWand(
+                BreakingWand.class,
+                key,
+                material,
+                recipe
+        );
+    }
 
-        PylonItem.register(BreakingWand.class, item);
-        MAIN.addItem(key);
+    public static void registerFillWand(
+            @NotNull NamespacedKey key,
+            @NotNull Material material,
+            @Nullable String... recipe) {
+        registerWand(
+                FillWand.class,
+                key,
+                material,
+                recipe
+        );
     }
 
     public static void registerRecipe(
@@ -62,7 +88,9 @@ public class WandSetup implements IManager {
         if (m.containsKey('S')) shapedRecipe.setIngredient('S', Material.STICK);
         if (m.containsKey('I')) shapedRecipe.setIngredient('I', Material.IRON_INGOT);
         if (m.containsKey('G')) shapedRecipe.setIngredient('G', Material.GOLD_INGOT);
+        if (m.containsKey('D')) shapedRecipe.setIngredient('D', Material.DIAMOND);
         if (m.containsKey('O')) shapedRecipe.setIngredient('O', Material.OBSIDIAN);
+        if (m.containsKey('N')) shapedRecipe.setIngredient('N', Material.NETHER_STAR);
 
         shapedRecipe.setCategory(CraftingBookCategory.BUILDING);
         RecipeType.VANILLA_SHAPED.addRecipe(shapedRecipe);
@@ -134,6 +162,28 @@ public class WandSetup implements IManager {
         registerBreakingWand(
                 key("breaking-wand-3"),
                 Material.GOLDEN_SWORD,
+                (String[]) null
+        );
+
+        registerFillWand(
+                key("fill-wand-1"),
+                Material.STONE_SWORD,
+                "  D",
+                " N ",
+                "S  "
+        );
+
+        registerFillWand(
+                key("fill-wand-2"),
+                Material.DIAMOND_SWORD,
+                "  D",
+                " N ",
+                "N  "
+        );
+
+        registerFillWand(
+                key("fill-wand-3"),
+                Material.NETHERITE_SWORD,
                 (String[]) null
         );
     }
