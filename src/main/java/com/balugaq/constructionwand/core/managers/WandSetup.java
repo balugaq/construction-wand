@@ -1,6 +1,5 @@
 package com.balugaq.constructionwand.core.managers;
 
-import com.balugaq.constructionwand.api.interfaces.IManager;
 import com.balugaq.constructionwand.api.items.BreakingWand;
 import com.balugaq.constructionwand.api.items.BuildingWand;
 import com.balugaq.constructionwand.api.items.FillWand;

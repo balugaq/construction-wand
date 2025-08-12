@@ -1,6 +1,5 @@
 package com.balugaq.constructionwand.core.managers;
 
-import com.balugaq.constructionwand.api.interfaces.IManager;
 import com.balugaq.constructionwand.core.listeners.PlayerInteractListener;
 import com.balugaq.constructionwand.core.listeners.PrepareBreakingListener;
 import com.balugaq.constructionwand.core.listeners.PrepareBuildingListener;

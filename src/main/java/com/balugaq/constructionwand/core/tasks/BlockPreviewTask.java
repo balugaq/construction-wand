@@ -6,6 +6,7 @@ import com.balugaq.constructionwand.api.items.BreakingWand;
 import com.balugaq.constructionwand.api.items.BuildingWand;
 import com.balugaq.constructionwand.core.managers.DisplayManager;
 import com.balugaq.constructionwand.implementation.ConstructionWandPlugin;
+import com.balugaq.constructionwand.utils.Debug;
 import com.balugaq.constructionwand.utils.WandUtil;
 import io.github.pylonmc.pylon.core.item.PylonItem;
 import lombok.Getter;
@@ -16,12 +17,14 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
+import java.util.function.Consumer;
 
-public class BlockPreviewTask implements Task {
+public class BlockPreviewTask extends BukkitRunnable {
     @Getter
     private final DisplayManager manager;
 
@@ -29,14 +32,12 @@ public class BlockPreviewTask implements Task {
         manager = ConstructionWandPlugin.getInstance().getDisplayManager();
     }
 
-    /**
-     * Performs this operation on the given argument.
-     *
-     * @param bukkitTask the input argument
-     */
     @Override
-    public void accept(@NotNull BukkitTask bukkitTask) {
+    public void run() {
+        Debug.log(this);
+
         if (!manager.isRunning()) {
+            this.cancel();
             return;
         }
 
@@ -44,27 +45,31 @@ public class BlockPreviewTask implements Task {
             if (player.getGameMode() == GameMode.SPECTATOR) {
                 return;
             }
+
             UUID uuid = player.getUniqueId();
             Block block = player.getTargetBlockExact(6, FluidCollisionMode.NEVER);
             if (block == null || block.getType().isAir()) {
-                lookingAt.remove(uuid);
-                killDisplays(uuid);
+                manager.getLookingAts().remove(uuid);
+                manager.killDisplays(uuid);
                 continue;
             }
 
             BlockFace originalFacing = player.getTargetBlockFace(6, FluidCollisionMode.NEVER);
             if (originalFacing == null) {
-                lookingAt.remove(uuid);
-                lookingFaces.remove(uuid);
-                killDisplays(uuid);
+                manager.getLookingAts().remove(uuid);
+                manager.getLookingFaces().remove(uuid);
+                manager.killDisplays(uuid);
                 continue;
             }
 
             Location location = block.getLocation();
-            if (!lookingAt.containsKey(uuid) || !lookingAt.get(uuid).equals(location) || !lookingFaces.containsKey(uuid) || !lookingFaces.get(uuid).equals(originalFacing)) {
-                killDisplays(uuid);
-                lookingAt.put(uuid, location);
-                lookingFaces.put(uuid, originalFacing);
+            if (!manager.getLookingAts().containsKey(uuid)
+                    || !manager.getLookingAts().get(uuid).equals(location)
+                    || !manager.getLookingFaces().containsKey(uuid)
+                    || !manager.getLookingFaces().get(uuid).equals(originalFacing)) {
+                manager.killDisplays(uuid);
+                manager.getLookingAts().put(uuid, location);
+                manager.getLookingFaces().put(uuid, originalFacing);
 
                 PylonItem wandLike = PylonItem.fromStack(player.getInventory().getItemInMainHand());
                 if (wandLike instanceof BuildingWand buildingWand) {

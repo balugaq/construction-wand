@@ -8,7 +8,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public class FakeBlockPlaceEvent extends BlockPlaceEvent {
+public class FakeBlockPlaceEvent extends BlockPlaceEvent implements FakeEvent {
     public FakeBlockPlaceEvent(@NotNull Block placedBlock, @NotNull BlockState replacedBlockState, @NotNull Block placedAgainst, @NotNull ItemStack itemInHand, @NotNull Player thePlayer, boolean canBuild, @NotNull EquipmentSlot hand) {
         super(placedBlock, replacedBlockState, placedAgainst, itemInHand, thePlayer, canBuild, hand);
     }

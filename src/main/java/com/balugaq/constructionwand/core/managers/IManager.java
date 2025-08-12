@@ -1,4 +1,4 @@
-package com.balugaq.constructionwand.api.interfaces;
+package com.balugaq.constructionwand.core.managers;
 
 public interface IManager {
     void setup();

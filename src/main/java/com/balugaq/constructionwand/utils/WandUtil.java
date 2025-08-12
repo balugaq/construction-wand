@@ -207,11 +207,11 @@ public class WandUtil {
     }
 
     public static void placeBlocks(@NotNull Plugin plugin, @NotNull PlayerInteractEvent event, boolean disabled, int limitBlocks, boolean blockStrict, boolean opOnly) {
-        placeBlocks(plugin, null, event.getPlayer(), disabled, limitBlocks, blockStrict, opOnly);
+        placeBlocks(plugin, event.getHand(), event.getPlayer(), disabled, limitBlocks, blockStrict, opOnly);
     }
 
     public static void placeBlocks(@NotNull Plugin plugin, @Nullable EquipmentSlot hand, @NotNull Player player, boolean disabled, int limitBlocks, boolean blockStrict, boolean opOnly) {
-        if (hand != EquipmentSlot.HAND) {
+        if (hand != null && hand != EquipmentSlot.HAND) {
             return;
         }
 
@@ -234,24 +234,27 @@ public class WandUtil {
 
         Material material = lookingAtBlock.getType();
         if (isMaterialDisabledToBuild(material)) {
+            Debug.log("Place blocks: Material is disabled to build");
             return;
         }
 
         int playerHas = ItemProvider.getItemAmount(player, material, limitBlocks);
         if (playerHas == 0) {
+            Debug.log("Place blocks: Player has no " + material);
             return;
         }
 
         BlockFace originalFacing = player.getTargetBlockFace(6, FluidCollisionMode.NEVER);
         if (originalFacing == null) {
+            Debug.log("Place blocks: Looking at block face is null");
             return;
         }
 
         BlockFace lookingFacing = getBlockFaceAsCartesian(originalFacing);
 
         ItemStack itemInHand = new ItemStack(material, 1);
-        ItemStack item = player.getInventory().getItemInMainHand();
-        Set<Location> buildingLocations = WandUtil.getBuildingLocations(player, Math.min(limitBlocks, playerHas), WandUtil.getAxis(item), blockStrict);
+        ItemStack wand = player.getInventory().getItemInMainHand();
+        Set<Location> buildingLocations = WandUtil.getBuildingLocations(player, Math.min(limitBlocks, playerHas), WandUtil.getAxis(wand), blockStrict);
 
         int consumed = 0;
 
@@ -290,9 +293,10 @@ public class WandUtil {
                 }
                 block.getState().update(true, true);
             }
-        }, 2);
+        }, 2); // The lagger the server is, the more delay it should take.
 
         if (player.getGameMode() == GameMode.CREATIVE) {
+            Debug.log("Place blocks: Player is in creative mode");
             return;
         }
 
@@ -305,7 +309,7 @@ public class WandUtil {
     }
 
     public static void breakBlocks(@NotNull Plugin plugin, @Nullable EquipmentSlot hand, @NotNull Player player, boolean disabled, int limitBlocks, boolean blockStrict, boolean opOnly) {
-        if (hand != EquipmentSlot.HAND) {
+        if (hand != null && hand != EquipmentSlot.HAND) {
             return;
         }
 
@@ -333,6 +337,7 @@ public class WandUtil {
 
         BlockFace originalFacing = player.getTargetBlockFace(6, FluidCollisionMode.NEVER);
         if (originalFacing == null) {
+            Debug.log("Break blocks: Looking at block face is null");
             return;
         }
 

@@ -3,23 +3,22 @@ package com.balugaq.constructionwand.core.tasks;
 import com.balugaq.constructionwand.api.items.FillWand;
 import com.balugaq.constructionwand.core.managers.DisplayManager;
 import com.balugaq.constructionwand.implementation.ConstructionWandPlugin;
+import com.balugaq.constructionwand.utils.Debug;
 import com.balugaq.constructionwand.utils.ParticleUtil;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.World;
-import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.MetadataValue;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import java.util.function.Consumer;
 
-public class FillWandSUITask implements Task {
+public class FillWandSUITask extends BukkitRunnable {
     @Getter
     private final DisplayManager manager;
 
@@ -27,14 +26,12 @@ public class FillWandSUITask implements Task {
         manager = ConstructionWandPlugin.getInstance().getDisplayManager();
     }
 
-    /**
-     * Performs this operation on the given argument.
-     *
-     * @param bukkitTask the input argument
-     */
     @Override
-    public void accept(@NotNull BukkitTask bukkitTask) {
+    public void run() {
+        Debug.log(this);
+
         if (!manager.isRunning()) {
+            this.cancel();
             return;
         }
 

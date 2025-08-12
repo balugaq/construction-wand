@@ -1,6 +1,5 @@
 package com.balugaq.constructionwand.core.managers;
 
-import com.balugaq.constructionwand.api.interfaces.IManager;
 import com.balugaq.constructionwand.implementation.ConstructionWandPlugin;
 import com.balugaq.constructionwand.utils.Debug;
 import io.github.pylonmc.pylon.core.config.Settings;

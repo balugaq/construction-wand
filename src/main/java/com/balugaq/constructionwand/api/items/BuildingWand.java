@@ -1,6 +1,7 @@
 package com.balugaq.constructionwand.api.items;
 
 import com.balugaq.constructionwand.implementation.ConstructionWandPlugin;
+import com.balugaq.constructionwand.utils.Debug;
 import com.balugaq.constructionwand.utils.WandUtil;
 import io.github.pylonmc.pylon.core.i18n.PylonArgument;
 import io.github.pylonmc.pylon.core.item.PylonItem;
@@ -25,6 +26,7 @@ public class BuildingWand extends PylonItem implements Wand, PylonBlockInteracto
 
     @Override
     public void onUsedToClickBlock(@NotNull PlayerInteractEvent event) {
+        Debug.log(this + " #1");
         if (isCooldowning(event.getPlayer())) {
             return;
         }
