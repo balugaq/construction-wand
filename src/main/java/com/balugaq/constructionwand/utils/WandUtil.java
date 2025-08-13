@@ -408,6 +408,10 @@ public class WandUtil {
                 return;
             }
 
+            if (!PermissionUtil.canPlaceBlock(player, block, block)) {
+                return;
+            }
+
             block.setType(material);
             filled.incrementAndGet();
         });

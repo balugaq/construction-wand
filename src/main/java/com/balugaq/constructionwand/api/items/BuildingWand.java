@@ -26,7 +26,6 @@ public class BuildingWand extends PylonItem implements Wand, PylonBlockInteracto
 
     @Override
     public void onUsedToClickBlock(@NotNull PlayerInteractEvent event) {
-        Debug.log(this + " #1");
         if (isCooldowning(event.getPlayer())) {
             return;
         }

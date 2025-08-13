@@ -14,6 +14,16 @@ import org.jetbrains.annotations.NotNull;
 public class PermissionUtil {
     public static boolean canPlaceBlock(
             @NotNull Player player,
+            @NotNull Block placeBlock
+    ) {
+        return canPlaceBlock(
+                player,
+                placeBlock,
+                placeBlock
+        );
+    }
+    public static boolean canPlaceBlock(
+            @NotNull Player player,
             @NotNull Block placeBlock,
             @NotNull Block blockAgainst
     ) {
@@ -37,16 +47,8 @@ public class PermissionUtil {
             boolean canBuild,
             EquipmentSlot hand
     ) {
-        FakeBlockPlaceEvent event = new FakeBlockPlaceEvent(
-                placeBlock,
-                replacedBlockState,
-                blockAgainst,
-                itemInMainHand,
-                player,
-                canBuild,
-                hand
-        );
-        event.callEvent();
+        FakeBlockPlaceEvent event = simulateBlockPlace(placeBlock, replacedBlockState, blockAgainst, itemInMainHand, player, canBuild, hand);
+        Debug.log(!event.isCancelled());
         return !event.isCancelled();
     }
 
@@ -74,18 +76,17 @@ public class PermissionUtil {
 
     public static boolean canBreakBlock(
             @NotNull Player player,
-            @NotNull Block breakBlock
+            @NotNull Block theBlock
     ) {
-        FakeBlockBreakEvent event = new FakeBlockBreakEvent(breakBlock, player);
-        event.callEvent();
+        FakeBlockBreakEvent event = simulateBlockBreak(player, theBlock);
         return !event.isCancelled();
     }
 
     public static FakeBlockBreakEvent simulateBlockBreak(
             @NotNull Player player,
-            @NotNull Block breakBlock
+            @NotNull Block theBlock
     ) {
-        FakeBlockBreakEvent event = new FakeBlockBreakEvent(breakBlock, player);
+        FakeBlockBreakEvent event = new FakeBlockBreakEvent(theBlock, player);
         event.callEvent();
         return event;
     }
