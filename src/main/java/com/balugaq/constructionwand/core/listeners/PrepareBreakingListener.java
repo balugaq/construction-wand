@@ -1,6 +1,5 @@
 package com.balugaq.constructionwand.core.listeners;
 
-import com.balugaq.constructionwand.api.enums.Interaction;
 import com.balugaq.constructionwand.api.events.PrepareBreakingEvent;
 import com.balugaq.constructionwand.api.items.BreakingWand;
 import com.balugaq.constructionwand.core.managers.ConfigManager;
@@ -52,7 +51,7 @@ public class PrepareBreakingListener implements Listener {
     }
 
     private void showBreakingBlocksFor(@NotNull Player player, @NotNull Block lookingAtBlock, int limitBlocks, @NotNull BreakingWand breakingWand) {
-        if (!player.isOp() && !PermissionUtil.hasPermission(player, lookingAtBlock, Interaction.BREAK_BLOCK)) {
+        if (!player.isOp() && !PermissionUtil.canBreakBlock(player, lookingAtBlock)) {
             return;
         }
 

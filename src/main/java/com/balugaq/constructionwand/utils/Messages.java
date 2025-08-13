@@ -6,6 +6,7 @@ import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Messages {
@@ -50,48 +51,24 @@ public class Messages {
     public static final String KEY_NO_ENOUGH_ITEMS = PREFIX + "common.no-enough-items";
 
     @NotNull
-    public static TranslatableComponent argsWithed(@NotNull String key, @NotNull String argName, int arg) {
-        return Component.translatable(key, PylonArgument.of(argName, arg));
-    }
-
-    // todo: use a better way to do this...
-    @NotNull
-    public static TranslatableComponent argsWithed(@NotNull String key, @NotNull String argName1, @NotNull String arg1, @NotNull String argName2, long arg2) {
-        return Component.translatable(key, List.of(PylonArgument.of(argName1, arg1), PylonArgument.of(argName2, arg2)));
-    }
-
-    @NotNull
-    public static TranslatableComponent argsWithed(@NotNull String key, @NotNull String argName, float arg) {
-        return Component.translatable(key, PylonArgument.of(argName, arg));
-    }
-
-    @NotNull
-    public static TranslatableComponent argsWithed(@NotNull String key, @NotNull String argName, long arg) {
-        return Component.translatable(key, PylonArgument.of(argName, arg));
-    }
-
-    @NotNull
-    public static TranslatableComponent argsWithed(@NotNull String key, @NotNull String argName, double arg) {
-        return Component.translatable(key, PylonArgument.of(argName, arg));
-    }
-
-    @NotNull
-    public static TranslatableComponent argsWithed(@NotNull String key, @NotNull String argName, @NotNull String arg) {
-        return Component.translatable(key, PylonArgument.of(argName, arg));
-    }
-
-    @NotNull
-    public static TranslatableComponent argsWithed(@NotNull String key, @NotNull String argName, @NotNull ComponentLike arg) {
-        return Component.translatable(key, PylonArgument.of(argName, arg));
-    }
-
-    @NotNull
-    public static TranslatableComponent argsWithed(@NotNull String key, @NotNull String argName, boolean arg) {
-        return Component.translatable(key, PylonArgument.of(argName, arg));
-    }
-
-    @NotNull
-    public static TranslatableComponent argsWithed(@NotNull String key, @NotNull String argName, char arg) {
-        return Component.translatable(key, PylonArgument.of(argName, arg));
+    public static TranslatableComponent argsWithed(@NotNull String translationKey, @NotNull Object... args) {
+        List<PylonArgument> pargs = new ArrayList<>();
+        for (int i = 0; i < args.length / 2; i += 2) {
+            String argkey = args[i].toString();
+            Object object = args[i + 1];
+            switch (object) {
+                case ComponentLike componentLike -> pargs.add(PylonArgument.of(argkey, componentLike));
+                case String string -> pargs.add(PylonArgument.of(argkey, string));
+                case Integer integer -> pargs.add(PylonArgument.of(argkey, integer));
+                case Long longValue -> pargs.add(PylonArgument.of(argkey, longValue));
+                case Double doubleValue -> pargs.add(PylonArgument.of(argkey, doubleValue));
+                case Float floatValue -> pargs.add(PylonArgument.of(argkey, floatValue));
+                case Boolean booleanValue -> pargs.add(PylonArgument.of(argkey, booleanValue));
+                case Character character -> pargs.add(PylonArgument.of(argkey, character));
+                default -> {
+                }
+            }
+        }
+        return Component.translatable(translationKey, pargs);
     }
 }

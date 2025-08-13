@@ -1,8 +1,6 @@
 package com.balugaq.constructionwand.utils;
 
-import com.balugaq.constructionwand.api.enums.Interaction;
 import com.balugaq.constructionwand.api.events.FakeBlockBreakEvent;
-import com.balugaq.constructionwand.api.events.FakeBlockPlaceEvent;
 import com.balugaq.constructionwand.api.providers.ItemProvider;
 import com.destroystokyo.paper.MaterialTags;
 import org.bukkit.Axis;
@@ -259,17 +257,7 @@ public class WandUtil {
         for (Location location : buildingLocations) {
             Block block = location.getBlock();
             if (block.getType() == Material.AIR || block.getType() == Material.WATER || block.getType() == Material.LAVA) {
-                FakeBlockPlaceEvent blockPlaceEvent = new FakeBlockPlaceEvent(
-                        block,
-                        block.getState(),
-                        block.getRelative(lookingFacing.getOppositeFace()),
-                        itemInHand,
-                        player,
-                        true, // Why needs a `canBuild` param before check permission
-                        EquipmentSlot.HAND
-                );
-                Bukkit.getPluginManager().callEvent(blockPlaceEvent);
-                if (!blockPlaceEvent.isCancelled()) {
+                if (PermissionUtil.canPlaceBlock(player, block, block.getRelative(lookingFacing.getOppositeFace()))) {
                     blocks.add(block);
                     consumed += 1;
                 }
@@ -365,12 +353,7 @@ public class WandUtil {
 
         Set<BlockBreakEvent> locationsToBreak = new HashSet<>();
         for (Location location : result) {
-            if (!PermissionUtil.hasPermission(player, location, Interaction.BREAK_BLOCK)) {
-                continue;
-            }
-
-            FakeBlockBreakEvent e2 = new FakeBlockBreakEvent(location.getBlock(), player);
-            Bukkit.getPluginManager().callEvent(e2);
+            FakeBlockBreakEvent e2 = PermissionUtil.simulateBlockBreak(player, location.getBlock());
             if (!e2.isCancelled()) {
                 locationsToBreak.add(e2);
             }
