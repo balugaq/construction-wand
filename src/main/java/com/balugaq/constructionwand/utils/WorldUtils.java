@@ -111,7 +111,7 @@ public class WorldUtils {
         }
     }
 
-    public static long getRange(@Nonnull Location pos1, @Nonnull Location pos2) {
+    public static long totalBlocks(@Nonnull Location pos1, @Nonnull Location pos2) {
         if (pos1 == null || pos2 == null) {
             return 0;
         }

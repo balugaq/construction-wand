@@ -1,6 +1,6 @@
 package com.balugaq.constructionwand.utils;
 
-import com.balugaq.constructionwand.api.enums.Interaction;
+import com.balugaq.constructionwand.api.events.FakeBlockBreakEvent;
 import com.balugaq.constructionwand.api.providers.ItemProvider;
 import com.destroystokyo.paper.MaterialTags;
 import org.bukkit.Axis;
@@ -15,7 +15,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -23,6 +22,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -205,11 +205,11 @@ public class WandUtil {
     }
 
     public static void placeBlocks(@NotNull Plugin plugin, @NotNull PlayerInteractEvent event, boolean disabled, int limitBlocks, boolean blockStrict, boolean opOnly) {
-        placeBlocks(plugin, null, event.getPlayer(), disabled, limitBlocks, blockStrict, opOnly);
+        placeBlocks(plugin, event.getHand(), event.getPlayer(), disabled, limitBlocks, blockStrict, opOnly);
     }
 
     public static void placeBlocks(@NotNull Plugin plugin, @Nullable EquipmentSlot hand, @NotNull Player player, boolean disabled, int limitBlocks, boolean blockStrict, boolean opOnly) {
-        if (hand != EquipmentSlot.HAND) {
+        if (hand != null && hand != EquipmentSlot.HAND) {
             return;
         }
 
@@ -236,7 +236,7 @@ public class WandUtil {
         }
 
         int playerHas = ItemProvider.getItemAmount(player, material, limitBlocks);
-        if (playerHas <= 0) {
+        if (playerHas == 0) {
             return;
         }
 
@@ -248,8 +248,8 @@ public class WandUtil {
         BlockFace lookingFacing = getBlockFaceAsCartesian(originalFacing);
 
         ItemStack itemInHand = new ItemStack(material, 1);
-        ItemStack item = player.getInventory().getItemInMainHand();
-        Set<Location> buildingLocations = WandUtil.getBuildingLocations(player, Math.min(limitBlocks, playerHas), WandUtil.getAxis(item), blockStrict);
+        ItemStack wand = player.getInventory().getItemInMainHand();
+        Set<Location> buildingLocations = WandUtil.getBuildingLocations(player, Math.min(limitBlocks, playerHas), WandUtil.getAxis(wand), blockStrict);
 
         int consumed = 0;
 
@@ -257,17 +257,7 @@ public class WandUtil {
         for (Location location : buildingLocations) {
             Block block = location.getBlock();
             if (block.getType() == Material.AIR || block.getType() == Material.WATER || block.getType() == Material.LAVA) {
-                BlockPlaceEvent blockPlaceEvent = new BlockPlaceEvent(
-                        block,
-                        block.getState(),
-                        block.getRelative(lookingFacing.getOppositeFace()),
-                        itemInHand,
-                        player,
-                        true, // Why needs a `canBuild` param before check permission
-                        EquipmentSlot.HAND
-                );
-                Bukkit.getPluginManager().callEvent(blockPlaceEvent);
-                if (!blockPlaceEvent.isCancelled()) {
+                if (PermissionUtil.canPlaceBlock(player, block, block.getRelative(lookingFacing.getOppositeFace()))) {
                     blocks.add(block);
                     consumed += 1;
                 }
@@ -288,13 +278,14 @@ public class WandUtil {
                 }
                 block.getState().update(true, true);
             }
-        }, 2);
+        }, 2); // The lagger the server is, the more delay it should take.
 
         if (player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
 
         ItemProvider.consumeItems(player, material, consumed);
+        player.updateInventory();
     }
 
     public static void breakBlocks(@NotNull Plugin plugin, @NotNull PlayerInteractEvent event, boolean disabled, int limitBlocks, boolean blockStrict, boolean opOnly) {
@@ -302,7 +293,7 @@ public class WandUtil {
     }
 
     public static void breakBlocks(@NotNull Plugin plugin, @Nullable EquipmentSlot hand, @NotNull Player player, boolean disabled, int limitBlocks, boolean blockStrict, boolean opOnly) {
-        if (hand != EquipmentSlot.HAND) {
+        if (hand != null && hand != EquipmentSlot.HAND) {
             return;
         }
 
@@ -362,12 +353,7 @@ public class WandUtil {
 
         Set<BlockBreakEvent> locationsToBreak = new HashSet<>();
         for (Location location : result) {
-            if (!PermissionUtil.hasPermission(player, location, Interaction.BREAK_BLOCK)) {
-                continue;
-            }
-
-            BlockBreakEvent e2 = new BlockBreakEvent(location.getBlock(), player);
-            Bukkit.getPluginManager().callEvent(e2);
+            FakeBlockBreakEvent e2 = PermissionUtil.simulateBlockBreak(player, location.getBlock());
             if (!e2.isCancelled()) {
                 locationsToBreak.add(e2);
             }
@@ -395,6 +381,44 @@ public class WandUtil {
                 state.update(true, true);
             }
         }, 2);
+    }
+
+    @Range(from = -1, to = Integer.MAX_VALUE)
+    public static int fillBlocks(@NotNull Plugin plugin, @NotNull PlayerInteractEvent event, @NotNull Location loc1, @NotNull Location loc2, @NotNull Material material, int limitBlocks) {
+        Player player = event.getPlayer();
+
+        if (player.getGameMode() == GameMode.SPECTATOR) {
+            return -1;
+        }
+
+        if (WorldUtils.totalBlocks(loc1, loc2) > limitBlocks) {
+            return -1;
+        }
+
+        int amount = ItemProvider.getItemAmount(player, material, ItemProvider.INF);
+        AtomicInteger filled = new AtomicInteger(0);
+        WorldUtils.doWorldEdit(loc1, loc2, location -> {
+            if (filled.get() >= amount) {
+                return;
+            }
+
+            Block block = location.getBlock();
+            if (!block.getType().isAir()) {
+                // neither AIR nor CAVE_AIR
+                return;
+            }
+
+            if (!PermissionUtil.canPlaceBlock(player, block, block)) {
+                return;
+            }
+
+            block.setType(material);
+            filled.incrementAndGet();
+        });
+        ItemProvider.consumeItems(player, material, filled.get());
+        player.updateInventory();
+
+        return filled.get();
     }
 
     public static boolean isMaterialDisabledToBreak(@NotNull Material material) {

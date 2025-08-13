@@ -5,6 +5,7 @@ import com.balugaq.constructionwand.utils.Debug;
 import com.balugaq.constructionwand.utils.WandUtil;
 import io.github.pylonmc.pylon.core.i18n.PylonArgument;
 import io.github.pylonmc.pylon.core.item.PylonItem;
+import io.github.pylonmc.pylon.core.item.base.PylonBlockInteractor;
 import lombok.Getter;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -13,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @Getter
-public class BuildingWand extends PylonItem implements Wand {
+public class BuildingWand extends PylonItem implements Wand, PylonBlockInteractor {
     private final int limitBlocks = getOrThrow("limit-blocks", Integer.class);
     private final boolean blockStrict = getOrThrow("block-strict", Boolean.class);
     private final boolean opOnly = getOrThrow("op-only", Boolean.class);
@@ -25,6 +26,10 @@ public class BuildingWand extends PylonItem implements Wand {
 
     @Override
     public void onUsedToClickBlock(@NotNull PlayerInteractEvent event) {
+        if (isCooldowning(event.getPlayer())) {
+            return;
+        }
+
         WandUtil.placeBlocks(ConstructionWandPlugin.getInstance(), event, isDisabled(), limitBlocks, blockStrict, opOnly);
     }
 

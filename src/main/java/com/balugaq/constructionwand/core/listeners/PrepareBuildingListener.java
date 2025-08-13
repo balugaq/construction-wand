@@ -47,7 +47,7 @@ public class PrepareBuildingListener implements Listener {
     }
 
     private void showBuildingBlocksFor(@NotNull Player player, @NotNull Block lookingAtBlock, int limitBlocks, @NotNull BuildingWand buildingWand) {
-        if (!player.isOp() && !PermissionUtil.hasPermission(player, lookingAtBlock, Interaction.PLACE_BLOCK)) {
+        if (!player.isOp() && !PermissionUtil.canPlaceBlock(player, lookingAtBlock)) {
             return;
         }
         Material material = lookingAtBlock.getType();

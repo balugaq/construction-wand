@@ -18,12 +18,7 @@ public class PersistentUtil {
             return null;
         }
 
-        ItemMeta meta = itemStack.getItemMeta();
-        if (meta == null) {
-            return null;
-        }
-
-        return meta.getPersistentDataContainer().get(key, dataType);
+        return itemStack.getPersistentDataContainer().get(key, dataType);
     }
 
     public static <T, Z> void set(@Nullable ItemStack itemStack, @NotNull PersistentDataType<T, Z> dataType, @NotNull NamespacedKey key, @NotNull Z value) {
@@ -59,12 +54,7 @@ public class PersistentUtil {
             return false;
         }
 
-        ItemMeta meta = itemStack.getItemMeta();
-        if (meta == null) {
-            return false;
-        }
-
-        return meta.getPersistentDataContainer().has(key, dataType);
+        return itemStack.getPersistentDataContainer().has(key, dataType);
     }
 
     public static <T, Z> Z getOrDefault(ItemStack itemStack, @NotNull PersistentDataType<T, Z> dataType, @NotNull NamespacedKey key, Z defaultValue) {

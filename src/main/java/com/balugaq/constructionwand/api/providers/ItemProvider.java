@@ -11,44 +11,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public interface ItemProvider {
     List<ItemProvider> PROVIDERS = new CopyOnWriteArrayList<>();
-    int INF = 4096;
-
-    /**
-     * The plugin that this item provider is from
-     * @return The plugin
-     */
-    @NotNull Plugin getPlugin();
-
-    /**
-     * Counts the amount of items the player has
-     * @param player The player
-     * @param material The item material, item must be a pure vanilla item.
-     * @param requireAmount The max amount to consume
-     * @return The amount of items the player has
-     */
-    @Range(from = 0, to = Integer.MAX_VALUE)
-    int getAmount(
-            @NotNull Player player,
-            @NotNull Material material,
-            @Range(from = 1, to = Integer.MAX_VALUE) int requireAmount
-    );
-
-    /**
-     * Consume items when player uses filling wand / building wand
-     * @param player The player
-     * @param material The item material, item must be a pure vanilla item.
-     * @param amount The amount to consume
-     * @return The amount of items consumed
-     */
-    @Range(from = 0, to = Integer.MAX_VALUE)
-    int consumeItem(
-            @NotNull Player player,
-            @NotNull Material material,
-            @Range(from = 1, to = Integer.MAX_VALUE) int amount
-    );
+    int INF = 40960;
 
     /**
      * Register an item provider, be used when player uses filling wand / building wand
+     *
      * @param provider The item provider
      */
     static void registerProvider(@NotNull ItemProvider provider) {
@@ -57,8 +24,9 @@ public interface ItemProvider {
 
     /**
      * Counts the amount of items the player has
-     * @param player The player
-     * @param material The item material, item must be a pure vanilla item.
+     *
+     * @param player        The player
+     * @param material      The item material, item must be a pure vanilla item.
      * @param requireAmount The max amount to consume
      * @return The amount of items the player has
      */
@@ -77,9 +45,11 @@ public interface ItemProvider {
 
     /**
      * Consume items when player uses filling wand / building wand
-     * @param player The player
+     * Call `player.updateInventory()` after calling this method.
+     *
+     * @param player   The player
      * @param material The item material, item must be a pure vanilla item.
-     * @param amount The amount to consume
+     * @param amount   The amount to consume
      * @return The amount of items consumed
      */
     static @Range(from = 0, to = Integer.MAX_VALUE) int consumeItems(@NotNull Player player, @NotNull Material material, @Range(from = 1, to = Integer.MAX_VALUE) int amount) {
@@ -94,4 +64,41 @@ public interface ItemProvider {
         }
         return total;
     }
+
+    /**
+     * The plugin that this item provider is from
+     *
+     * @return The plugin
+     */
+    @NotNull Plugin getPlugin();
+
+    /**
+     * Counts the amount of items the player has
+     *
+     * @param player        The player
+     * @param material      The item material, item must be a pure vanilla item.
+     * @param requireAmount The max amount to consume
+     * @return The amount of items the player has
+     */
+    @Range(from = 0, to = Integer.MAX_VALUE)
+    int getAmount(
+            @NotNull Player player,
+            @NotNull Material material,
+            @Range(from = 1, to = Integer.MAX_VALUE) int requireAmount
+    );
+
+    /**
+     * Consume items when player uses filling wand / building wand
+     *
+     * @param player   The player
+     * @param material The item material, item must be a pure vanilla item.
+     * @param amount   The amount to consume
+     * @return The amount of items consumed
+     */
+    @Range(from = 0, to = Integer.MAX_VALUE)
+    int consumeItem(
+            @NotNull Player player,
+            @NotNull Material material,
+            @Range(from = 1, to = Integer.MAX_VALUE) int amount
+    );
 }

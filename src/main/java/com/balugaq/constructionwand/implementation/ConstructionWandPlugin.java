@@ -1,5 +1,8 @@
 package com.balugaq.constructionwand.implementation;
 
+import com.balugaq.constructionwand.api.providers.ItemProvider;
+import com.balugaq.constructionwand.api.providers.PlayerInventoryItemProvider;
+import com.balugaq.constructionwand.api.providers.ShulkerBoxItemProvider;
 import com.balugaq.constructionwand.core.managers.ConfigManager;
 import com.balugaq.constructionwand.core.managers.DisplayManager;
 import com.balugaq.constructionwand.core.managers.ListenerManager;
@@ -47,6 +50,9 @@ public class ConstructionWandPlugin extends JavaPlugin implements PylonAddon {
         configManager = new ConfigManager(this);
         configManager.setup();
 
+        ItemProvider.PROVIDERS.add(new PlayerInventoryItemProvider());
+        ItemProvider.PROVIDERS.add(new ShulkerBoxItemProvider());
+
         Debug.log("Loading display manager");
         displayManager = new DisplayManager(this);
         displayManager.setup();
@@ -69,10 +75,10 @@ public class ConstructionWandPlugin extends JavaPlugin implements PylonAddon {
 
     @Override
     public void onDisable() {
-        wandSetup.shutdown();
-        displayManager.shutdown();
-        listenerManager.shutdown();
-        Debug.log("Disabled BuildingWand!");
+        if (wandSetup != null) wandSetup.shutdown();
+        if (displayManager != null) displayManager.shutdown();
+        if (listenerManager != null) listenerManager.shutdown();
+        Debug.log("Disabled ConstructionWand!");
     }
 
     @Override
