@@ -48,7 +48,6 @@ public class PermissionUtil {
             EquipmentSlot hand
     ) {
         FakeBlockPlaceEvent event = simulateBlockPlace(placeBlock, replacedBlockState, blockAgainst, itemInMainHand, player, canBuild, hand);
-        Debug.log(!event.isCancelled());
         return !event.isCancelled();
     }
 
