@@ -22,6 +22,7 @@ public class PermissionUtil {
                 placeBlock
         );
     }
+
     public static boolean canPlaceBlock(
             @NotNull Player player,
             @NotNull Block placeBlock,
@@ -39,26 +40,26 @@ public class PermissionUtil {
     }
 
     public static boolean canPlaceBlock(
-            Block placeBlock,
-            BlockState replacedBlockState,
-            Block blockAgainst,
-            ItemStack itemInMainHand,
-            Player player,
+            @NotNull Block placeBlock,
+            @NotNull BlockState replacedBlockState,
+            @NotNull Block blockAgainst,
+            @NotNull ItemStack itemInMainHand,
+            @NotNull Player player,
             boolean canBuild,
-            EquipmentSlot hand
+            @NotNull EquipmentSlot hand
     ) {
         FakeBlockPlaceEvent event = simulateBlockPlace(placeBlock, replacedBlockState, blockAgainst, itemInMainHand, player, canBuild, hand);
         return !event.isCancelled();
     }
 
-    public static FakeBlockPlaceEvent simulateBlockPlace(
-            Block placeBlock,
-            BlockState replacedBlockState,
-            Block blockAgainst,
-            ItemStack itemInMainHand,
-            Player player,
+    public static @NotNull FakeBlockPlaceEvent simulateBlockPlace(
+            @NotNull Block placeBlock,
+            @NotNull BlockState replacedBlockState,
+            @NotNull Block blockAgainst,
+            @NotNull ItemStack itemInMainHand,
+            @NotNull Player player,
             boolean canBuild,
-            EquipmentSlot hand
+            @NotNull EquipmentSlot hand
     ) {
         FakeBlockPlaceEvent event = new FakeBlockPlaceEvent(
                 placeBlock,
@@ -81,7 +82,7 @@ public class PermissionUtil {
         return !event.isCancelled();
     }
 
-    public static FakeBlockBreakEvent simulateBlockBreak(
+    public static @NotNull FakeBlockBreakEvent simulateBlockBreak(
             @NotNull Player player,
             @NotNull Block theBlock
     ) {

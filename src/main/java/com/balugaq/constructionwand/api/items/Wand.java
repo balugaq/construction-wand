@@ -20,7 +20,7 @@ public interface Wand extends Keyed {
 
     long getCooldown();
 
-    default <T> T getOrThrow(@NotNull String key, @NotNull Class<T> clazz) {
+    default <T> @NotNull T getOrThrow(@NotNull String key, @NotNull Class<T> clazz) {
         return ConfigManager.getSettingOrThrow(getKey(), key, clazz);
     }
 

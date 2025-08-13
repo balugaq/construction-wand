@@ -51,7 +51,7 @@ public class Messages {
     public static final String KEY_NO_ENOUGH_ITEMS = PREFIX + "common.no-enough-items";
 
     @NotNull
-    public static TranslatableComponent argsWithed(@NotNull String translationKey, @NotNull Object... args) {
+    public static TranslatableComponent argsWithed(@NotNull String translationKey, @NotNull Object @NotNull ... args) {
         List<PylonArgument> pargs = new ArrayList<>();
         for (int i = 0; i < args.length / 2; i += 2) {
             String argkey = args[i].toString();
@@ -65,6 +65,7 @@ public class Messages {
                 case Float floatValue -> pargs.add(PylonArgument.of(argkey, floatValue));
                 case Boolean booleanValue -> pargs.add(PylonArgument.of(argkey, booleanValue));
                 case Character character -> pargs.add(PylonArgument.of(argkey, character));
+                case Number number -> pargs.add(PylonArgument.of(argkey, number.intValue()));
                 default -> {
                 }
             }

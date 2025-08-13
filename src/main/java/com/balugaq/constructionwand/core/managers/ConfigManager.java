@@ -22,7 +22,7 @@ import java.util.Map;
 @Getter
 public class ConfigManager implements IManager {
     public static final Map<NamespacedKey, Map<String, ?>> CACHE = new HashMap<>();
-    private final JavaPlugin plugin;
+    private final @NotNull JavaPlugin plugin;
     private boolean AUTO_UPDATE;
     private boolean DISPLAY_PROJECTION;
     private boolean DEBUG;

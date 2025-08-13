@@ -11,7 +11,6 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
 import java.util.function.Consumer;
 
@@ -46,7 +45,7 @@ public class WorldUtils {
     }
 
     @CanIgnoreReturnValue
-    public static boolean copyBlockState(@Nonnull BlockState fromBlockState, @Nonnull Block toBlock) {
+    public static boolean copyBlockState(@NotNull BlockState fromBlockState, @NotNull Block toBlock) {
         if (!success) {
             return false;
         }
@@ -67,31 +66,7 @@ public class WorldUtils {
         }
     }
 
-    public static @NotNull String locationToString(@Nonnull Location l) {
-        if (l == null) {
-            return "Unknown Location";
-        }
-        if (l.getWorld() == null) {
-            return "Unknown Location";
-        }
-        return l.getWorld().getName() + "," + l.getBlockX() + "," + l.getBlockY() + "," + l.getBlockZ();
-    }
-
-    public static long locationRange(@Nonnull Location pos1, @Nonnull Location pos2) {
-        if (pos1 == null || pos2 == null) {
-            return 0;
-        }
-
-        final int downX = Math.min(pos1.getBlockX(), pos2.getBlockX());
-        final int upX = Math.max(pos1.getBlockX(), pos2.getBlockX());
-        final int downY = Math.min(pos1.getBlockY(), pos2.getBlockY());
-        final int upY = Math.max(pos1.getBlockY(), pos2.getBlockY());
-        final int downZ = Math.min(pos1.getBlockZ(), pos2.getBlockZ());
-        final int upZ = Math.max(pos1.getBlockZ(), pos2.getBlockZ());
-        return (long) (Math.abs(upX - downX) + 1) * (Math.abs(upY - downY) + 1) * (Math.abs(upZ - downZ) + 1);
-    }
-
-    public static void doWorldEdit(@Nonnull Location pos1, @Nonnull Location pos2, @Nonnull Consumer<Location> consumer) {
+    public static void doWorldEdit(@NotNull Location pos1, @NotNull Location pos2, @NotNull Consumer<Location> consumer) {
         if (pos1 == null || pos2 == null) {
             return;
         }
@@ -111,7 +86,7 @@ public class WorldUtils {
         }
     }
 
-    public static long totalBlocks(@Nonnull Location pos1, @Nonnull Location pos2) {
+    public static long totalBlocks(@NotNull Location pos1, @NotNull Location pos2) {
         if (pos1 == null || pos2 == null) {
             return 0;
         }

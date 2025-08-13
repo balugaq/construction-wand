@@ -31,7 +31,7 @@ public class WandSetup implements IManager {
             @NotNull Class<? extends PylonItem> clazz,
             @NotNull NamespacedKey key,
             @NotNull Material material,
-            @Nullable String... recipe) {
+            @Nullable String @Nullable ... recipe) {
         ItemStack item = ItemStackBuilder.pylonItem(material, key).build();
         if (recipe != null) {
             registerRecipe(key, item, recipe);
@@ -74,6 +74,8 @@ public class WandSetup implements IManager {
                 material,
                 recipe
         );
+
+        PylonItem.fromStack(ItemStackBuilder.pylonItem(material, key).build());
     }
 
     public static void registerRecipe(
