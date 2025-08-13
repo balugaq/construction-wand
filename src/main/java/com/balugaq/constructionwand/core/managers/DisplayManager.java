@@ -21,7 +21,7 @@ public class DisplayManager implements IManager {
     private final Map<UUID, BlockFace> lookingFaces = new HashMap<>();
     private final Map<UUID, Location> lookingAts = new HashMap<>();
     private final Map<UUID, DisplayGroup> displays = new HashMap<>();
-    private final JavaPlugin plugin;
+    private final @NotNull JavaPlugin plugin;
     private boolean running = true;
 
     public DisplayManager(@NotNull JavaPlugin plugin) {

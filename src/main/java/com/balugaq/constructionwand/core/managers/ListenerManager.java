@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListenerManager implements IManager {
-    private final JavaPlugin plugin;
+    private final @NotNull JavaPlugin plugin;
     private final List<Listener> listeners = new ArrayList<>();
 
     public ListenerManager(@NotNull JavaPlugin plugin) {

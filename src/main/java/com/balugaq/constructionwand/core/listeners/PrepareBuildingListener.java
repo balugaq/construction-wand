@@ -1,6 +1,5 @@
 package com.balugaq.constructionwand.core.listeners;
 
-import com.balugaq.constructionwand.api.enums.Interaction;
 import com.balugaq.constructionwand.api.events.PrepareBuildingEvent;
 import com.balugaq.constructionwand.api.items.BuildingWand;
 import com.balugaq.constructionwand.core.managers.ConfigManager;

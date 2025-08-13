@@ -19,7 +19,7 @@ public class JavaUtil {
 
     @SafeVarargs
     @NotNull
-    public static <T> Set<T> toSet(@NotNull T... objects) {
+    public static <T> Set<T> toSet(@NotNull T @NotNull ... objects) {
         Set<T> result = new HashSet<>(objects.length);
         result.addAll(Arrays.asList(objects));
         return result;
@@ -27,7 +27,7 @@ public class JavaUtil {
 
     @SafeVarargs
     @NotNull
-    public static <T> List<T> toList(@NotNull T... objects) {
+    public static <T> List<T> toList(@NotNull T @NotNull ... objects) {
         List<T> result = new ArrayList<>(objects.length);
         result.addAll(Arrays.asList(objects));
         return result;
@@ -43,7 +43,7 @@ public class JavaUtil {
     }
 
     @NotNull
-    public static int[] reserve(@NotNull int[] objects) {
+    public static int[] reserve(@NotNull int @NotNull [] objects) {
         int[] result = objects.clone();
         for (int i = 0; i < objects.length; i++) {
             result[i] = objects[objects.length - 1 - i];
@@ -61,7 +61,7 @@ public class JavaUtil {
     }
 
     @NotNull
-    public static int[] shuffle(@NotNull int[] objects) {
+    public static int[] shuffle(@NotNull int @NotNull [] objects) {
         List<Integer> collect = Arrays.stream(objects).boxed().collect(Collectors.toList());
         Collections.shuffle(collect);
         int[] result = objects.clone();
@@ -72,7 +72,7 @@ public class JavaUtil {
     }
 
     @NotNull
-    public static <T> T[] shuffle(@NotNull T[] objects) {
+    public static <T> T[] shuffle(@NotNull T @NotNull [] objects) {
         List<T> collect = Arrays.stream(objects).collect(Collectors.toList());
         Collections.shuffle(collect);
         T[] result = objects.clone();
@@ -90,7 +90,7 @@ public class JavaUtil {
     }
 
     @NotNull
-    public static double[] disperse(int size, @NotNull Number... value) {
+    public static double[] disperse(int size, @NotNull Number @NotNull ... value) {
         if (size == 1 && value.length > 0) {
             return new double[]{value[0].doubleValue()};
         } else if (size == 0 || value.length == 0) {
@@ -107,7 +107,7 @@ public class JavaUtil {
     }
 
     @NotNull
-    public static String[] split(@NotNull String string) {
+    public static String @NotNull [] split(@NotNull String string) {
         String[] result = new String[string.length()];
         for (int i = 0; i < string.length(); i++) {
             result[i] = String.valueOf(string.charAt(i));
@@ -156,7 +156,7 @@ public class JavaUtil {
      * @return the shuffled list
      */
     @NotNull
-    public static <T> List<T> shuffleByInts(@NotNull List<T> list, @NotNull int[] ints) {
+    public static <T> List<T> shuffleByInts(@NotNull List<T> list, @NotNull int @NotNull [] ints) {
         List<T> result = new ArrayList<>(list.size());
         for (int anInt : ints) {
             result.add(list.get(anInt));
@@ -165,7 +165,7 @@ public class JavaUtil {
     }
 
     @NotNull
-    public static String[] addToFirst(@NotNull String value, @NotNull String... values) {
+    public static String @NotNull [] addToFirst(@NotNull String value, @NotNull String @NotNull ... values) {
         String[] result = new String[values.length + 1];
         result[0] = value;
         System.arraycopy(values, 0, result, 1, values.length);
@@ -173,7 +173,7 @@ public class JavaUtil {
     }
 
     @SafeVarargs
-    public static <T> boolean matchOnce(@NotNull T source, @NotNull T... targets) {
+    public static <T> boolean matchOnce(@NotNull T source, @NotNull T @NotNull ... targets) {
         for (T object : targets) {
             if (object.equals(source)) {
                 return true;
@@ -193,7 +193,7 @@ public class JavaUtil {
      */
     @SafeVarargs
     @Nullable
-    public static <T> T getFirstNotNull(@NotNull T... objects) {
+    public static <T> T getFirstNotNull(@NotNull T @NotNull ... objects) {
         for (T object : objects) {
             if (object != null) {
                 return object;

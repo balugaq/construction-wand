@@ -1,7 +1,6 @@
 package com.balugaq.constructionwand.api.items;
 
 import com.balugaq.constructionwand.implementation.ConstructionWandPlugin;
-import com.balugaq.constructionwand.utils.Debug;
 import com.balugaq.constructionwand.utils.WandUtil;
 import io.github.pylonmc.pylon.core.i18n.PylonArgument;
 import io.github.pylonmc.pylon.core.item.PylonItem;

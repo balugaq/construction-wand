@@ -30,25 +30,32 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 public class FillWand extends PylonItem implements Wand, PylonInteractor {
     public static final NamespacedKey LOC1_KEY = KeyUtil.newKey("loc1");
     public static final NamespacedKey LOC2_KEY = KeyUtil.newKey("loc2");
     public static final NamespacedKey MATERIAL_KEY = KeyUtil.newKey("material");
+    public static final Map<NamespacedKey, List<Component>> originLore = new HashMap<>();
     private final int limitBlocks = getOrThrow("limit-blocks", Integer.class);
     private final boolean opOnly = getOrThrow("op-only", Boolean.class);
     private final long cooldown = getOrThrow("cooldown", Integer.class);
 
     public FillWand(@NotNull ItemStack stack) {
         super(stack);
+
+        if (!originLore.containsKey(getKey())) {
+            originLore.put(getKey(), stack.getData(DataComponentTypes.LORE).lines());
+        }
     }
 
     @SuppressWarnings("UnstableApiUsage")
-    public static void resolveWandLore(@NotNull ItemStack wand) {
+    public static void resolveWandLore(@NotNull NamespacedKey key, @NotNull ItemStack wand) {
         ItemLore.Builder lore = ItemLore.lore();
-        lore.addLines(List.of(Component.translatable("pylon.constructionwand.item." + PylonItem.fromStack(wand).getKey() + ".lore")));
+        lore.addLines(originLore.get(key));
         PersistentDataContainerView view = wand.getPersistentDataContainer();
 
         String loc1 = view.get(LOC1_KEY, PersistentDataType.STRING);
@@ -194,7 +201,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                     ));
                 }
                 PersistentUtil.set(wand, PersistentDataType.STRING, LOC1_KEY, resolveLoc2str(location));
-                resolveWandLore(wand);
+                resolveWandLore(getKey(), wand);
                 return;
             }
 
@@ -218,7 +225,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                             humanizeMaterialName(material)
                     ));
                     PersistentUtil.set(wand, PersistentDataType.STRING, MATERIAL_KEY, resolveMaterial2str(material));
-                    resolveWandLore(wand);
+                    resolveWandLore(getKey(), wand);
                     return;
                 } else {
                     // Set loc2
@@ -239,7 +246,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                         ));
                     }
                     PersistentUtil.set(wand, PersistentDataType.STRING, LOC2_KEY, resolveLoc2str(location));
-                    resolveWandLore(wand);
+                    resolveWandLore(getKey(), wand);
                     return;
                 }
             }
@@ -287,7 +294,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                         "blocks",
                         filled
                 ));
-                resolveWandLore(wand);
+                resolveWandLore(getKey(), wand);
                 return;
             }
         }

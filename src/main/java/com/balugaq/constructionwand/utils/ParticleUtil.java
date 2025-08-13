@@ -18,7 +18,7 @@ public class ParticleUtil {
     private static final double[] BLOCK_CUBE_OFFSET_Y = new double[]{0, 0, 1, 0, 1, 0, 1, 1};
     private static final double[] BLOCK_CUBE_OFFSET_Z = new double[]{0, 0, 0, 1, 0, 1, 1, 1};
 
-    public static void drawLineByTotalAmount(@NotNull Particle particle, int totalAmount, @NotNull Location... locations) {
+    public static void drawLineByTotalAmount(@NotNull Particle particle, int totalAmount, @NotNull Location @NotNull ... locations) {
         for (int i = 0; i < locations.length; i++) {
             if ((i + 1) < locations.length) {
                 Location location1 = locations[i];
@@ -46,7 +46,7 @@ public class ParticleUtil {
         ParticleUtil.drawLineByTotalAmount(particle, totalAmount, locations);
     }
 
-    public static void drawLineByDistance(@NotNull Plugin plugin, @NotNull Particle particle, long interval, double distance, @NotNull Location... locations) {
+    public static void drawLineByDistance(@NotNull Plugin plugin, @NotNull Particle particle, long interval, double distance, @NotNull Location @NotNull ... locations) {
         int time = 0;
         for (int i = 0; i + 1 < locations.length; i++) {
             Location location1 = locations[i];
@@ -105,7 +105,7 @@ public class ParticleUtil {
         ParticleUtil.drawLineByDistance(plugin, particle, interval, distance, locations);
     }
 
-    public static void drawCubeByLocations(@NotNull Plugin plugin, @NotNull Particle particle, long interval, @NotNull Location... locations) {
+    public static void drawCubeByLocations(@NotNull Plugin plugin, @NotNull Particle particle, long interval, @NotNull Location @NotNull ... locations) {
         int time = 0;
         for (Location location : locations) {
             World world = location.getWorld();
