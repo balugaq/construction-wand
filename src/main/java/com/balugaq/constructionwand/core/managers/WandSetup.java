@@ -74,6 +74,8 @@ public class WandSetup implements IManager {
                 material,
                 recipe
         );
+
+        PylonItem.fromStack(ItemStackBuilder.pylonItem(material, key).build());
     }
 
     public static void registerRecipe(

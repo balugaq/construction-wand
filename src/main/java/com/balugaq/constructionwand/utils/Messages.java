@@ -65,6 +65,7 @@ public class Messages {
                 case Float floatValue -> pargs.add(PylonArgument.of(argkey, floatValue));
                 case Boolean booleanValue -> pargs.add(PylonArgument.of(argkey, booleanValue));
                 case Character character -> pargs.add(PylonArgument.of(argkey, character));
+                case Number number -> pargs.add(PylonArgument.of(argkey, number.intValue()));
                 default -> {
                 }
             }

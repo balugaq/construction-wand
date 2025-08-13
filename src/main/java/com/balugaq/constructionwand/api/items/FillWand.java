@@ -63,7 +63,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
         String material = view.get(MATERIAL_KEY, PersistentDataType.STRING);
 
         if (loc1 != null || loc2 != null || material != null) {
-            lore.addLine(Component.text(""));
+            lore.addLine(Component.text(" "));
         }
 
         if (loc1 != null) {
