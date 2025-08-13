@@ -1,3 +1,10 @@
 auto-update: false
 display-projection: true
 debug: false
+tasks:
+  block-preview:
+    period: 1 # gt
+  displays-clear:
+    period: 6000 # gt
+  fill-wand-sui:
+    period: 10 # gt
