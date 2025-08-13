@@ -23,15 +23,22 @@ import java.util.Map;
 public class ConfigManager implements IManager {
     public static final Map<NamespacedKey, Map<String, ?>> CACHE = new HashMap<>();
     private final @NotNull JavaPlugin plugin;
-    private boolean AUTO_UPDATE;
-    private boolean DISPLAY_PROJECTION;
-    private boolean DEBUG;
+    private final boolean autoUpdate;
+    private final boolean displayProjection;
+    private final boolean debug;
+    private final int blockPreviewTaskPeriod;
+    private final int displaysClearTaskPeriod;
+    private final int fillWandSUITaskPeriod;
 
     public ConfigManager(@NotNull JavaPlugin plugin) {
         this.plugin = plugin;
-        AUTO_UPDATE = plugin.getConfig().getBoolean("auto-update");
-        DISPLAY_PROJECTION = plugin.getConfig().getBoolean("display-projection");
-        DEBUG = plugin.getConfig().getBoolean("debug");
+        FileConfiguration config = plugin.getConfig();
+        autoUpdate = config.getBoolean("auto-update");
+        displayProjection = config.getBoolean("display-projection");
+        debug = config.getBoolean("debug");
+        blockPreviewTaskPeriod = config.getInt("tasks.block-preview.period");
+        displaysClearTaskPeriod = config.getInt("tasks.displays-clear.period");
+        fillWandSUITaskPeriod = config.getInt("tasks.fill-wand-sui.period");
     }
 
     public static <T> @NotNull T getSettingOrThrow(@NotNull NamespacedKey nk, @NotNull String key, @NotNull Class<T> clazz) {
@@ -53,15 +60,15 @@ public class ConfigManager implements IManager {
     }
 
     public static boolean autoUpdate() {
-        return ConstructionWandPlugin.getInstance().getConfigManager().AUTO_UPDATE;
+        return ConstructionWandPlugin.getInstance().getConfigManager().autoUpdate;
     }
 
     public static boolean displayProjection() {
-        return ConstructionWandPlugin.getInstance().getConfigManager().DISPLAY_PROJECTION;
+        return ConstructionWandPlugin.getInstance().getConfigManager().displayProjection;
     }
 
     public static boolean debug() {
-        return ConstructionWandPlugin.getInstance().getConfigManager().DEBUG;
+        return ConstructionWandPlugin.getInstance().getConfigManager().debug;
     }
 
     @Override

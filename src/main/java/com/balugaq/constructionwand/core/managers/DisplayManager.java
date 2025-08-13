@@ -3,6 +3,7 @@ package com.balugaq.constructionwand.core.managers;
 import com.balugaq.constructionwand.core.tasks.BlockPreviewTask;
 import com.balugaq.constructionwand.core.tasks.DisplaysClearTask;
 import com.balugaq.constructionwand.core.tasks.FillWandSUITask;
+import com.balugaq.constructionwand.implementation.ConstructionWandPlugin;
 import dev.sefiraat.sefilib.entity.display.DisplayGroup;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -30,12 +31,13 @@ public class DisplayManager implements IManager {
 
     @Override
     public void setup() {
+        ConfigManager config = ConstructionWandPlugin.getInstance().getConfigManager();
         // Entities needs to running on the main thread
-        Bukkit.getScheduler().runTaskTimer(plugin, () -> new BlockPreviewTask().run(), 1, 1);
-        Bukkit.getScheduler().runTaskTimer(plugin, () -> new DisplaysClearTask().run(), 1, 20 * 60 * 5); // 5 minutes
+        Bukkit.getScheduler().runTaskTimer(plugin, () -> new BlockPreviewTask().run(), 1, config.getBlockPreviewTaskPeriod());
+        Bukkit.getScheduler().runTaskTimer(plugin, () -> new DisplaysClearTask().run(), 1, config.getDisplaysClearTaskPeriod());
 
         // Particles are asyncable
-        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> new FillWandSUITask().run(), 0, 10);
+        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> new FillWandSUITask().run(), 1, config.getFillWandSUITaskPeriod());
     }
 
     @Override
