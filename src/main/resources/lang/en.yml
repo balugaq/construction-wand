@@ -65,6 +65,7 @@ item:
       <green>Right-click on block to set Location-2
       <green>Shift+Right-click on block to set block to fill
       <green>Right-click on air to fill blocks
+      <attr>Max Range:</attr> %range% Blocks
   fill-wand-2:
     name: "<red>Fill Wand | <gold>Level 2"
     lore: |-
@@ -72,6 +73,7 @@ item:
       <green>Right-click on block to set Location-2
       <green>Shift+Right-click on block to set block to fill
       <green>Right-click on air to fill blocks
+      <attr>Max Range:</attr> %range% Blocks
   fill-wand-3:
     name: "<red>Fill Wand | <yellow>Level 3"
     lore: |-
@@ -79,6 +81,7 @@ item:
       <green>Right-click on block to set Location-2
       <green>Shift+Right-click on block to set block to fill
       <green>Right-click on air to fill blocks
+      <attr>Max Range:</attr> %range% Blocks
       <red>OP only
 
 guide:
