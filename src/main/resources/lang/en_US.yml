@@ -58,7 +58,53 @@ item:
       <attr>Max Range:</attr> %range% Blocks
       <red>Selected area can be formed only by one kind of block
       <red>OP only
+  fill-wand-1:
+    name: "<red>Fill Wand | <blue>Level 1"
+    lore: |-
+      <green>Left-click on block to set Location-1
+      <green>Right-click on block to set Location-2
+      <green>Shift+Right-click on block to set block to fill
+      <green>Right-click on air to fill blocks
+      <attr>Max Range:</attr> %range% Blocks
+  fill-wand-2:
+    name: "<red>Fill Wand | <gold>Level 2"
+    lore: |-
+      <green>Left-click on block to set Location-1
+      <green>Right-click on block to set Location-2
+      <green>Shift+Right-click on block to set block to fill
+      <green>Right-click on air to fill blocks
+      <attr>Max Range:</attr> %range% Blocks
+  fill-wand-3:
+    name: "<red>Fill Wand | <yellow>Level 3"
+    lore: |-
+      <green>Left-click on block to set Location-1
+      <green>Right-click on block to set Location-2
+      <green>Shift+Right-click on block to set block to fill
+      <green>Right-click on air to fill blocks
+      <attr>Max Range:</attr> %range% Blocks
+      <red>OP only
 
 guide:
   page:
     construction-wand: "Construction Wand"
+
+message:
+  common:
+    set-loc1: "<green>Set Location-1: %loc1%"
+    set-loc2: "<green>Set Location-2: %loc2%"
+    set-loc1-with-range: "<green>Set Location-1: %loc1% <gray>( <yellow>%total% Blocks <gray>)"
+    set-loc2-with-range: "<green>Set Location-2: %loc2% <gray>( <yellow>%total% Blocks <gray>)"
+    set-material: "<green>Set Material: %material%"
+    not-set-loc1: "<red>Location-1 is absent!"
+    not-set-loc2: "<red>Location-2 is absent!"
+    not-set-material: "<red>Material is absent!"
+    locations-in-different-worlds: "<red>Locations are in different worlds!"
+    too-many-blocks: "<red>Too many blocks!"
+    invalid-block: "<red>Invalid block!"
+    disabled-block: "<red>Disabled block!"
+    no-enough-items: "<red>No enough %material%!"
+    loc1: "<attr>Location-1:</attr> %loc1%"
+    loc2: "<attr>Location-2:</attr> %loc2%"
+    material: "<attr>Material:</attr> %material%"
+  fill-wand:
+    filled-blocks: "<green>Filled %blocks% blocks"

@@ -7,6 +7,7 @@ import io.github.pylonmc.pylon.core.item.PylonItem;
 import io.github.pylonmc.pylon.core.item.base.PylonBlockInteractor;
 import lombok.Getter;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,7 +26,7 @@ public class BreakingWand extends PylonItem implements Wand, PylonBlockInteracto
 
     @Override
     public void onUsedToClickBlock(@NotNull PlayerInteractEvent event) {
-        if (isCooldowning(event.getPlayer())) {
+        if (event.getHand() != EquipmentSlot.HAND) {
             return;
         }
 
