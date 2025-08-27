@@ -90,10 +90,10 @@ guide:
 
 message:
   common:
-    set-loc1: "<green>Set Location-1: %loc%"
-    set-loc2: "<green>Set Location-2: %loc%"
-    set-loc1-with-range: "<green>Set Location-1: %loc% <gray>( <yellow>%total% Blocks <gray>)"
-    set-loc2-with-range: "<green>Set Location-2: %loc% <gray>( <yellow>%total% Blocks <gray>)"
+    set-loc1: "<green>Set Location-1: %loc1%"
+    set-loc2: "<green>Set Location-2: %loc2%"
+    set-loc1-with-range: "<green>Set Location-1: %loc1% <gray>( <yellow>%total% Blocks <gray>)"
+    set-loc2-with-range: "<green>Set Location-2: %loc2% <gray>( <yellow>%total% Blocks <gray>)"
     set-material: "<green>Set Material: %material%"
     not-set-loc1: "<red>Location-1 is absent!"
     not-set-loc2: "<red>Location-2 is absent!"
@@ -103,8 +103,8 @@ message:
     invalid-block: "<red>Invalid block!"
     disabled-block: "<red>Disabled block!"
     no-enough-items: "<red>No enough %material%!"
-    loc1: "<attr>Location-1:</attr> %loc%"
-    loc2: "<attr>Location-2:</attr> %loc%"
+    loc1: "<attr>Location-1:</attr> %loc1%"
+    loc2: "<attr>Location-2:</attr> %loc2%"
     material: "<attr>Material:</attr> %material%"
   fill-wand:
     filled-blocks: "<green>Filled %blocks% blocks"
