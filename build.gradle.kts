@@ -25,7 +25,7 @@ repositories {
 val coreVersion = project.properties["pylon-core.version"] as String
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT")
     compileOnly("io.github.pylonmc:pylon-core:$coreVersion")
     implementation("org.metamechanists:DisplayModelLib:35")
     shadow("org.metamechanists:DisplayModelLib:35")
