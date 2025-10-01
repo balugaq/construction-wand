@@ -8,9 +8,11 @@ import org.bukkit.World;
 import org.bukkit.entity.Display;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
+@NullMarked
 public class DisplaysClearTask extends BukkitRunnable {
     @Getter
     private final DisplayManager manager;

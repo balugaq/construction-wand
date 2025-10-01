@@ -8,13 +8,14 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
 @UtilityClass
+@NullMarked
 public class PermissionUtil {
     public static boolean canPlaceBlock(
-            @NotNull Player player,
-            @NotNull Block placeBlock
+            Player player,
+            Block placeBlock
     ) {
         return canPlaceBlock(
                 player,
@@ -24,9 +25,9 @@ public class PermissionUtil {
     }
 
     public static boolean canPlaceBlock(
-            @NotNull Player player,
-            @NotNull Block placeBlock,
-            @NotNull Block blockAgainst
+            Player player,
+            Block placeBlock,
+            Block blockAgainst
     ) {
         return canPlaceBlock(
                 placeBlock,
@@ -40,26 +41,26 @@ public class PermissionUtil {
     }
 
     public static boolean canPlaceBlock(
-            @NotNull Block placeBlock,
-            @NotNull BlockState replacedBlockState,
-            @NotNull Block blockAgainst,
-            @NotNull ItemStack itemInMainHand,
-            @NotNull Player player,
+            Block placeBlock,
+            BlockState replacedBlockState,
+            Block blockAgainst,
+            ItemStack itemInMainHand,
+            Player player,
             boolean canBuild,
-            @NotNull EquipmentSlot hand
+            EquipmentSlot hand
     ) {
         FakeBlockPlaceEvent event = simulateBlockPlace(placeBlock, replacedBlockState, blockAgainst, itemInMainHand, player, canBuild, hand);
         return !event.isCancelled();
     }
 
-    public static @NotNull FakeBlockPlaceEvent simulateBlockPlace(
-            @NotNull Block placeBlock,
-            @NotNull BlockState replacedBlockState,
-            @NotNull Block blockAgainst,
-            @NotNull ItemStack itemInMainHand,
-            @NotNull Player player,
+    public static FakeBlockPlaceEvent simulateBlockPlace(
+            Block placeBlock,
+            BlockState replacedBlockState,
+            Block blockAgainst,
+            ItemStack itemInMainHand,
+            Player player,
             boolean canBuild,
-            @NotNull EquipmentSlot hand
+            EquipmentSlot hand
     ) {
         FakeBlockPlaceEvent event = new FakeBlockPlaceEvent(
                 placeBlock,
@@ -75,16 +76,16 @@ public class PermissionUtil {
     }
 
     public static boolean canBreakBlock(
-            @NotNull Player player,
-            @NotNull Block theBlock
+            Player player,
+            Block theBlock
     ) {
         FakeBlockBreakEvent event = simulateBlockBreak(player, theBlock);
         return !event.isCancelled();
     }
 
-    public static @NotNull FakeBlockBreakEvent simulateBlockBreak(
-            @NotNull Player player,
-            @NotNull Block theBlock
+    public static FakeBlockBreakEvent simulateBlockBreak(
+            Player player,
+            Block theBlock
     ) {
         FakeBlockBreakEvent event = new FakeBlockBreakEvent(theBlock, player);
         event.callEvent();

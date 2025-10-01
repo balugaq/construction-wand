@@ -11,7 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * When a player hold a wand in his main hand and hold a block in his offhand,
@@ -22,10 +22,11 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author balugaq
  */
+@NullMarked
 public class PlayerInteractListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onPlayerInteract(@NotNull PlayerInteractEvent event) {
+    public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
         PylonItem pyItem = PylonItem.fromStack(itemInMainHand);

@@ -8,14 +8,15 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 
 import java.lang.reflect.Field;
 import java.util.function.Consumer;
 
 @ApiStatus.Experimental
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "SequencedCollectionMethodCanBeUsed", "DataFlowIssue"})
+@NullMarked
 public class WorldUtils {
     protected static @Nullable Class<?> craftBlockStateClass;
     protected static @Nullable Field interfaceBlockDataField;
@@ -45,7 +46,7 @@ public class WorldUtils {
     }
 
     @CanIgnoreReturnValue
-    public static boolean copyBlockState(@NotNull BlockState fromBlockState, @NotNull Block toBlock) {
+    public static boolean copyBlockState(BlockState fromBlockState, Block toBlock) {
         if (!success) {
             return false;
         }
@@ -66,7 +67,7 @@ public class WorldUtils {
         }
     }
 
-    public static void doWorldEdit(@NotNull Location pos1, @NotNull Location pos2, @NotNull Consumer<Location> consumer) {
+    public static void doWorldEdit(@Nullable Location pos1, @Nullable Location pos2, Consumer<Location> consumer) {
         if (pos1 == null || pos2 == null) {
             return;
         }
@@ -86,7 +87,7 @@ public class WorldUtils {
         }
     }
 
-    public static long totalBlocks(@NotNull Location pos1, @NotNull Location pos2) {
+    public static long totalBlocks(@Nullable Location pos1, @Nullable Location pos2) {
         if (pos1 == null || pos2 == null) {
             return 0;
         }

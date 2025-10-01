@@ -6,6 +6,7 @@ import com.balugaq.constructionwand.utils.Messages;
 import com.balugaq.constructionwand.utils.PersistentUtil;
 import com.balugaq.constructionwand.utils.WandUtil;
 import com.balugaq.constructionwand.utils.WorldUtils;
+import io.github.pylonmc.pylon.core.config.adapter.ConfigAdapter;
 import io.github.pylonmc.pylon.core.i18n.PylonArgument;
 import io.github.pylonmc.pylon.core.item.PylonItem;
 import io.github.pylonmc.pylon.core.item.base.PylonInteractor;
@@ -41,13 +42,13 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
     public static final NamespacedKey LOC2_KEY = KeyUtil.newKey("loc2");
     public static final NamespacedKey MATERIAL_KEY = KeyUtil.newKey("material");
     public static final Map<NamespacedKey, List<Component>> originLore = new HashMap<>();
-    private final int limitBlocks = getOrThrow("limit-blocks", Integer.class);
-    private final boolean opOnly = getOrThrow("op-only", Boolean.class);
-    private final long cooldown = getOrThrow("cooldown", Integer.class);
+    private final int limitBlocks = getOrThrow("limit-blocks", ConfigAdapter.INT);
+    private final boolean opOnly = getOrThrow("op-only", ConfigAdapter.BOOLEAN);
 
+    @SuppressWarnings({"UnstableApiUsage", "DataFlowIssue"})
     public FillWand(@NotNull ItemStack stack) {
         super(stack);
-        
+
         if (!originLore.containsKey(getKey())) {
             originLore.put(getKey(), stack.getData(DataComponentTypes.LORE).lines());
         }
@@ -230,7 +231,6 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                     ));
                     PersistentUtil.set(wand, PersistentDataType.STRING, MATERIAL_KEY, resolveMaterial2str(material));
                     resolveWandLore(player, getKey(), wand);
-                    return;
                 } else {
                     // Set loc2
                     Location loc1 = resolveStr2Loc(PersistentUtil.get(wand, PersistentDataType.STRING, LOC1_KEY));
@@ -253,7 +253,6 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                     }
                     PersistentUtil.set(wand, PersistentDataType.STRING, LOC2_KEY, resolveLoc2str(location));
                     resolveWandLore(player, getKey(), wand);
-                    return;
                 }
             }
         } else {
@@ -303,7 +302,6 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                         filled
                 ));
                 resolveWandLore(player, getKey(), wand);
-                return;
             }
         }
     }

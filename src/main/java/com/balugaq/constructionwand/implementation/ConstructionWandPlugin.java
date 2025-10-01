@@ -12,13 +12,14 @@ import io.github.pylonmc.pylon.core.addon.PylonAddon;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Set;
 
-@SuppressWarnings({"unused"})
+@SuppressWarnings({"unused", "NotNullFieldNotInitialized"})
+@NullMarked
 public class ConstructionWandPlugin extends JavaPlugin implements PylonAddon {
     @Getter
     private static ConstructionWandPlugin instance;
@@ -73,6 +74,7 @@ public class ConstructionWandPlugin extends JavaPlugin implements PylonAddon {
         onEnable();
     }
 
+    @SuppressWarnings("ConstantValue")
     @Override
     public void onDisable() {
         if (wandSetup != null) wandSetup.shutdown();
@@ -82,7 +84,6 @@ public class ConstructionWandPlugin extends JavaPlugin implements PylonAddon {
     }
 
     @Override
-    @NotNull
     public JavaPlugin getJavaPlugin() {
         return this;
     }
@@ -92,14 +93,14 @@ public class ConstructionWandPlugin extends JavaPlugin implements PylonAddon {
     }
 
     @Override
-    public @NotNull Set<Locale> getLanguages() {
+    public Set<Locale> getLanguages() {
         return Set.of(
                 Locale.US
         );
     }
 
     @Override
-    public @NotNull Material getMaterial() {
+    public Material getMaterial() {
         return Material.BLAZE_ROD;
     }
 }

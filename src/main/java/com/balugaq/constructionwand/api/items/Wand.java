@@ -1,19 +1,34 @@
 package com.balugaq.constructionwand.api.items;
 
-import com.balugaq.constructionwand.core.managers.ConfigManager;
+import io.github.pylonmc.pylon.core.config.Settings;
+import io.github.pylonmc.pylon.core.config.adapter.ConfigAdapter;
 import org.bukkit.Keyed;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.NamespacedKey;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public interface Wand extends Keyed {
+    Map<NamespacedKey, Map<String, Object>> cache = new HashMap<>();
+
     boolean isBlockStrict();
 
     boolean isOpOnly();
 
     int getLimitBlocks();
 
-    long getCooldown();
+    default <T> T getOrThrow(String key, ConfigAdapter<T> adapter) {
+        NamespacedKey ik = getKey();
+        if (!cache.containsKey(ik)) {
+            cache.put(ik, new HashMap<>());
+        }
 
-    default <T> @NotNull T getOrThrow(@NotNull String key, @NotNull Class<T> clazz) {
-        return ConfigManager.getSettingOrThrow(getKey(), key, clazz);
+        if (cache.get(ik).containsKey(key)) {
+            return (T) cache.get(ik).get(key);
+        }
+
+        T v = Settings.get(ik).getOrThrow(key, adapter);
+        cache.get(ik).put(key, v);
+        return v;
     }
 }

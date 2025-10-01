@@ -16,34 +16,40 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.recipe.CraftingBookCategory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.Map;
 
+@NullMarked
 public class WandSetup implements IManager {
     public static SimpleStaticGuidePage MAIN;
 
-    @NotNull
-    public static NamespacedKey key(@NotNull String key) {
+    static {
+        MAIN = new SimpleStaticGuidePage(key("construction-wand"), Material.BLAZE_ROD);
+    }
+
+    public static NamespacedKey key(String key) {
         return KeyUtil.newKey(key);
     }
 
+    @SuppressWarnings("NullableProblems")
     public static void registerWand(
-            @NotNull Class<? extends PylonItem> clazz,
-            @NotNull NamespacedKey key,
-            @NotNull Material material,
+            Class<? extends PylonItem> clazz,
+            NamespacedKey key,
+            Material material,
             @Nullable String @Nullable ... recipe) {
         ItemStack item = ItemStackBuilder.pylonItem(material, key).build();
         if (recipe != null) {
             registerRecipe(key, item, recipe);
         }
         PylonItem.register(clazz, item);
-        MAIN.addItem(key);
+        MAIN.addItem(item);
     }
 
     public static void registerBuildingWand(
-            @NotNull NamespacedKey key,
-            @NotNull Material material,
-            @Nullable String... recipe) {
+            NamespacedKey key,
+            Material material,
+            @Nullable String @Nullable ... recipe) {
         registerWand(
                 BuildingWand.class,
                 key,
@@ -55,7 +61,7 @@ public class WandSetup implements IManager {
     public static void registerBreakingWand(
             @NotNull NamespacedKey key,
             @NotNull Material material,
-            @Nullable String... recipe) {
+            @Nullable String @Nullable ... recipe) {
         registerWand(
                 BreakingWand.class,
                 key,
@@ -65,9 +71,9 @@ public class WandSetup implements IManager {
     }
 
     public static void registerFillWand(
-            @NotNull NamespacedKey key,
-            @NotNull Material material,
-            @Nullable String... recipe) {
+            NamespacedKey key,
+            Material material,
+            @Nullable String @Nullable ... recipe) {
         registerWand(
                 FillWand.class,
                 key,
@@ -78,10 +84,11 @@ public class WandSetup implements IManager {
         PylonItem.fromStack(ItemStackBuilder.pylonItem(material, key).build());
     }
 
+    @SuppressWarnings("deprecation")
     public static void registerRecipe(
             @NotNull NamespacedKey key,
             @NotNull ItemStack item,
-            @NotNull String... recipe) {
+            @NotNull String @NotNull ... recipe) {
         ShapedRecipe shapedRecipe = new ShapedRecipe(key, item)
                 .shape(recipe);
         Map<Character, ItemStack> m = shapedRecipe.getIngredientMap();
@@ -98,7 +105,6 @@ public class WandSetup implements IManager {
 
     @Override
     public void setup() {
-        MAIN = new SimpleStaticGuidePage(key("construction-wand"), Material.BLAZE_ROD);
         PylonGuide.getRootPage().addPage(MAIN);
 
         registerBuildingWand(

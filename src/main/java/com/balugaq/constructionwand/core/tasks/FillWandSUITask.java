@@ -14,7 +14,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 public class FillWandSUITask extends BukkitRunnable {
     @Getter
     private final DisplayManager manager;

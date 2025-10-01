@@ -10,7 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,14 +18,15 @@ import java.util.Map;
 import java.util.UUID;
 
 @Getter
+@NullMarked
 public class DisplayManager implements IManager {
     private final Map<UUID, BlockFace> lookingFaces = new HashMap<>();
     private final Map<UUID, Location> lookingAts = new HashMap<>();
     private final Map<UUID, DisplayGroup> displays = new HashMap<>();
-    private final @NotNull JavaPlugin plugin;
+    private final JavaPlugin plugin;
     private boolean running = true;
 
-    public DisplayManager(@NotNull JavaPlugin plugin) {
+    public DisplayManager(JavaPlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -52,7 +53,7 @@ public class DisplayManager implements IManager {
         }
     }
 
-    public void killDisplays(@NotNull UUID uuid) {
+    public void killDisplays(UUID uuid) {
         DisplayGroup group = displays.get(uuid);
         if (group != null) {
             group.remove();
@@ -62,7 +63,7 @@ public class DisplayManager implements IManager {
         lookingFaces.remove(uuid);
     }
 
-    public void registerDisplayGroup(@NotNull UUID uuid, @NotNull DisplayGroup group) {
+    public void registerDisplayGroup(UUID uuid, DisplayGroup group) {
         displays.put(uuid, group);
     }
 }

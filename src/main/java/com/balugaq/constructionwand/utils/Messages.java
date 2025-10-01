@@ -3,16 +3,15 @@ package com.balugaq.constructionwand.utils;
 import io.github.pylonmc.pylon.core.i18n.PylonArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
-import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.translation.GlobalTranslator;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+@NullMarked
 public class Messages {
     public static final String PREFIX = "pylon.constructionwand.message.";
 
@@ -54,8 +53,7 @@ public class Messages {
     // arg: %material% - Translated material
     public static final String KEY_NO_ENOUGH_ITEMS = PREFIX + "common.no-enough-items";
 
-    @NotNull
-    public static Component argsWithed(@Nullable Locale locale, @NotNull String translationKey, @NotNull Object @NotNull ... args) {
+    public static Component argsWithed(@Nullable Locale locale, String translationKey, Object... args) {
         List<PylonArgument> pargs = new ArrayList<>();
         for (int i = 0; i < args.length / 2; i += 2) {
             String argkey = args[i].toString();

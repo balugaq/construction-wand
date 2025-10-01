@@ -4,7 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +13,13 @@ import java.util.List;
  * @author Final_ROOT
  * @author balugaq
  */
+@NullMarked
 public class ParticleUtil {
     private static final double[] BLOCK_CUBE_OFFSET_X = new double[]{0, 1, 0, 0, 1, 1, 0, 1};
     private static final double[] BLOCK_CUBE_OFFSET_Y = new double[]{0, 0, 1, 0, 1, 0, 1, 1};
     private static final double[] BLOCK_CUBE_OFFSET_Z = new double[]{0, 0, 0, 1, 0, 1, 1, 1};
 
-    public static void drawLineByTotalAmount(@NotNull Particle particle, int totalAmount, @NotNull Location @NotNull ... locations) {
+    public static void drawLineByTotalAmount(Particle particle, int totalAmount, Location... locations) {
         for (int i = 0; i < locations.length; i++) {
             if ((i + 1) < locations.length) {
                 Location location1 = locations[i];
@@ -38,7 +39,7 @@ public class ParticleUtil {
         }
     }
 
-    public static void drawLineByTotalAmount(@NotNull Particle particle, int totalAmount, @NotNull List<Location> locationList) {
+    public static void drawLineByTotalAmount(Particle particle, int totalAmount, List<Location> locationList) {
         Location[] locations = new Location[locationList.size()];
         for (int i = 0; i < locations.length; i++) {
             locations[i] = locationList.get(i);
@@ -46,7 +47,7 @@ public class ParticleUtil {
         ParticleUtil.drawLineByTotalAmount(particle, totalAmount, locations);
     }
 
-    public static void drawLineByDistance(@NotNull Plugin plugin, @NotNull Particle particle, long interval, double distance, @NotNull Location @NotNull ... locations) {
+    public static void drawLineByDistance(Plugin plugin, Particle particle, long interval, double distance, Location... locations) {
         int time = 0;
         for (int i = 0; i + 1 < locations.length; i++) {
             Location location1 = locations[i];
@@ -97,7 +98,7 @@ public class ParticleUtil {
         }
     }
 
-    public static void drawLineByDistance(@NotNull Plugin plugin, @NotNull Particle particle, long interval, double distance, @NotNull List<Location> locationList) {
+    public static void drawLineByDistance(Plugin plugin, Particle particle, long interval, double distance, List<Location> locationList) {
         Location[] locations = new Location[locationList.size()];
         for (int i = 0; i < locations.length; i++) {
             locations[i] = locationList.get(i);
@@ -105,7 +106,7 @@ public class ParticleUtil {
         ParticleUtil.drawLineByDistance(plugin, particle, interval, distance, locations);
     }
 
-    public static void drawCubeByLocations(@NotNull Plugin plugin, @NotNull Particle particle, long interval, @NotNull Location @NotNull ... locations) {
+    public static void drawCubeByLocations(Plugin plugin, Particle particle, long interval, Location... locations) {
         int time = 0;
         for (Location location : locations) {
             World world = location.getWorld();
@@ -130,7 +131,7 @@ public class ParticleUtil {
         }
     }
 
-    public static void drawCubeByLocations(@NotNull Plugin plugin, @NotNull Particle particle, long interval, @NotNull List<Location> locationList) {
+    public static void drawCubeByLocations(Plugin plugin, Particle particle, long interval, List<Location> locationList) {
         Location[] locations = new Location[locationList.size()];
         for (int i = 0; i < locationList.size(); i++) {
             locations[i] = locationList.get(i);
@@ -138,7 +139,7 @@ public class ParticleUtil {
         ParticleUtil.drawCubeByLocations(plugin, particle, interval, locations);
     }
 
-    public static void drawRegionOutline(@NotNull Plugin plugin, @NotNull Particle particle, long interval, @NotNull Location corner1, @NotNull Location corner2) {
+    public static void drawRegionOutline(Plugin plugin, Particle particle, long interval, Location corner1, Location corner2) {
         World world = corner1.getWorld();
         if (world == null || corner1.getWorld() != corner2.getWorld()) {
             return;
