@@ -2,6 +2,7 @@ package com.balugaq.constructionwand.api.items;
 
 import com.balugaq.constructionwand.implementation.ConstructionWandPlugin;
 import com.balugaq.constructionwand.utils.WandUtil;
+import io.github.pylonmc.pylon.core.config.adapter.ConfigAdapter;
 import io.github.pylonmc.pylon.core.i18n.PylonArgument;
 import io.github.pylonmc.pylon.core.item.PylonItem;
 import io.github.pylonmc.pylon.core.item.base.PylonBlockInteractor;
@@ -15,10 +16,9 @@ import java.util.List;
 
 @Getter
 public class BreakingWand extends PylonItem implements Wand, PylonBlockInteractor {
-    private final int limitBlocks = getOrThrow("limit-blocks", Integer.class);
-    private final boolean blockStrict = getOrThrow("block-strict", Boolean.class);
-    private final boolean opOnly = getOrThrow("op-only", Boolean.class);
-    private final long cooldown = getOrThrow("cooldown", Integer.class);
+    private final int limitBlocks = getOrThrow("limit-blocks", ConfigAdapter.INT);
+    private final boolean blockStrict = getOrThrow("block-strict", ConfigAdapter.BOOLEAN);
+    private final boolean opOnly = getOrThrow("op-only", ConfigAdapter.BOOLEAN);
 
     public BreakingWand(@NotNull ItemStack stack) {
         super(stack);

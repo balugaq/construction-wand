@@ -13,19 +13,20 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
+@NullMarked
 public class WandModeSwitchListener implements Listener {
     @EventHandler
-    public void onWandModeSwitch(@NotNull PlayerSwapHandItemsEvent event) {
+    public void onWandModeSwitch(PlayerSwapHandItemsEvent event) {
         Player player = event.getPlayer();
         ItemStack itemInOffHand = event.getOffHandItem();
         PylonItem wandLike = PylonItem.fromStack(itemInOffHand);
-        if (wandLike instanceof Wand wand) {
+        if (wandLike instanceof Wand) {
             Axis axis = WandUtil.getAxis(itemInOffHand);
             Axis nextAxis;
             if (axis == null) {

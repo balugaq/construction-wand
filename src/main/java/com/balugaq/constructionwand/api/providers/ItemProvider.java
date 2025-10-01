@@ -1,24 +1,26 @@
 package com.balugaq.constructionwand.api.providers;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+@NullMarked
 public interface ItemProvider {
     List<ItemProvider> PROVIDERS = new CopyOnWriteArrayList<>();
-    int INF = 40960;
+    int MAX_AMOUNT = 40960;
 
     /**
      * Register an item provider, be used when player uses filling wand / building wand
      *
      * @param provider The item provider
      */
-    static void registerProvider(@NotNull ItemProvider provider) {
+    static void registerProvider(ItemProvider provider) {
         PROVIDERS.add(provider);
     }
 
@@ -30,7 +32,7 @@ public interface ItemProvider {
      * @param requireAmount The max amount to consume
      * @return The amount of items the player has
      */
-    static @Range(from = 0, to = Integer.MAX_VALUE) int getItemAmount(@NotNull Player player, @NotNull Material material, @Range(from = 1, to = Integer.MAX_VALUE) int requireAmount) {
+    static @Range(from = 0, to = Integer.MAX_VALUE) int getItemAmount(Player player, Material material, @Range(from = 1, to = Integer.MAX_VALUE) int requireAmount) {
         int total = 0;
         for (ItemProvider provider : PROVIDERS) {
             int got = provider.getAmount(player, material, requireAmount);
@@ -52,7 +54,8 @@ public interface ItemProvider {
      * @param amount   The amount to consume
      * @return The amount of items consumed
      */
-    static @Range(from = 0, to = Integer.MAX_VALUE) int consumeItems(@NotNull Player player, @NotNull Material material, @Range(from = 1, to = Integer.MAX_VALUE) int amount) {
+    @CanIgnoreReturnValue
+    static @Range(from = 0, to = Integer.MAX_VALUE) int consumeItems(Player player, Material material, @Range(from = 1, to = Integer.MAX_VALUE) int amount) {
         int total = 0;
         for (ItemProvider provider : PROVIDERS) {
             int consumed = provider.consumeItem(player, material, amount);
@@ -70,7 +73,7 @@ public interface ItemProvider {
      *
      * @return The plugin
      */
-    @NotNull Plugin getPlugin();
+    Plugin getPlugin();
 
     /**
      * Counts the amount of items the player has
@@ -80,10 +83,11 @@ public interface ItemProvider {
      * @param requireAmount The max amount to consume
      * @return The amount of items the player has
      */
+    @CanIgnoreReturnValue
     @Range(from = 0, to = Integer.MAX_VALUE)
     int getAmount(
-            @NotNull Player player,
-            @NotNull Material material,
+            Player player,
+            Material material,
             @Range(from = 1, to = Integer.MAX_VALUE) int requireAmount
     );
 
@@ -95,10 +99,11 @@ public interface ItemProvider {
      * @param amount   The amount to consume
      * @return The amount of items consumed
      */
+    @CanIgnoreReturnValue
     @Range(from = 0, to = Integer.MAX_VALUE)
     int consumeItem(
-            @NotNull Player player,
-            @NotNull Material material,
+            Player player,
+            Material material,
             @Range(from = 1, to = Integer.MAX_VALUE) int amount
     );
 }

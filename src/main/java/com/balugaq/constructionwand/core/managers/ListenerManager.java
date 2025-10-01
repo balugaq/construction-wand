@@ -8,16 +8,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@NullMarked
 public class ListenerManager implements IManager {
-    private final @NotNull JavaPlugin plugin;
+    private final JavaPlugin plugin;
     private final List<Listener> listeners = new ArrayList<>();
 
-    public ListenerManager(@NotNull JavaPlugin plugin) {
+    public ListenerManager(JavaPlugin plugin) {
         this.plugin = plugin;
     }
 

@@ -6,6 +6,7 @@ import com.balugaq.constructionwand.utils.Messages;
 import com.balugaq.constructionwand.utils.PersistentUtil;
 import com.balugaq.constructionwand.utils.WandUtil;
 import com.balugaq.constructionwand.utils.WorldUtils;
+import io.github.pylonmc.pylon.core.config.adapter.ConfigAdapter;
 import io.github.pylonmc.pylon.core.i18n.PylonArgument;
 import io.github.pylonmc.pylon.core.item.PylonItem;
 import io.github.pylonmc.pylon.core.item.base.PylonInteractor;
@@ -14,7 +15,7 @@ import io.papermc.paper.datacomponent.item.ItemLore;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TranslatableComponent;
+import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,32 +32,24 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Getter
 public class FillWand extends PylonItem implements Wand, PylonInteractor {
     public static final NamespacedKey LOC1_KEY = KeyUtil.newKey("loc1");
     public static final NamespacedKey LOC2_KEY = KeyUtil.newKey("loc2");
     public static final NamespacedKey MATERIAL_KEY = KeyUtil.newKey("material");
-    public static final Map<NamespacedKey, List<Component>> originLore = new HashMap<>();
-    private final int limitBlocks = getOrThrow("limit-blocks", Integer.class);
-    private final boolean opOnly = getOrThrow("op-only", Boolean.class);
-    private final long cooldown = getOrThrow("cooldown", Integer.class);
+    private final int limitBlocks = getOrThrow("limit-blocks", ConfigAdapter.INT);
+    private final boolean opOnly = getOrThrow("op-only", ConfigAdapter.BOOLEAN);
 
     public FillWand(@NotNull ItemStack stack) {
         super(stack);
-        
-        if (!originLore.containsKey(getKey())) {
-            originLore.put(getKey(), stack.getData(DataComponentTypes.LORE).lines());
-        }
     }
 
     @SuppressWarnings("UnstableApiUsage")
     public static void resolveWandLore(@NotNull Player player, @NotNull NamespacedKey key, @NotNull ItemStack wand) {
         ItemLore.Builder lore = ItemLore.lore();
-        lore.addLines(originLore.get(key));
+        lore.addLines(wand.lore().stream().limit(5).toList());
         PersistentDataContainerView view = wand.getPersistentDataContainer();
 
         String loc1 = view.get(LOC1_KEY, PersistentDataType.STRING);
@@ -82,15 +75,6 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                     Messages.KEY_LOC2,
                     "loc2",
                     humanizeLoc(resolveStr2Loc(loc2))
-            ));
-        }
-
-        if (material != null) {
-            lore.addLine(Messages.argsWithed(
-                    player.locale(),
-                    Messages.KEY_MATERIAL,
-                    "material",
-                    humanizeMaterialName(resolveStr2material(material))
             ));
         }
 
@@ -146,8 +130,8 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
     }
 
     @NotNull
-    public static TranslatableComponent humanizeMaterialName(@NotNull Material material) {
-        return Component.translatable("block.minecraft." + resolveMaterial2str(material).toLowerCase());
+    public static Component humanizeMaterialName(@NotNull Player player, @NotNull Material material) {
+        return GlobalTranslator.render(Component.translatable("block.minecraft." + resolveMaterial2str(material).toLowerCase()), player.locale());
     }
 
     @Override
@@ -226,11 +210,10 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                             player.locale(),
                             Messages.KEY_SET_MATERIAL,
                             "material",
-                            humanizeMaterialName(material)
+                            humanizeMaterialName(player, material)
                     ));
                     PersistentUtil.set(wand, PersistentDataType.STRING, MATERIAL_KEY, resolveMaterial2str(material));
                     resolveWandLore(player, getKey(), wand);
-                    return;
                 } else {
                     // Set loc2
                     Location loc1 = resolveStr2Loc(PersistentUtil.get(wand, PersistentDataType.STRING, LOC1_KEY));
@@ -253,7 +236,6 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                     }
                     PersistentUtil.set(wand, PersistentDataType.STRING, LOC2_KEY, resolveLoc2str(location));
                     resolveWandLore(player, getKey(), wand);
-                    return;
                 }
             }
         } else {
@@ -293,7 +275,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                             player.locale(),
                             Messages.KEY_NO_ENOUGH_ITEMS,
                             "material",
-                            humanizeMaterialName(material)
+                            humanizeMaterialName(player, material)
                     ));
                 }
                 player.sendMessage(Messages.argsWithed(
@@ -303,7 +285,6 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                         filled
                 ));
                 resolveWandLore(player, getKey(), wand);
-                return;
             }
         }
     }

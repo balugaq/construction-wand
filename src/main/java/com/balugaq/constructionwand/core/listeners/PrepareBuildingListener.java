@@ -2,6 +2,7 @@ package com.balugaq.constructionwand.core.listeners;
 
 import com.balugaq.constructionwand.api.events.PrepareBuildingEvent;
 import com.balugaq.constructionwand.api.items.BuildingWand;
+import com.balugaq.constructionwand.api.providers.ItemProvider;
 import com.balugaq.constructionwand.core.managers.ConfigManager;
 import com.balugaq.constructionwand.implementation.ConstructionWandPlugin;
 import com.balugaq.constructionwand.utils.Debug;
@@ -17,12 +18,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Range;
+import org.jspecify.annotations.NullMarked;
 import org.metamechanists.displaymodellib.models.components.ModelCuboid;
 
 import java.util.Set;
 import java.util.UUID;
 
+@NullMarked
 public class PrepareBuildingListener implements Listener {
     private static final ModelCuboid blockBase = new ModelCuboid()
             .scale(0.6F, 0.6F, 0.6F);
@@ -31,7 +34,7 @@ public class PrepareBuildingListener implements Listener {
             .scale(0.7F, 0.7F, 0.7F);
 
     @EventHandler
-    public void onPrepareBuilding(@NotNull PrepareBuildingEvent event) {
+    public void onPrepareBuilding(PrepareBuildingEvent event) {
         if (!ConfigManager.displayProjection()) {
             return;
         }
@@ -45,7 +48,7 @@ public class PrepareBuildingListener implements Listener {
         showBuildingBlocksFor(player, event.getLookingAtBlock(), buildingWand.getLimitBlocks(), event.getBuildingWand());
     }
 
-    private void showBuildingBlocksFor(@NotNull Player player, @NotNull Block lookingAtBlock, int limitBlocks, @NotNull BuildingWand buildingWand) {
+    private void showBuildingBlocksFor(Player player, Block lookingAtBlock, @Range(from = 1, to = ItemProvider.MAX_AMOUNT) int limitBlocks, BuildingWand buildingWand) {
         if (!player.isOp() && !PermissionUtil.canPlaceBlock(player, lookingAtBlock)) {
             return;
         }

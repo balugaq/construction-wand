@@ -2,27 +2,23 @@ package com.balugaq.constructionwand.core.managers;
 
 import com.balugaq.constructionwand.implementation.ConstructionWandPlugin;
 import com.balugaq.constructionwand.utils.Debug;
-import io.github.pylonmc.pylon.core.config.Settings;
 import lombok.Getter;
-import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.HashMap;
-import java.util.Map;
 
 @Getter
+@NullMarked
 public class ConfigManager implements IManager {
-    public static final Map<NamespacedKey, Map<String, ?>> CACHE = new HashMap<>();
-    private final @NotNull JavaPlugin plugin;
+    private final JavaPlugin plugin;
     private final boolean autoUpdate;
     private final boolean displayProjection;
     private final boolean debug;
@@ -30,7 +26,7 @@ public class ConfigManager implements IManager {
     private final int displaysClearTaskPeriod;
     private final int fillWandSUITaskPeriod;
 
-    public ConfigManager(@NotNull JavaPlugin plugin) {
+    public ConfigManager(JavaPlugin plugin) {
         this.plugin = plugin;
         FileConfiguration config = plugin.getConfig();
         autoUpdate = config.getBoolean("auto-update");
@@ -41,28 +37,11 @@ public class ConfigManager implements IManager {
         fillWandSUITaskPeriod = config.getInt("tasks.fill-wand-sui.period");
     }
 
-    public static <T> @NotNull T getSettingOrThrow(@NotNull NamespacedKey nk, @NotNull String key, @NotNull Class<T> clazz) {
-        Map<String, ?> cache = CACHE.get(nk);
-        if (cache == null) {
-            T value = Settings.get(nk).getOrThrow(key, clazz);
-            CACHE.put(nk, Map.of(key, value));
-            return value;
-        } else {
-            Object value = cache.get(key);
-            if (value == null) {
-                value = Settings.get(nk).getOrThrow(key, clazz);
-                CACHE.put(nk, Map.of(key, value));
-                return clazz.cast(value);
-            } else {
-                return clazz.cast(value);
-            }
-        }
-    }
-
     public static boolean autoUpdate() {
         return ConstructionWandPlugin.getInstance().getConfigManager().autoUpdate;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean displayProjection() {
         return ConstructionWandPlugin.getInstance().getConfigManager().displayProjection;
     }
@@ -78,7 +57,6 @@ public class ConfigManager implements IManager {
 
     @Override
     public void shutdown() {
-
     }
 
     public void loadConfig() {
@@ -108,7 +86,7 @@ public class ConfigManager implements IManager {
         }
     }
 
-    private void checkKey(@NotNull FileConfiguration existingConfig, @NotNull FileConfiguration resourceConfig, @NotNull String key) {
+    private void checkKey(FileConfiguration existingConfig, FileConfiguration resourceConfig, String key) {
         final Object currentValue = existingConfig.get(key);
         final Object newValue = resourceConfig.get(key);
         if (newValue instanceof ConfigurationSection section) {

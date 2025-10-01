@@ -8,14 +8,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 
 @SuppressWarnings("unused")
 @UtilityClass
+@NullMarked
 public class Debug {
     private static final JavaPlugin plugin = ConstructionWandPlugin.getInstance();
     private static final String debugPrefix = "[Debug] ";
 
-    public static void debug(Object @NotNull ... objects) {
+    public static void debug(@Nullable Object... objects) {
         StringBuilder sb = new StringBuilder();
         for (Object obj : objects) {
             if (obj == null) {
@@ -27,11 +29,11 @@ public class Debug {
         debug(sb.toString());
     }
 
-    public static void debug(@NotNull Object object) {
+    public static void debug(Object object) {
         debug(object.toString());
     }
 
-    public static void debug(String @NotNull ... messages) {
+    public static void debug(String... messages) {
         for (String message : messages) {
             debug(message);
         }

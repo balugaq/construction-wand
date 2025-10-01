@@ -13,11 +13,17 @@ group = project.properties["group"]!!
 
 repositories {
     mavenCentral()
+    maven("https://central.sonatype.com/repository/maven-snapshots/") {
+        name = "sonatype"
+    }
     maven("https://repo.papermc.io/repository/maven-public/") {
         name = "papermc"
     }
     maven("https://repo.metamechanists.org/releases") {
         name = "MetaMechanists Repository"
+    }
+    maven("https://jitpack.io") {
+        name = "JitPack"
     }
     maven("https://repo.xenondevs.xyz/releases")
 }

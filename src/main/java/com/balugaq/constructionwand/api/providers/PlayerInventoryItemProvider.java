@@ -6,8 +6,10 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Range;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 public class PlayerInventoryItemProvider implements ItemProvider {
     /**
      * The plugin that this item provider is from
@@ -15,7 +17,7 @@ public class PlayerInventoryItemProvider implements ItemProvider {
      * @return The plugin
      */
     @Override
-    public @NotNull Plugin getPlugin() {
+    public Plugin getPlugin() {
         return ConstructionWandPlugin.getInstance();
     }
 
@@ -28,9 +30,10 @@ public class PlayerInventoryItemProvider implements ItemProvider {
      * @return The amount of items the player has
      */
     @Override
-    public int getAmount(@NotNull Player player, @NotNull Material material, int requireAmount) {
+    @Range(from = 0, to = Integer.MAX_VALUE)
+    public int getAmount(Player player, Material material, @Range(from = 1, to = Integer.MAX_VALUE) int requireAmount) {
         if (player.getGameMode() == GameMode.CREATIVE) {
-            return INF;
+            return MAX_AMOUNT;
         }
 
         int existing = 0;
@@ -63,8 +66,10 @@ public class PlayerInventoryItemProvider implements ItemProvider {
      * @param amount   The amount to consume
      * @return The amount of items consumed
      */
+    @SuppressWarnings("DuplicatedCode")
     @Override
-    public int consumeItem(@NotNull Player player, @NotNull Material material, int amount) {
+    @Range(from = 0, to = Integer.MAX_VALUE)
+    public int consumeItem(Player player, Material material, @Range(from = 1, to = Integer.MAX_VALUE) int amount) {
         if (player.getGameMode() == GameMode.CREATIVE) {
             return amount;
         }

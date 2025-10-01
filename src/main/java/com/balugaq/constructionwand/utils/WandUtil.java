@@ -34,7 +34,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "deprecation"})
 public class WandUtil {
     public static final Set<BlockFace> validFaces = new HashSet<>();
 
@@ -81,6 +81,7 @@ public class WandUtil {
         return lookingFacing;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     public static @NotNull Set<Location> getLocations(@NotNull Block lookingBlock, @NotNull BlockFace lookingFacing, int limitBlocks, Axis onlyAxis, boolean blockStrict) {
         Set<Location> rawLocations = getRawLocations(lookingBlock, lookingFacing, limitBlocks, onlyAxis, blockStrict);
         Set<Location> outwardLocations = new HashSet<>();
@@ -208,6 +209,7 @@ public class WandUtil {
         placeBlocks(plugin, event.getHand(), event.getPlayer(), disabled, limitBlocks, blockStrict, opOnly);
     }
 
+    @SuppressWarnings("DuplicatedCode")
     public static void placeBlocks(@NotNull Plugin plugin, @Nullable EquipmentSlot hand, @NotNull Player player, boolean disabled, int limitBlocks, boolean blockStrict, boolean opOnly) {
         if (hand != null && hand != EquipmentSlot.HAND) {
             return;
@@ -292,6 +294,7 @@ public class WandUtil {
         breakBlocks(plugin, event.getHand(), event.getPlayer(), disabled, limitBlocks, blockStrict, opOnly);
     }
 
+    @SuppressWarnings({"ConstantValue", "DuplicatedCode"})
     public static void breakBlocks(@NotNull Plugin plugin, @Nullable EquipmentSlot hand, @NotNull Player player, boolean disabled, int limitBlocks, boolean blockStrict, boolean opOnly) {
         if (hand != null && hand != EquipmentSlot.HAND) {
             return;
@@ -395,7 +398,7 @@ public class WandUtil {
             return -1;
         }
 
-        int amount = ItemProvider.getItemAmount(player, material, ItemProvider.INF);
+        int amount = ItemProvider.getItemAmount(player, material, ItemProvider.MAX_AMOUNT);
         AtomicInteger filled = new AtomicInteger(0);
         WorldUtils.doWorldEdit(loc1, loc2, location -> {
             if (filled.get() >= amount) {
@@ -421,6 +424,7 @@ public class WandUtil {
         return filled.get();
     }
 
+    @SuppressWarnings({"RedundantIfStatement", "DuplicatedCode"})
     public static boolean isMaterialDisabledToBreak(@NotNull Material material) {
         if (
                 material.isAir()
@@ -495,7 +499,7 @@ public class WandUtil {
                         || material.name().endsWith("_LOG")
                         || material == Material.END_ROD
                         || material.name().endsWith("LIGHTNING_ROD")
-                        || material.name().endsWith("CHAIN")
+                        || material.name().endsWith("CHAIN") // CHAIN, IRON_CHAIN, COPPER_CHAIN
                         || material.name().endsWith("_BARS")
                         || material == Material.DAYLIGHT_DETECTOR
                         || material == Material.ENDER_CHEST
@@ -505,6 +509,7 @@ public class WandUtil {
                         || material.name().endsWith("_WALL");
     }
 
+    @SuppressWarnings({"RedundantIfStatement", "DuplicatedCode"})
     public static boolean isMaterialDisabledToBuild(@NotNull Material material) {
         if (// Items that can store items
                 MaterialTags.SHULKER_BOXES.isTagged(material)
