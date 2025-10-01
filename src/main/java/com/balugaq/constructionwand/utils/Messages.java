@@ -55,7 +55,7 @@ public class Messages {
 
     public static Component argsWithed(@Nullable Locale locale, String translationKey, Object... args) {
         List<PylonArgument> pargs = new ArrayList<>();
-        for (int i = 0; i < args.length / 2; i += 2) {
+        for (int i = 0; i <= args.length / 2; i += 2) {
             String argkey = args[i].toString();
             Object object = args[i + 1];
             switch (object) {
