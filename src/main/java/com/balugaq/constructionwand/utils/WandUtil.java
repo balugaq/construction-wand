@@ -560,6 +560,8 @@ public class WandUtil {
                         || material == Material.JIGSAW
                         || material == Material.BARRIER
                         || material == Material.LIGHT
+                        || material == Material.TEST_BLOCK
+                        || material == Material.TEST_INSTANCE_BLOCK
                         || material == Material.SPAWNER
                         || material == Material.TRIAL_SPAWNER
                         || material == Material.CHORUS_FLOWER
