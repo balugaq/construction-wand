@@ -656,6 +656,7 @@ public class WandUtil {
                         || material == Material.CRIMSON_FUNGUS
                         || material == Material.WARPED_FUNGUS
                         || material == Material.SHORT_GRASS
+                        || material == Material.FIREFLY_BUSH
                         || material == Material.FERN
                         || material == Material.DEAD_BUSH
                         || material == Material.DANDELION
