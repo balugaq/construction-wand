@@ -80,3 +80,45 @@ constructionwand:fill-wand-rare:
     D: minecraft:diamond
     N: minecraft:nether_star
   result: constructionwand:fill-wand-rare
+
+constructionwand:building-wand-epic:
+  pattern:
+    - " NN"
+    - " SN"
+    - "S  "
+  key:
+    N: minecraft:netherite_ingot
+    S: minecraft:stick
+  result: constructionwand:building-wand-epic
+
+constructionwand:building-wand-block-strict-epic:
+  pattern:
+    - "NN "
+    - "NS "
+    - "  S"
+  key:
+    N: minecraft:netherite_ingot
+    S: minecraft:stick
+  result: constructionwand:building-wand-block-strict-epic
+
+constructionwand:breaking-wand-epic:
+  pattern:
+    - "OOO"
+    - "ONO"
+    - "SOO"
+  key:
+    O: minecraft:obsidian
+    N: minecraft:netherite_ingot
+    S: minecraft:stick
+  result: constructionwand:breaking-wand-epic
+
+constructionwand:fill-wand-epic:
+  pattern:
+    - " ND"
+    - " N "
+    - "SN "
+  key:
+    D: minecraft:diamond
+    N: minecraft:netherite_ingot
+    S: minecraft:stick
+  result: constructionwand:fill-wand-epic

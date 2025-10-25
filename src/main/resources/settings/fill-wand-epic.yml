@@ -1,2 +1,2 @@
-limit-blocks: 32768
-op-only: true
+limit-blocks: 1024
+op-only: false

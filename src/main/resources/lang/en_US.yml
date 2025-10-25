@@ -19,7 +19,6 @@ item:
       <gray>Right-click to place blocks
       <attr>Max Range:</attr> %range% Blocks
       <green>Selected area can be formed by any block
-      <red>OP only
   building-wand-block-strict-common:
     name: "<green>Build Wand | <blue>Common"
     lore: |-
@@ -34,6 +33,19 @@ item:
       <red>Selected area can be formed only by one kind of block
   building-wand-block-strict-epic:
     name: "<green>Build Wand | <yellow>Epic"
+    lore: |-
+      <gray>Right-click to place blocks
+      <attr>Max Range:</attr> %range% Blocks
+      <red>Selected area can be formed only by one kind of block
+  building-wand-cheat:
+    name: "<green>Build Wand | <dark_red>Cheat"
+    lore: |-
+      <gray>Right-click to place blocks
+      <attr>Max Range:</attr> %range% Blocks
+      <green>Selected area can be formed by any block
+      <red>OP only
+  building-wand-block-strict-cheat:
+    name: "<green>Build Wand | <dark_red>Cheat"
     lore: |-
       <gray>Right-click to place blocks
       <attr>Max Range:</attr> %range% Blocks
@@ -57,6 +69,12 @@ item:
       <gray>Right-click to break blocks
       <attr>Max Range:</attr> %range% Blocks
       <red>Selected area can be formed only by one kind of block
+  breaking-wand-cheat:
+    name: "<red>Break Wand | <dark_red>Cheat"
+    lore: |-
+      <gray>Right-click to break blocks
+      <attr>Max Range:</attr> %range% Blocks
+      <red>Selected area can be formed only by one kind of block
       <red>OP only
   fill-wand-common:
     name: "<red>Fill Wand | <blue>Common"
@@ -76,6 +94,14 @@ item:
       <attr>Max Range:</attr> %range% Blocks
   fill-wand-epic:
     name: "<red>Fill Wand | <yellow>Epic"
+    lore: |-
+      <green>Left-click on block to set Location-common
+      <green>Right-click on block to set Location-2
+      <green>Shift+Right-click on block to set block to fill
+      <green>Right-click on air to fill blocks
+      <attr>Max Range:</attr> %range% Blocks
+  fill-wand-cheat:
+    name: "<red>Fill Wand | <dark_red>Cheat"
     lore: |-
       <green>Left-click on block to set Location-common
       <green>Right-click on block to set Location-2

@@ -103,6 +103,16 @@ public class WandSetup implements IManager {
                 key("building-wand-block-strict-epic"),
                 Material.DIAMOND_SWORD
         );
+        
+        registerBuildingWand(
+                key("building-wand-cheat"),
+                Material.NETHERITE_SWORD
+        );
+
+        registerBuildingWand(
+                key("building-wand-block-strict-cheat"),
+                Material.NETHERITE_SWORD
+        );
 
         registerBreakingWand(
                 key("breaking-wand-common"),
@@ -118,6 +128,11 @@ public class WandSetup implements IManager {
                 key("breaking-wand-epic"),
                 Material.GOLDEN_SWORD
         );
+        
+        registerBreakingWand(
+                key("breaking-wand-cheat"),
+                Material.NETHERITE_SWORD
+        );
 
         registerFillWand(
                 key("fill-wand-common"),
@@ -131,6 +146,11 @@ public class WandSetup implements IManager {
 
         registerFillWand(
                 key("fill-wand-epic"),
+                Material.NETHERITE_SWORD
+        );
+        
+        registerFillWand(
+                key("fill-wand-cheat"),
                 Material.NETHERITE_SWORD
         );
     }

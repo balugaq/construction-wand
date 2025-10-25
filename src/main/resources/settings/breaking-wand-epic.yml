@@ -1,3 +1,3 @@
-limit-blocks: 4096
+limit-blocks: 256
 block-strict: false
-op-only: true
+op-only: false
