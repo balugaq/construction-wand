@@ -1,83 +1,83 @@
-addon: "Construction Wand"
+addon: "ConstructionWand"
 
 item:
-  building-wand-1:
-    name: "<green>Build Wand | <blue>Level 1"
+  building-wand-common:
+    name: "<green>Build Wand | <blue>Common"
     lore: |-
       <gray>Right-click to place blocks
       <attr>Max Range:</attr> %range% Blocks
       <green>Selected area can be formed by any block
-  building-wand-2:
-    name: "<green>Build Wand | <gold>Level 2"
+  building-wand-rare:
+    name: "<green>Build Wand | <gold>Rare"
     lore: |-
       <gray>Right-click to place blocks
       <attr>Max Range:</attr> %range% Blocks
       <green>Selected area can be formed by any block
-  building-wand-3:
-    name: "<green>Build Wand | <yellow>Level 3"
+  building-wand-epic:
+    name: "<green>Build Wand | <yellow>Epic"
     lore: |-
       <gray>Right-click to place blocks
       <attr>Max Range:</attr> %range% Blocks
       <green>Selected area can be formed by any block
       <red>OP only
-  building-wand-block-strict-1:
-    name: "<green>Build Wand | <blue>Level 1"
+  building-wand-block-strict-common:
+    name: "<green>Build Wand | <blue>Common"
     lore: |-
       <gray>Right-click to place blocks
       <attr>Max Range:</attr> %range% Blocks
       <red>Selected area can be formed only by one kind of block
-  building-wand-block-strict-2:
-    name: "<green>Build Wand | <gold>Level 2"
+  building-wand-block-strict-rare:
+    name: "<green>Build Wand | <gold>Rare"
     lore: |-
       <gray>Right-click to place blocks
       <attr>Max Range:</attr> %range% Blocks
       <red>Selected area can be formed only by one kind of block
-  building-wand-block-strict-3:
-    name: "<green>Build Wand | <yellow>Level 3"
+  building-wand-block-strict-epic:
+    name: "<green>Build Wand | <yellow>Epic"
     lore: |-
       <gray>Right-click to place blocks
       <attr>Max Range:</attr> %range% Blocks
       <red>Selected area can be formed only by one kind of block
       <red>OP only
-  breaking-wand-1:
-    name: "<red>Break Wand | <blue>Level 1"
+  breaking-wand-common:
+    name: "<red>Break Wand | <blue>Common"
     lore: |-
       <gray>Right-click to break blocks
       <attr>Max Range:</attr> %range% Blocks
       <red>Selected area can be formed only by one kind of block
-  breaking-wand-2:
-    name: "<red>Break Wand | <gold>Level 2"
+  breaking-wand-rare:
+    name: "<red>Break Wand | <gold>Rare"
     lore: |-
       <gray>Right-click to break blocks
       <attr>Max Range:</attr> %range% Blocks
       <red>Selected area can be formed only by one kind of block
-  breaking-wand-3:
-    name: "<red>Break Wand | <yellow>Level 3"
+  breaking-wand-epic:
+    name: "<red>Break Wand | <yellow>Epic"
     lore: |-
       <gray>Right-click to break blocks
       <attr>Max Range:</attr> %range% Blocks
       <red>Selected area can be formed only by one kind of block
       <red>OP only
-  fill-wand-1:
-    name: "<red>Fill Wand | <blue>Level 1"
+  fill-wand-common:
+    name: "<red>Fill Wand | <blue>Common"
     lore: |-
-      <green>Left-click on block to set Location-1
+      <green>Left-click on block to set Location-common
       <green>Right-click on block to set Location-2
       <green>Shift+Right-click on block to set block to fill
       <green>Right-click on air to fill blocks
       <attr>Max Range:</attr> %range% Blocks
-  fill-wand-2:
-    name: "<red>Fill Wand | <gold>Level 2"
+  fill-wand-rare:
+    name: "<red>Fill Wand | <gold>Rare"
     lore: |-
-      <green>Left-click on block to set Location-1
+      <green>Left-click on block to set Location-common
       <green>Right-click on block to set Location-2
       <green>Shift+Right-click on block to set block to fill
       <green>Right-click on air to fill blocks
       <attr>Max Range:</attr> %range% Blocks
-  fill-wand-3:
-    name: "<red>Fill Wand | <yellow>Level 3"
+  fill-wand-epic:
+    name: "<red>Fill Wand | <yellow>Epic"
     lore: |-
-      <green>Left-click on block to set Location-1
+      <green>Left-click on block to set Location-common
       <green>Right-click on block to set Location-2
       <green>Shift+Right-click on block to set block to fill
       <green>Right-click on air to fill blocks
@@ -90,12 +90,12 @@ guide:
 
 message:
   common:
-    set-loc1: "<green>Set Location-1: %loc1%"
-    set-loc2: "<green>Set Location-2: %loc2%"
-    set-loc1-with-range: "<green>Set Location-1: %loc1% <gray>( <yellow>%total% Blocks <gray>)"
-    set-loc2-with-range: "<green>Set Location-2: %loc2% <gray>( <yellow>%total% Blocks <gray>)"
+    set-loc1: "<green>Set Location-common: %loc1%"
+    set-loc2: "<green>Set Location-rare: %loc2%"
+    set-loc1-with-range: "<green>Set Location-common: %loc1% <gray>( <yellow>%total% Blocks <gray>)"
+    set-loc2-with-range: "<green>Set Location-rare: %loc2% <gray>( <yellow>%total% Blocks <gray>)"
     set-material: "<green>Set Material: %material%"
-    not-set-loc1: "<red>Location-1 is absent!"
+    not-set-loc1: "<red>Location-common is absent!"
     not-set-loc2: "<red>Location-2 is absent!"
     not-set-material: "<red>Material is absent!"
     locations-in-different-worlds: "<red>Locations are in different worlds!"
@@ -103,8 +103,8 @@ message:
     invalid-block: "<red>Invalid block!"
     disabled-block: "<red>Disabled block!"
     no-enough-items: "<red>No enough %material%!"
-    loc1: "<attr>Location-1:</attr> %loc1%"
-    loc2: "<attr>Location-2:</attr> %loc2%"
+    loc1: "<attr>Location-common:</attr> %loc1%"
+    loc2: "<attr>Location-rare:</attr> %loc2%"
     material: "<attr>Material:</attr> %material%"
   fill-wand:
     filled-blocks: "<green>Filled %blocks% blocks"

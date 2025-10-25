@@ -15,7 +15,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.recipe.CraftingBookCategory;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.Map;
@@ -32,75 +31,45 @@ public class WandSetup implements IManager {
         return KeyUtil.newKey(key);
     }
 
-    @SuppressWarnings("NullableProblems")
     public static void registerWand(
             Class<? extends PylonItem> clazz,
             NamespacedKey key,
-            Material material,
-            @Nullable String @Nullable ... recipe) {
-        ItemStack item = ItemStackBuilder.pylonItem(material, key).build();
-        if (recipe != null) {
-            registerRecipe(key, item, recipe);
-        }
+            Material material) {
+        ItemStack item = ItemStackBuilder.pylon(material, key).build();
         PylonItem.register(clazz, item);
         MAIN.addItem(item);
     }
 
     public static void registerBuildingWand(
             NamespacedKey key,
-            Material material,
-            @Nullable String @Nullable ... recipe) {
+            Material material) {
         registerWand(
                 BuildingWand.class,
                 key,
-                material,
-                recipe
+                material
         );
     }
 
     public static void registerBreakingWand(
             @NotNull NamespacedKey key,
-            @NotNull Material material,
-            @Nullable String @Nullable ... recipe) {
+            @NotNull Material material) {
         registerWand(
                 BreakingWand.class,
                 key,
-                material,
-                recipe
+                material
         );
     }
 
     public static void registerFillWand(
             NamespacedKey key,
-            Material material,
-            @Nullable String @Nullable ... recipe) {
+            Material material) {
         registerWand(
                 FillWand.class,
                 key,
-                material,
-                recipe
+                material
         );
 
-        PylonItem.fromStack(ItemStackBuilder.pylonItem(material, key).build());
-    }
-
-    @SuppressWarnings("deprecation")
-    public static void registerRecipe(
-            @NotNull NamespacedKey key,
-            @NotNull ItemStack item,
-            @NotNull String @NotNull ... recipe) {
-        ShapedRecipe shapedRecipe = new ShapedRecipe(key, item)
-                .shape(recipe);
-        Map<Character, ItemStack> m = shapedRecipe.getIngredientMap();
-        if (m.containsKey('S')) shapedRecipe.setIngredient('S', Material.STICK);
-        if (m.containsKey('I')) shapedRecipe.setIngredient('I', Material.IRON_INGOT);
-        if (m.containsKey('G')) shapedRecipe.setIngredient('G', Material.GOLD_INGOT);
-        if (m.containsKey('D')) shapedRecipe.setIngredient('D', Material.DIAMOND);
-        if (m.containsKey('O')) shapedRecipe.setIngredient('O', Material.OBSIDIAN);
-        if (m.containsKey('N')) shapedRecipe.setIngredient('N', Material.NETHER_STAR);
-
-        shapedRecipe.setCategory(CraftingBookCategory.BUILDING);
-        RecipeType.VANILLA_SHAPED.addRecipe(shapedRecipe);
+        PylonItem.fromStack(ItemStackBuilder.pylon(material, key).build());
     }
 
     @Override
@@ -108,89 +77,61 @@ public class WandSetup implements IManager {
         PylonGuide.getRootPage().addPage(MAIN);
 
         registerBuildingWand(
-                key("building-wand-1"),
-                Material.STONE_SWORD,
-                "  I",
-                " S ",
-                "S  "
+                key("building-wand-common"),
+                Material.STONE_SWORD
         );
         registerBuildingWand(
-                key("building-wand-2"),
-                Material.IRON_SWORD,
-                "  G",
-                " S ",
-                "S  "
+                key("building-wand-rare"),
+                Material.IRON_SWORD
         );
         registerBuildingWand(
-                key("building-wand-3"),
-                Material.DIAMOND_SWORD,
-                (String[]) null
+                key("building-wand-epic"),
+                Material.DIAMOND_SWORD
         );
 
         registerBuildingWand(
-                key("building-wand-block-strict-1"),
-                Material.STONE_SWORD,
-                "I  ",
-                " S ",
-                "  S"
+                key("building-wand-block-strict-common"),
+                Material.STONE_SWORD
         );
 
         registerBuildingWand(
-                key("building-wand-block-strict-2"),
-                Material.IRON_SWORD,
-                "G  ",
-                " S ",
-                "  S"
+                key("building-wand-block-strict-rare"),
+                Material.IRON_SWORD
         );
 
         registerBuildingWand(
-                key("building-wand-block-strict-3"),
-                Material.DIAMOND_SWORD,
-                (String[]) null
+                key("building-wand-block-strict-epic"),
+                Material.DIAMOND_SWORD
         );
 
         registerBreakingWand(
-                key("breaking-wand-1"),
-                Material.GOLDEN_SWORD,
-                "OOI",
-                "OSO",
-                "SOO"
+                key("breaking-wand-common"),
+                Material.GOLDEN_SWORD
         );
 
         registerBreakingWand(
-                key("breaking-wand-2"),
-                Material.GOLDEN_SWORD,
-                "OOG",
-                "OSO",
-                "SOO"
+                key("breaking-wand-rare"),
+                Material.GOLDEN_SWORD
         );
 
         registerBreakingWand(
-                key("breaking-wand-3"),
-                Material.GOLDEN_SWORD,
-                (String[]) null
+                key("breaking-wand-epic"),
+                Material.GOLDEN_SWORD
         );
 
         registerFillWand(
-                key("fill-wand-1"),
-                Material.STONE_SWORD,
-                "  D",
-                " N ",
-                "S  "
+                key("fill-wand-common"),
+                Material.STONE_SWORD
         );
 
         registerFillWand(
-                key("fill-wand-2"),
-                Material.DIAMOND_SWORD,
-                "  D",
-                " N ",
-                "N  "
+                key("fill-wand-rare"),
+                Material.DIAMOND_SWORD
         );
 
         registerFillWand(
-                key("fill-wand-3"),
-                Material.NETHERITE_SWORD,
-                (String[]) null
+                key("fill-wand-epic"),
+                Material.NETHERITE_SWORD
         );
     }
 
