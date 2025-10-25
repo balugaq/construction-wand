@@ -79,32 +79,32 @@ item:
   fill-wand-common:
     name: "<red>Fill Wand | <blue>Common"
     lore: |-
-      <green>Left-click on block to set Location-common
-      <green>Right-click on block to set Location-2
+      <green>Left-click on block to set start location
+      <green>Right-click on block to set end location
       <green>Shift+Right-click on block to set block to fill
       <green>Right-click on air to fill blocks
       <attr>Max Range:</attr> %range% Blocks
   fill-wand-rare:
     name: "<red>Fill Wand | <gold>Rare"
     lore: |-
-      <green>Left-click on block to set Location-common
-      <green>Right-click on block to set Location-2
+      <green>Left-click on block to set start location
+      <green>Right-click on block to set end location
       <green>Shift+Right-click on block to set block to fill
       <green>Right-click on air to fill blocks
       <attr>Max Range:</attr> %range% Blocks
   fill-wand-epic:
     name: "<red>Fill Wand | <yellow>Epic"
     lore: |-
-      <green>Left-click on block to set Location-common
-      <green>Right-click on block to set Location-2
+      <green>Left-click on block to set start location
+      <green>Right-click on block to set end location
       <green>Shift+Right-click on block to set block to fill
       <green>Right-click on air to fill blocks
       <attr>Max Range:</attr> %range% Blocks
   fill-wand-cheat:
     name: "<red>Fill Wand | <dark_red>Cheat"
     lore: |-
-      <green>Left-click on block to set Location-common
-      <green>Right-click on block to set Location-2
+      <green>Left-click on block to set start location
+      <green>Right-click on block to set end location
       <green>Shift+Right-click on block to set block to fill
       <green>Right-click on air to fill blocks
       <attr>Max Range:</attr> %range% Blocks
@@ -116,21 +116,21 @@ guide:
 
 message:
   common:
-    set-loc1: "<green>Set Location-common: %loc1%"
-    set-loc2: "<green>Set Location-rare: %loc2%"
-    set-loc1-with-range: "<green>Set Location-common: %loc1% <gray>( <yellow>%total% Blocks <gray>)"
-    set-loc2-with-range: "<green>Set Location-rare: %loc2% <gray>( <yellow>%total% Blocks <gray>)"
+    set-start-location: "<green>Set start location: %start-location%"
+    set-end-location: "<green>Set end location: %end-location%"
+    set-start-location-with-range: "<green>Set start location: %start-location% <gray>( <yellow>%total% Blocks <gray>)"
+    set-end-location-with-range: "<green>Set end location: %end-location% <gray>( <yellow>%total% Blocks <gray>)"
     set-material: "<green>Set Material: %material%"
-    not-set-loc1: "<red>Location-common is absent!"
-    not-set-loc2: "<red>Location-2 is absent!"
-    not-set-material: "<red>Material is absent!"
+    not-set-start-location: "<red>Start location hasn't been set!"
+    not-set-end-location: "<red>End Location hasn't been set!"
+    not-set-material: "<red>Material hasn't been set!"
     locations-in-different-worlds: "<red>Locations are in different worlds!"
     too-many-blocks: "<red>Too many blocks!"
     invalid-block: "<red>Invalid block!"
     disabled-block: "<red>Disabled block!"
     no-enough-items: "<red>No enough %material%!"
-    loc1: "<attr>Location-common:</attr> %loc1%"
-    loc2: "<attr>Location-rare:</attr> %loc2%"
+    start-location: "<attr>Start location:</attr> %start-location%"
+    end-location: "<attr>End location:</attr> %end-location%"
     material: "<attr>Material:</attr> %material%"
   fill-wand:
     filled-blocks: "<green>Filled %blocks% blocks"

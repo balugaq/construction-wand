@@ -40,8 +40,8 @@ import java.util.List;
  */
 @Getter
 public class FillWand extends PylonItem implements Wand, PylonInteractor {
-    public static final NamespacedKey LOC1_KEY = KeyUtil.newKey("loc1");
-    public static final NamespacedKey LOC2_KEY = KeyUtil.newKey("loc2");
+    public static final NamespacedKey START_LOCATION_KEY = KeyUtil.newKey("start-location");
+    public static final NamespacedKey END_LOCATION_KEY = KeyUtil.newKey("end-location");
     public static final NamespacedKey MATERIAL_KEY = KeyUtil.newKey("material");
     private final int limitBlocks = getOrThrow("limit-blocks", ConfigAdapter.INT);
     private final boolean opOnly = getOrThrow("op-only", ConfigAdapter.BOOLEAN);
@@ -56,8 +56,8 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
         lore.addLines(wand.lore().stream().limit(5).toList());
         PersistentDataContainerView view = wand.getPersistentDataContainer();
 
-        String loc1 = view.get(LOC1_KEY, PersistentDataType.STRING);
-        String loc2 = view.get(LOC2_KEY, PersistentDataType.STRING);
+        String loc1 = view.get(START_LOCATION_KEY, PersistentDataType.STRING);
+        String loc2 = view.get(END_LOCATION_KEY, PersistentDataType.STRING);
         String material = view.get(MATERIAL_KEY, PersistentDataType.STRING);
 
         if (loc1 != null || loc2 != null || material != null) {
@@ -67,7 +67,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
         if (loc1 != null) {
             lore.addLine(Messages.arguments(
                     player.locale(),
-                    Messages.KEY_LOC1,
+                    Messages.KEY_START_LOCATION,
                     "loc1",
                     humanizeLoc(resolveStr2Loc(loc1))
             ));
@@ -76,7 +76,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
         if (loc2 != null) {
             lore.addLine(Messages.arguments(
                     player.locale(),
-                    Messages.KEY_LOC2,
+                    Messages.KEY_END_LOCATION,
                     "loc2",
                     humanizeLoc(resolveStr2Loc(loc2))
             ));
@@ -173,11 +173,11 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
             Location location = block.getLocation();
             if (leftClick) {
                 // Set loc1
-                Location loc2 = resolveStr2Loc(PersistentUtil.get(wand, PersistentDataType.STRING, LOC2_KEY));
+                Location loc2 = resolveStr2Loc(PersistentUtil.get(wand, PersistentDataType.STRING, END_LOCATION_KEY));
                 if (loc2 != null) {
                     player.sendMessage(Messages.arguments(
                             player.locale(),
-                            Messages.KEY_SET_LOC1_WITH_RANGE,
+                            Messages.KEY_SET_START_LOCATION_WITH_RANGE,
                             "loc1",
                             humanizeLoc(location),
                             "total",
@@ -186,12 +186,12 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                 } else {
                     player.sendMessage(Messages.arguments(
                             player.locale(),
-                            Messages.KEY_SET_LOC1,
+                            Messages.KEY_SET_START_LOCATION,
                             "loc1",
                             humanizeLoc(location)
                     ));
                 }
-                PersistentUtil.set(wand, PersistentDataType.STRING, LOC1_KEY, resolveLoc2str(location));
+                PersistentUtil.set(wand, PersistentDataType.STRING, START_LOCATION_KEY, resolveLoc2str(location));
                 resolveWandLore(player, getKey(), wand);
                 return;
             }
@@ -220,11 +220,11 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                     resolveWandLore(player, getKey(), wand);
                 } else {
                     // Set loc2
-                    Location loc1 = resolveStr2Loc(PersistentUtil.get(wand, PersistentDataType.STRING, LOC1_KEY));
+                    Location loc1 = resolveStr2Loc(PersistentUtil.get(wand, PersistentDataType.STRING, START_LOCATION_KEY));
                     if (loc1 != null) {
                         player.sendMessage(Messages.arguments(
                                 player.locale(),
-                                Messages.KEY_SET_LOC2_WITH_RANGE,
+                                Messages.KEY_SET_END_LOCATION_WITH_RANGE,
                                 "loc2",
                                 humanizeLoc(location),
                                 "total",
@@ -233,27 +233,27 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                     } else {
                         player.sendMessage(Messages.arguments(
                                 player.locale(),
-                                Messages.KEY_SET_LOC2,
+                                Messages.KEY_SET_END_LOCATION,
                                 "loc2",
                                 humanizeLoc(location)
                         ));
                     }
-                    PersistentUtil.set(wand, PersistentDataType.STRING, LOC2_KEY, resolveLoc2str(location));
+                    PersistentUtil.set(wand, PersistentDataType.STRING, END_LOCATION_KEY, resolveLoc2str(location));
                     resolveWandLore(player, getKey(), wand);
                 }
             }
         } else {
             // click on air
             if (rightClick) {
-                Location loc1 = resolveStr2Loc(PersistentUtil.get(wand, PersistentDataType.STRING, LOC1_KEY));
-                Location loc2 = resolveStr2Loc(PersistentUtil.get(wand, PersistentDataType.STRING, LOC2_KEY));
+                Location loc1 = resolveStr2Loc(PersistentUtil.get(wand, PersistentDataType.STRING, START_LOCATION_KEY));
+                Location loc2 = resolveStr2Loc(PersistentUtil.get(wand, PersistentDataType.STRING, END_LOCATION_KEY));
                 if (loc1 == null) {
-                    player.sendMessage(Messages.NOT_SET_LOC1);
+                    player.sendMessage(Messages.NOT_SET_START_LOCATION);
                     return;
                 }
 
                 if (loc2 == null) {
-                    player.sendMessage(Messages.NOT_SET_LOC2);
+                    player.sendMessage(Messages.NOT_SET_END_LOCATION);
                     return;
                 }
 

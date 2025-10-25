@@ -43,8 +43,8 @@ public class FillWandSUITask extends BukkitRunnable {
                 continue;
             }
 
-            Location loc1 = FillWand.resolveStr2Loc(wand.getPersistentDataContainer().get(FillWand.LOC1_KEY, PersistentDataType.STRING));
-            Location loc2 = FillWand.resolveStr2Loc(wand.getPersistentDataContainer().get(FillWand.LOC2_KEY, PersistentDataType.STRING));
+            Location loc1 = FillWand.resolveStr2Loc(wand.getPersistentDataContainer().get(FillWand.START_LOCATION_KEY, PersistentDataType.STRING));
+            Location loc2 = FillWand.resolveStr2Loc(wand.getPersistentDataContainer().get(FillWand.END_LOCATION_KEY, PersistentDataType.STRING));
             if (loc1 == null || loc2 == null) {
                 continue;
             }
