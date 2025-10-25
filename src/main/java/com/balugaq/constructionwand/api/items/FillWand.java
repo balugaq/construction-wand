@@ -34,6 +34,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+/**
+ * @author balugaq
+ * @since 1.0
+ */
 @Getter
 public class FillWand extends PylonItem implements Wand, PylonInteractor {
     public static final NamespacedKey LOC1_KEY = KeyUtil.newKey("loc1");
@@ -61,7 +65,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
         }
 
         if (loc1 != null) {
-            lore.addLine(Messages.argsWithed(
+            lore.addLine(Messages.arguments(
                     player.locale(),
                     Messages.KEY_LOC1,
                     "loc1",
@@ -70,7 +74,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
         }
 
         if (loc2 != null) {
-            lore.addLine(Messages.argsWithed(
+            lore.addLine(Messages.arguments(
                     player.locale(),
                     Messages.KEY_LOC2,
                     "loc2",
@@ -171,7 +175,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                 // Set loc1
                 Location loc2 = resolveStr2Loc(PersistentUtil.get(wand, PersistentDataType.STRING, LOC2_KEY));
                 if (loc2 != null) {
-                    player.sendMessage(Messages.argsWithed(
+                    player.sendMessage(Messages.arguments(
                             player.locale(),
                             Messages.KEY_SET_LOC1_WITH_RANGE,
                             "loc1",
@@ -180,7 +184,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                             WorldUtils.totalBlocks(location, loc2)
                     ));
                 } else {
-                    player.sendMessage(Messages.argsWithed(
+                    player.sendMessage(Messages.arguments(
                             player.locale(),
                             Messages.KEY_SET_LOC1,
                             "loc1",
@@ -206,7 +210,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                         return;
                     }
 
-                    player.sendMessage(Messages.argsWithed(
+                    player.sendMessage(Messages.arguments(
                             player.locale(),
                             Messages.KEY_SET_MATERIAL,
                             "material",
@@ -218,7 +222,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                     // Set loc2
                     Location loc1 = resolveStr2Loc(PersistentUtil.get(wand, PersistentDataType.STRING, LOC1_KEY));
                     if (loc1 != null) {
-                        player.sendMessage(Messages.argsWithed(
+                        player.sendMessage(Messages.arguments(
                                 player.locale(),
                                 Messages.KEY_SET_LOC2_WITH_RANGE,
                                 "loc2",
@@ -227,7 +231,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                                 WorldUtils.totalBlocks(loc1, location)
                         ));
                     } else {
-                        player.sendMessage(Messages.argsWithed(
+                        player.sendMessage(Messages.arguments(
                                 player.locale(),
                                 Messages.KEY_SET_LOC2,
                                 "loc2",
@@ -271,14 +275,14 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
 
                 int filled = WandUtil.fillBlocks(ConstructionWandPlugin.getInstance(), event, loc1, loc2, material, getLimitBlocks());
                 if (filled == 0) {
-                    player.sendMessage(Messages.argsWithed(
+                    player.sendMessage(Messages.arguments(
                             player.locale(),
                             Messages.KEY_NO_ENOUGH_ITEMS,
                             "material",
                             humanizeMaterialName(player, material)
                     ));
                 }
-                player.sendMessage(Messages.argsWithed(
+                player.sendMessage(Messages.arguments(
                         player.locale(),
                         Messages.KEY_FILLED_BLOCKS,
                         "blocks",

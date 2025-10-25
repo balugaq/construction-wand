@@ -14,6 +14,10 @@ import org.jspecify.annotations.NullMarked;
 import java.lang.reflect.Field;
 import java.util.function.Consumer;
 
+/**
+ * @author m1919810
+ * @since 1.0
+ */
 @ApiStatus.Experimental
 @SuppressWarnings({"unused", "SequencedCollectionMethodCanBeUsed", "DataFlowIssue"})
 @NullMarked
@@ -30,14 +34,14 @@ public class WorldUtils {
             World sampleWorld = Bukkit.getWorlds().get(0);
             BlockState blockstate = sampleWorld.getBlockAt(0, 0, 0).getState();
             Pair<Field, Class<?>> result = ReflectionUtil.getDeclaredFieldsRecursively(blockstate.getClass(), "data");
-            interfaceBlockDataField = result.getFirst();
+            interfaceBlockDataField = result.first();
             interfaceBlockDataField.setAccessible(true);
-            craftBlockStateClass = result.getSecond();
-            blockPositionField = ReflectionUtil.getDeclaredFieldsRecursively(craftBlockStateClass, "position").getFirst();
+            craftBlockStateClass = result.second();
+            blockPositionField = ReflectionUtil.getDeclaredFieldsRecursively(craftBlockStateClass, "position").first();
             blockPositionField.setAccessible(true);
-            worldField = ReflectionUtil.getDeclaredFieldsRecursively(craftBlockStateClass, "world").getFirst();
+            worldField = ReflectionUtil.getDeclaredFieldsRecursively(craftBlockStateClass, "world").first();
             worldField.setAccessible(true);
-            weakWorldField = ReflectionUtil.getDeclaredFieldsRecursively(craftBlockStateClass, "weakWorld").getFirst();
+            weakWorldField = ReflectionUtil.getDeclaredFieldsRecursively(craftBlockStateClass, "weakWorld").first();
             weakWorldField.setAccessible(true);
             success = true;
         } catch (NullPointerException ignored) {

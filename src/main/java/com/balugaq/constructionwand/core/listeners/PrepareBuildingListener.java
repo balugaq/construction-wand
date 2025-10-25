@@ -25,6 +25,10 @@ import org.metamechanists.displaymodellib.models.components.ModelCuboid;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * @author balugaq
+ * @since 1.0
+ */
 @NullMarked
 public class PrepareBuildingListener implements Listener {
     private static final ModelCuboid blockBase = new ModelCuboid()

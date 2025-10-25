@@ -14,6 +14,10 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
+/**
+ * @author balugaq
+ * @since 1.0
+ */
 @NullMarked
 public class ShulkerBoxItemProvider implements ItemProvider {
     /**

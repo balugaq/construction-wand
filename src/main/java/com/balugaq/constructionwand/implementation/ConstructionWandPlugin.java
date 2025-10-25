@@ -18,6 +18,10 @@ import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Set;
 
+/**
+ * @author balugaq
+ * @since 1.0
+ */
 @SuppressWarnings({"unused", "NotNullFieldNotInitialized"})
 @NullMarked
 public class ConstructionWandPlugin extends JavaPlugin implements PylonAddon {

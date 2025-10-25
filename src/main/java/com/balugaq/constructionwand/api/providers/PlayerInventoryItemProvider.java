@@ -9,6 +9,10 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Range;
 import org.jspecify.annotations.NullMarked;
 
+/**
+ * @author balugaq
+ * @since 1.0
+ */
 @NullMarked
 public class PlayerInventoryItemProvider implements ItemProvider {
     /**

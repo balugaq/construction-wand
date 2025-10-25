@@ -17,8 +17,10 @@ import org.bukkit.inventory.recipe.CraftingBookCategory;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NullMarked;
 
-import java.util.Map;
-
+/**
+ * @author balugaq
+ * @since 1.0
+ */
 @NullMarked
 public class WandSetup implements IManager {
     public static SimpleStaticGuidePage MAIN;

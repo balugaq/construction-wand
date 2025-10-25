@@ -12,41 +12,10 @@ import java.util.List;
 /**
  * @author Final_ROOT
  * @author balugaq
+ * @since 1.0
  */
 @NullMarked
 public class ParticleUtil {
-    private static final double[] BLOCK_CUBE_OFFSET_X = new double[]{0, 1, 0, 0, 1, 1, 0, 1};
-    private static final double[] BLOCK_CUBE_OFFSET_Y = new double[]{0, 0, 1, 0, 1, 0, 1, 1};
-    private static final double[] BLOCK_CUBE_OFFSET_Z = new double[]{0, 0, 0, 1, 0, 1, 1, 1};
-
-    public static void drawLineByTotalAmount(Particle particle, int totalAmount, Location... locations) {
-        for (int i = 0; i < locations.length; i++) {
-            if ((i + 1) < locations.length) {
-                Location location1 = locations[i];
-                Location location2 = locations[i + 1];
-
-                if (totalAmount < 1 || location1.getWorld() == null || location1.getWorld() != location2.getWorld()) {
-                    return;
-                }
-                World world = location1.getWorld();
-                double[] x = JavaUtil.disperse(totalAmount, location1.getX(), location2.getX());
-                double[] y = JavaUtil.disperse(totalAmount, location1.getY(), location2.getY());
-                double[] z = JavaUtil.disperse(totalAmount, location1.getZ(), location2.getZ());
-                for (int j = 0; j < totalAmount; j++) {
-                    world.spawnParticle(particle, x[j], y[j], z[j], 1, 0, 0, 0, 0);
-                }
-            }
-        }
-    }
-
-    public static void drawLineByTotalAmount(Particle particle, int totalAmount, List<Location> locationList) {
-        Location[] locations = new Location[locationList.size()];
-        for (int i = 0; i < locations.length; i++) {
-            locations[i] = locationList.get(i);
-        }
-        ParticleUtil.drawLineByTotalAmount(particle, totalAmount, locations);
-    }
-
     public static void drawLineByDistance(Plugin plugin, Particle particle, long interval, double distance, Location... locations) {
         int time = 0;
         for (int i = 0; i + 1 < locations.length; i++) {
@@ -96,47 +65,6 @@ public class ParticleUtil {
 
             time += (int) interval;
         }
-    }
-
-    public static void drawLineByDistance(Plugin plugin, Particle particle, long interval, double distance, List<Location> locationList) {
-        Location[] locations = new Location[locationList.size()];
-        for (int i = 0; i < locations.length; i++) {
-            locations[i] = locationList.get(i);
-        }
-        ParticleUtil.drawLineByDistance(plugin, particle, interval, distance, locations);
-    }
-
-    public static void drawCubeByLocations(Plugin plugin, Particle particle, long interval, Location... locations) {
-        int time = 0;
-        for (Location location : locations) {
-            World world = location.getWorld();
-            if (world == null) {
-                continue;
-            }
-            int x = location.getBlockX();
-            int y = location.getBlockY();
-            int z = location.getBlockZ();
-            if (time < 50) {
-                for (int i = 0; i < BLOCK_CUBE_OFFSET_X.length; i++) {
-                    world.spawnParticle(particle, x + BLOCK_CUBE_OFFSET_X[i], y + BLOCK_CUBE_OFFSET_Y[i], z + BLOCK_CUBE_OFFSET_Z[i], 1, 0, 0, 0, 0);
-                }
-            } else {
-                plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, () -> {
-                    for (int i = 0; i < BLOCK_CUBE_OFFSET_X.length; i++) {
-                        world.spawnParticle(particle, x + BLOCK_CUBE_OFFSET_X[i], y + BLOCK_CUBE_OFFSET_Y[i], z + BLOCK_CUBE_OFFSET_Z[i], 1, 0, 0, 0, 0);
-                    }
-                }, time / 50);
-            }
-            time += (int) interval;
-        }
-    }
-
-    public static void drawCubeByLocations(Plugin plugin, Particle particle, long interval, List<Location> locationList) {
-        Location[] locations = new Location[locationList.size()];
-        for (int i = 0; i < locationList.size(); i++) {
-            locations[i] = locationList.get(i);
-        }
-        ParticleUtil.drawCubeByLocations(plugin, particle, interval, locations);
     }
 
     public static void drawRegionOutline(Plugin plugin, Particle particle, long interval, Location corner1, Location corner2) {

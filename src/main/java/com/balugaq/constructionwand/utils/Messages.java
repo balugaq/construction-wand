@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * @author balugaq
+ * @since 1.0
+ */
 @NullMarked
 public class Messages {
     public static final String PREFIX = "pylon.constructionwand.message.";
@@ -53,7 +57,7 @@ public class Messages {
     // arg: %material% - Translated material
     public static final String KEY_NO_ENOUGH_ITEMS = PREFIX + "common.no-enough-items";
 
-    public static Component argsWithed(@Nullable Locale locale, String translationKey, Object... args) {
+    public static Component arguments(@Nullable Locale locale, String translationKey, Object... args) {
         List<PylonArgument> pargs = new ArrayList<>();
         for (int i = 0; i <= args.length / 2; i += 2) {
             String argkey = args[i].toString();

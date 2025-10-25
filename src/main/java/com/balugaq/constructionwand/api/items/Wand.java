@@ -8,6 +8,10 @@ import org.bukkit.NamespacedKey;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author balugaq
+ * @since 1.0
+ */
 public interface Wand extends Keyed {
     Map<NamespacedKey, Map<String, Object>> cache = new HashMap<>();
 

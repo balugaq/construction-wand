@@ -2,46 +2,100 @@ package com.balugaq.constructionwand.utils;
 
 import com.balugaq.constructionwand.api.collections.Pair;
 import lombok.experimental.UtilityClass;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jspecify.annotations.NullMarked;
+import org.jetbrains.annotations.Range;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * @author Final_ROOT
+ * @author balugaq
+ * @since 1.0
  */
-@SuppressWarnings({"unchecked", "unused"})
+@SuppressWarnings({"unchecked", "unused", "CallToPrintStackTrace"})
 @UtilityClass
-@NullMarked
 public class ReflectionUtil {
 
-    public static boolean setValue(Object object, String field, Object value) {
+    @SuppressWarnings("UnusedReturnValue")
+    public static boolean setValue(@NotNull Object object, @NotNull String field, @Nullable Object value) {
         try {
-            Field declaredField = object.getClass().getDeclaredField(field);
+            Field declaredField = getField(object.getClass(), field);
+            if (declaredField == null) {
+                throw new NoSuchFieldException(field);
+            }
             declaredField.setAccessible(true);
             declaredField.set(object, value);
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            Debug.log(e);
+            e.printStackTrace();
             return false;
         }
         return true;
     }
 
-    public static <T> boolean setStaticValue(Class<T> clazz, String field, Object value) {
+    public static <T> boolean setStaticValue(@NotNull Class<T> clazz, @NotNull String field, @Nullable Object value) {
         try {
-            Field declaredField = clazz.getDeclaredField(field);
+            Field declaredField = getField(clazz, field);
+            if (declaredField == null) {
+                throw new NoSuchFieldException(field);
+            }
             declaredField.setAccessible(true);
             declaredField.set(null, value);
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            Debug.log(e);
+            e.printStackTrace();
             return false;
         }
         return true;
     }
 
-    public static @Nullable Method getMethod(Class<?> clazz, String methodName) {
+    public static @Nullable Object getStaticValue(@NotNull Class<?> clazz, @NotNull String field) {
+        try {
+            Field declaredField = getField(clazz, field);
+            if (declaredField == null) {
+                throw new NoSuchFieldException(field);
+            }
+            declaredField.setAccessible(true);
+            return declaredField.get(null);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static <T> @Nullable T getStaticValue(
+            @NotNull Class<?> clazz, @NotNull String field, @NotNull Class<T> cast) {
+        try {
+            Field declaredField = getField(clazz, field);
+            if (declaredField == null) {
+                throw new NoSuchFieldException(field);
+            }
+            declaredField.setAccessible(true);
+            return (T) declaredField.get(null);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static @Nullable Method getMethod(@NotNull Class<?> clazz, @NotNull String methodName, boolean noargs) {
+        while (clazz != Object.class) {
+            for (Method method : clazz.getDeclaredMethods()) {
+                if (method.getName().equals(methodName) && (!noargs || method.getParameterTypes().length == 0)) {
+                    return method;
+                }
+            }
+            clazz = clazz.getSuperclass();
+        }
+        // noargs failed, try to find a method which has arguments
+        return getMethod(clazz, methodName);
+    }
+
+    public static @Nullable Method getMethod(@NotNull Class<?> clazz, @NotNull String methodName) {
         while (clazz != Object.class) {
             for (Method method : clazz.getDeclaredMethods()) {
                 if (method.getName().equals(methodName)) {
@@ -53,7 +107,56 @@ public class ReflectionUtil {
         return null;
     }
 
-    public static @Nullable Field getField(Class<?> clazz, String fieldName) {
+    public static @Nullable Method getMethod(
+            @NotNull Class<?> clazz,
+            @NotNull String methodName,
+            @Range(from = 0, to = Short.MAX_VALUE) int parameterCount) {
+        while (clazz != Object.class) {
+            for (Method method : clazz.getDeclaredMethods()) {
+                if (method.getName().equals(methodName) && method.getParameterTypes().length == parameterCount) {
+                    return method;
+                }
+            }
+            clazz = clazz.getSuperclass();
+        }
+        return null;
+    }
+
+    public static @Nullable Method getMethod(
+            @NotNull Class<?> clazz, @NotNull String methodName, @NotNull Class<?> @NotNull ... parameterTypes) {
+        while (clazz != Object.class) {
+            for (Method method : clazz.getDeclaredMethods()) {
+                if (method.getName().equals(methodName) && method.getParameterTypes().length == parameterTypes.length) {
+                    boolean match = true;
+                    // exact match
+                    for (int i = 0; i < parameterTypes.length; i++) {
+                        if (method.getParameterTypes()[i] != parameterTypes[i]) {
+                            match = false;
+                            break;
+                        }
+                    }
+                    // normal match, find an adaptable method, which args are adaptable
+                    if (!match) {
+                        match = true;
+                        for (int i = 0; i < parameterTypes.length; i++) {
+                            if (!method.getParameterTypes()[i].isAssignableFrom(parameterTypes[i])) {
+                                match = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (match) {
+                        return method;
+                    }
+                }
+            }
+            clazz = clazz.getSuperclass();
+        }
+        return null;
+    }
+
+    public static @Nullable Field getField(@NotNull Class<?> clazz, @NotNull String fieldName) {
         while (clazz != Object.class) {
             for (Field field : clazz.getDeclaredFields()) {
                 if (field.getName().equals(fieldName)) {
@@ -65,7 +168,32 @@ public class ReflectionUtil {
         return null;
     }
 
-    public static @Nullable Object getValue(Object object, String fieldName) {
+    public static @Nullable Class<?> getClass(@NotNull Class<?> clazz, @NotNull String className) {
+        while (clazz != Object.class) {
+            if (clazz.getSimpleName().equals(className)) {
+                return clazz;
+            }
+            clazz = clazz.getSuperclass();
+        }
+        return null;
+    }
+
+    public static <T> @Nullable T getValue(@NotNull Object object, @NotNull String fieldName, @NotNull Class<T> cast) {
+        try {
+            Field field = getField(object.getClass(), fieldName);
+            if (field != null) {
+                field.setAccessible(true);
+                return (T) field.get(object);
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return null;
+    }
+
+    public static @Nullable Object getValue(@NotNull Object object, @NotNull String fieldName) {
         try {
             Field field = getField(object.getClass(), fieldName);
             if (field != null) {
@@ -73,14 +201,15 @@ public class ReflectionUtil {
                 return field.get(object);
             }
         } catch (IllegalAccessException e) {
-            Debug.log(e);
+            e.printStackTrace();
             return null;
         }
 
         return null;
     }
 
-    public static <T, V> @Nullable T getProperty(Object o, Class<V> clazz, String fieldName) throws IllegalAccessException {
+    public static <T, V> @Nullable T getProperty(Object o, @NotNull Class<V> clazz, @NotNull String fieldName)
+            throws IllegalAccessException {
         Field field = getField(clazz, fieldName);
         if (field != null) {
             boolean b = field.canAccess(o);
@@ -93,12 +222,13 @@ public class ReflectionUtil {
         return null;
     }
 
-    public static @Nullable Pair<Field, Class<?>> getDeclaredFieldsRecursively(Class<?> clazz, String fieldName) {
+    public static @Nullable Pair<Field, Class<?>> getDeclaredFieldsRecursively(
+            @NotNull Class<?> clazz, @NotNull String fieldName) {
         try {
             Field field = clazz.getDeclaredField(fieldName);
             field.setAccessible(true);
             return new Pair<>(field, clazz);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             clazz = clazz.getSuperclass();
             if (clazz == null) {
                 return null;
@@ -106,5 +236,92 @@ public class ReflectionUtil {
                 return getDeclaredFieldsRecursively(clazz, fieldName);
             }
         }
+    }
+
+    public static @Nullable Constructor<?> getConstructor(
+            @NotNull Class<?> clazz, @Nullable Class<?> @Nullable ... parameterTypes) {
+        try {
+            return clazz.getDeclaredConstructor(parameterTypes);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Nullable
+    public static Object invokeMethod(
+            @NotNull Object object, @NotNull String methodName, @Nullable Object @Nullable ... args) {
+        try {
+            Method method;
+            if (args == null) {
+                method = getMethod(object.getClass(), methodName, 1);
+            } else {
+                boolean containsNull = false;
+                for (Object arg : args) {
+                    if (arg == null) {
+                        containsNull = true;
+                        break;
+                    }
+                }
+
+                if (containsNull) {
+                    method = getMethod(object.getClass(), methodName, args.length);
+                } else {
+                    method = getMethod(
+                            object.getClass(),
+                            methodName,
+                            Arrays.stream(args)
+                                    .filter(Objects::nonNull)
+                                    .map(Object::getClass)
+                                    .toArray(Class[]::new));
+                }
+            }
+
+            if (method != null) {
+                method.setAccessible(true);
+                return method.invoke(object, args);
+            }
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Nullable
+    public static Object invokeStaticMethod(
+            @NotNull Class<?> clazz, @NotNull String methodName, @Nullable Object @Nullable ... args) {
+        try {
+            Method method;
+            if (args == null) {
+                method = getMethod(clazz, methodName, 1);
+            } else {
+                boolean containsNull = false;
+                for (Object arg : args) {
+                    if (arg == null) {
+                        containsNull = true;
+                        break;
+                    }
+                }
+
+                if (containsNull) {
+                    method = getMethod(clazz, methodName, args.length);
+                } else {
+                    method = getMethod(
+                            clazz,
+                            methodName,
+                            Arrays.stream(args)
+                                    .filter(Objects::nonNull)
+                                    .map(Object::getClass)
+                                    .toArray(Class[]::new));
+                }
+            }
+            if (method != null) {
+                method.setAccessible(true);
+                return method.invoke(null, args);
+            }
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

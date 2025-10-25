@@ -10,6 +10,10 @@ import org.jspecify.annotations.NullMarked;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * @author balugaq
+ * @since 1.0
+ */
 @NullMarked
 public interface ItemProvider {
     List<ItemProvider> PROVIDERS = new CopyOnWriteArrayList<>();

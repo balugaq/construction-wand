@@ -18,6 +18,10 @@ import org.jspecify.annotations.NullMarked;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author balugaq
+ * @since 1.0
+ */
 @SuppressWarnings("deprecation")
 @NullMarked
 public class WandModeSwitchListener implements Listener {

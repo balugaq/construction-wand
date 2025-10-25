@@ -16,6 +16,10 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jspecify.annotations.NullMarked;
 
+/**
+ * @author balugaq
+ * @since 1.0
+ */
 @NullMarked
 public class FillWandSUITask extends BukkitRunnable {
     @Getter
