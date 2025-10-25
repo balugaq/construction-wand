@@ -1,5 +1,6 @@
 package com.balugaq.constructionwand.api.providers;
 
+import com.balugaq.constructionwand.core.managers.ConfigManager;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -17,7 +18,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @NullMarked
 public interface ItemProvider {
     List<ItemProvider> PROVIDERS = new CopyOnWriteArrayList<>();
-    int MAX_AMOUNT = 40960;
+    int MAX_AMOUNT = ConfigManager.modificationBlockLimit();
 
     /**
      * Register an item provider, be used when player uses filling wand / building wand
@@ -51,7 +52,7 @@ public interface ItemProvider {
 
     /**
      * Consume items when player uses filling wand / building wand
-     * Call `player.updateInventory()` after calling this method.
+     * Call {@link Player#updateInventory()} after calling this method.
      *
      * @param player   The player
      * @param material The item material, item must be a pure vanilla item.

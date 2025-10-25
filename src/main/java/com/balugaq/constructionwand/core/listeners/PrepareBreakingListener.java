@@ -38,11 +38,11 @@ import java.util.UUID;
  */
 @NullMarked
 public class PrepareBreakingListener implements Listener {
-    private static final ModelCuboid border = new ModelCuboid()
+    private static final ModelCuboid BORDER = new ModelCuboid()
             .material(Material.RED_STAINED_GLASS)
             .scale(0.9F, 0.9F, 0.9F);
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPrepareBreaking(PrepareBreakingEvent event) {
         if (!ConfigManager.displayProjection()) {
             return;
@@ -107,7 +107,7 @@ public class PrepareBreakingListener implements Listener {
         for (Location location : sortedLocations) {
             String ls = location.getBlockX() + "_" + location.getBlockY() + "_" + location.getBlockZ();
             Location displayLocation = location.clone().add(vector);
-            displayGroup.addDisplay("b" + ls, border.build(displayLocation));
+            displayGroup.addDisplay("b" + ls, BORDER.build(displayLocation));
         }
 
         UUID uuid = player.getUniqueId();

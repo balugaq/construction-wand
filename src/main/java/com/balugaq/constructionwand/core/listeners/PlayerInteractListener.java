@@ -25,8 +25,7 @@ import org.jspecify.annotations.NullMarked;
  */
 @NullMarked
 public class PlayerInteractListener implements Listener {
-
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         ItemStack itemInMainHand = player.getInventory().getItemInMainHand();

@@ -1,10 +1,9 @@
-auto-update: false
 display-projection: true
 debug: false
 tasks:
   block-preview:
-    period: 1 # gt
+    period: 1 # game tick
   displays-clear:
-    period: 6000 # gt
+    period: 6000 # game tick
   fill-wand-sui:
-    period: 10 # gt
+    period: 10 # game tick

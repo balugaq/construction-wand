@@ -25,7 +25,7 @@ import java.util.List;
 @SuppressWarnings("deprecation")
 @NullMarked
 public class WandModeSwitchListener implements Listener {
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onWandModeSwitch(PlayerSwapHandItemsEvent event) {
         Player player = event.getPlayer();
         ItemStack itemInOffHand = event.getOffHandItem();

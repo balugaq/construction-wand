@@ -31,13 +31,13 @@ import java.util.UUID;
  */
 @NullMarked
 public class PrepareBuildingListener implements Listener {
-    private static final ModelCuboid blockBase = new ModelCuboid()
+    private static final ModelCuboid BLOCK_BASE = new ModelCuboid()
             .scale(0.6F, 0.6F, 0.6F);
-    private static final ModelCuboid border = new ModelCuboid()
+    private static final ModelCuboid BORDER = new ModelCuboid()
             .material(Material.LIGHT_GRAY_STAINED_GLASS)
             .scale(0.7F, 0.7F, 0.7F);
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPrepareBuilding(PrepareBuildingEvent event) {
         if (!ConfigManager.displayProjection()) {
             return;
@@ -82,8 +82,8 @@ public class PrepareBuildingListener implements Listener {
         for (Location location : showingBlocks) {
             String ls = location.getBlockX() + "_" + location.getBlockY() + "_" + location.getBlockZ();
             Location displayLocation = location.clone().add(0.5, 0.5, 0.5);
-            displayGroup.addDisplay("m" + ls, blockBase.material(material).build(displayLocation));
-            displayGroup.addDisplay("b" + ls, border.build(displayLocation));
+            displayGroup.addDisplay("m" + ls, BLOCK_BASE.material(material).build(displayLocation));
+            displayGroup.addDisplay("b" + ls, BORDER.build(displayLocation));
         }
 
         displayGroup.getDisplays().forEach((name, display) -> {

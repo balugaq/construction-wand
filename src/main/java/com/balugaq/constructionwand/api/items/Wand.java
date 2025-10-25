@@ -4,6 +4,7 @@ import io.github.pylonmc.pylon.core.config.Settings;
 import io.github.pylonmc.pylon.core.config.adapter.ConfigAdapter;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,8 +13,9 @@ import java.util.Map;
  * @author balugaq
  * @since 1.0
  */
+@NullMarked
 public interface Wand extends Keyed {
-    Map<NamespacedKey, Map<String, Object>> cache = new HashMap<>();
+    Map<NamespacedKey, Map<String, Object>> CACHE = new HashMap<>();
 
     boolean isBlockStrict();
 
@@ -23,16 +25,16 @@ public interface Wand extends Keyed {
 
     default <T> T getOrThrow(String key, ConfigAdapter<T> adapter) {
         NamespacedKey ik = getKey();
-        if (!cache.containsKey(ik)) {
-            cache.put(ik, new HashMap<>());
+        if (!CACHE.containsKey(ik)) {
+            CACHE.put(ik, new HashMap<>());
         }
 
-        if (cache.get(ik).containsKey(key)) {
-            return (T) cache.get(ik).get(key);
+        if (CACHE.get(ik).containsKey(key)) {
+            return (T) CACHE.get(ik).get(key);
         }
 
         T v = Settings.get(ik).getOrThrow(key, adapter);
-        cache.get(ik).put(key, v);
+        CACHE.get(ik).put(key, v);
         return v;
     }
 }
