@@ -14,7 +14,7 @@ constructionwand:building-wand-rare:
     - " AI"
     - "S  "
   key:
-    A: constructionwand:construction-wand-common
+    A: constructionwand:building-wand-common
     I: minecraft:iron_ingot
     S: minecraft:stick
   result: constructionwand:building-wand-rare
@@ -25,7 +25,7 @@ constructionwand:building-wand-epic:
     - " AG"
     - "S  "
   key:
-    A: constructionwand:construction-wand-rare
+    A: constructionwand:building-wand-rare
     G: minecraft:gold_ingot
     S: minecraft:stick
   result: constructionwand:building-wand-epic
@@ -46,7 +46,7 @@ constructionwand:building-wand-block-strict-rare:
     - "IA "
     - "  S"
   key:
-    A: constructionwand:construction-wand-block-strict-common
+    A: constructionwand:building-wand-block-strict-common
     I: minecraft:iron_ingot
     S: minecraft:stick
   result: constructionwand:building-wand-block-strict-rare
@@ -57,7 +57,7 @@ constructionwand:building-wand-block-strict-epic:
     - "GA "
     - "  S"
   key:
-    A: constructionwand:construction-wand-block-strict-rare
+    A: constructionwand:building-wand-block-strict-rare
     G: minecraft:gold_ingot
     S: minecraft:stick
   result: constructionwand:building-wand-block-strict-epic

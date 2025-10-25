@@ -37,7 +37,7 @@ public class PlayerInventoryItemProvider implements ItemProvider {
     @Range(from = 0, to = Integer.MAX_VALUE)
     public int getAmount(Player player, Material material, @Range(from = 1, to = Integer.MAX_VALUE) int requireAmount) {
         if (player.getGameMode() == GameMode.CREATIVE) {
-            return MAX_AMOUNT;
+            return MODIFICATION_BLOCK_LIMIT;
         }
 
         int existing = 0;

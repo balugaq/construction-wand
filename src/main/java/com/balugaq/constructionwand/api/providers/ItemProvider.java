@@ -2,6 +2,7 @@ package com.balugaq.constructionwand.api.providers;
 
 import com.balugaq.constructionwand.core.managers.ConfigManager;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -18,7 +19,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @NullMarked
 public interface ItemProvider {
     List<ItemProvider> PROVIDERS = new CopyOnWriteArrayList<>();
-    int MAX_AMOUNT = ConfigManager.modificationBlockLimit();
+    int MODIFICATION_BLOCK_LIMIT = ConfigManager.modificationBlockLimit();
 
     /**
      * Register an item provider, be used when player uses filling wand / building wand
@@ -30,7 +31,8 @@ public interface ItemProvider {
     }
 
     /**
-     * Counts the amount of items the player has
+     * Counts the amount of items the player has,
+     * If the player is in creative mode, then it will return {@link #MODIFICATION_BLOCK_LIMIT}
      *
      * @param player        The player
      * @param material      The item material, item must be a pure vanilla item.
@@ -38,6 +40,8 @@ public interface ItemProvider {
      * @return The amount of items the player has
      */
     static @Range(from = 0, to = Integer.MAX_VALUE) int getItemAmount(Player player, Material material, @Range(from = 1, to = Integer.MAX_VALUE) int requireAmount) {
+        if (player.getGameMode() == GameMode.CREATIVE) return MODIFICATION_BLOCK_LIMIT;
+
         int total = 0;
         for (ItemProvider provider : PROVIDERS) {
             int got = provider.getAmount(player, material, requireAmount);

@@ -2,6 +2,7 @@ package com.balugaq.constructionwand.core.listeners;
 
 import com.balugaq.constructionwand.api.events.PrepareBuildingEvent;
 import com.balugaq.constructionwand.api.items.BuildingWand;
+import com.balugaq.constructionwand.api.providers.ItemProvider;
 import com.balugaq.constructionwand.core.managers.ConfigManager;
 import com.balugaq.constructionwand.implementation.ConstructionWandPlugin;
 import com.balugaq.constructionwand.utils.Debug;
@@ -55,25 +56,7 @@ public class PrepareBuildingListener implements Listener {
             return;
         }
         Material material = lookingAtBlock.getType();
-        int playerHas = 0;
-        if (player.getGameMode() == GameMode.CREATIVE) {
-            playerHas = 4096;
-        } else {
-            for (ItemStack itemStack : player.getInventory().getStorageContents()) {
-                if (itemStack == null || itemStack.getType() == Material.AIR) {
-                    continue;
-                }
-
-                if (itemStack.getType() == material) {
-                    int count = itemStack.getAmount();
-                    playerHas += count;
-                }
-
-                if (playerHas >= limitBlocks) {
-                    break;
-                }
-            }
-        }
+        int playerHas = ItemProvider.getItemAmount(player, material, limitBlocks);
 
         Set<Location> showingBlocks = WandUtil.getBuildingLocations(player, Math.min(limitBlocks, playerHas), WandUtil.getAxis(player.getInventory().getItemInMainHand()), buildingWand.isBlockStrict());
         DisplayGroup displayGroup = new DisplayGroup(player.getLocation(), 0.0F, 0.0F);

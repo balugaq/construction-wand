@@ -402,7 +402,7 @@ public class WandUtil {
             return -1;
         }
 
-        int amount = ItemProvider.getItemAmount(player, material, ItemProvider.MAX_AMOUNT);
+        int amount = ItemProvider.getItemAmount(player, material, ItemProvider.MODIFICATION_BLOCK_LIMIT);
         AtomicInteger filled = new AtomicInteger(0);
         WorldUtils.doWorldEdit(loc1, loc2, location -> {
             if (filled.get() >= amount) {
