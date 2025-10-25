@@ -15,39 +15,44 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+/**
+ * @author balugaq
+ * @since 1.0
+ */
 @Getter
 @NullMarked
 public class ConfigManager implements IManager {
+    public static final String CONFIG_FILE_NAME = "config.yml";
     private final JavaPlugin plugin;
-    private final boolean autoUpdate;
     private final boolean displayProjection;
     private final boolean debug;
     private final int blockPreviewTaskPeriod;
     private final int displaysClearTaskPeriod;
     private final int fillWandSUITaskPeriod;
+    private final int modificationBlockLimit;
 
     public ConfigManager(JavaPlugin plugin) {
         this.plugin = plugin;
         FileConfiguration config = plugin.getConfig();
-        autoUpdate = config.getBoolean("auto-update");
         displayProjection = config.getBoolean("display-projection");
         debug = config.getBoolean("debug");
-        blockPreviewTaskPeriod = config.getInt("tasks.block-preview.period");
-        displaysClearTaskPeriod = config.getInt("tasks.displays-clear.period");
-        fillWandSUITaskPeriod = config.getInt("tasks.fill-wand-sui.period");
-    }
-
-    public static boolean autoUpdate() {
-        return ConstructionWandPlugin.getInstance().getConfigManager().autoUpdate;
+        blockPreviewTaskPeriod = config.getInt("tasks.block-preview.period", 1);
+        displaysClearTaskPeriod = config.getInt("tasks.displays-clear.period", 6000);
+        fillWandSUITaskPeriod = config.getInt("tasks.fill-wand-sui.period", 10);
+        modificationBlockLimit = config.getInt("modification-block-limit", 40960);
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean displayProjection() {
-        return ConstructionWandPlugin.getInstance().getConfigManager().displayProjection;
+        return ConstructionWandPlugin.getInstance().getConfigManager().isDisplayProjection();
+    }
+
+    public static int modificationBlockLimit() {
+        return ConstructionWandPlugin.getInstance().getConfigManager().getModificationBlockLimit();
     }
 
     public static boolean debug() {
-        return ConstructionWandPlugin.getInstance().getConfigManager().debug;
+        return ConstructionWandPlugin.getInstance().getConfigManager().isDebug();
     }
 
     @Override
@@ -64,8 +69,8 @@ public class ConfigManager implements IManager {
     }
 
     private void setupDefaultConfig() {
-        final InputStream inputStream = plugin.getResource("config.yml");
-        final File existingFile = new File(plugin.getDataFolder(), "config.yml");
+        final InputStream inputStream = getPlugin().getResource(CONFIG_FILE_NAME);
+        final File existingFile = new File(getPlugin().getDataFolder(), CONFIG_FILE_NAME);
 
         if (inputStream == null) {
             return;

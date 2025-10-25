@@ -34,17 +34,21 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * @author balugaq
+ * @since 1.0
+ */
 @SuppressWarnings({"unused", "deprecation"})
 public class WandUtil {
-    public static final Set<BlockFace> validFaces = new HashSet<>();
+    public static final Set<BlockFace> VALID_FACES = new HashSet<>();
 
     static {
-        validFaces.add(BlockFace.NORTH);
-        validFaces.add(BlockFace.SOUTH);
-        validFaces.add(BlockFace.EAST);
-        validFaces.add(BlockFace.WEST);
-        validFaces.add(BlockFace.UP);
-        validFaces.add(BlockFace.DOWN);
+        VALID_FACES.add(BlockFace.NORTH);
+        VALID_FACES.add(BlockFace.SOUTH);
+        VALID_FACES.add(BlockFace.EAST);
+        VALID_FACES.add(BlockFace.WEST);
+        VALID_FACES.add(BlockFace.UP);
+        VALID_FACES.add(BlockFace.DOWN);
     }
 
 
@@ -129,7 +133,7 @@ public class WandUtil {
         Location lookingLocation = lookingBlock.getLocation();
         queue.offer(lookingLocation);
 
-        Set<BlockFace> faces = new HashSet<>(validFaces);
+        Set<BlockFace> faces = new HashSet<>(VALID_FACES);
         faces.remove(lookingFacing);
         faces.remove(lookingFacing.getOppositeFace());
         if (onlyAxis != null) {
@@ -398,7 +402,7 @@ public class WandUtil {
             return -1;
         }
 
-        int amount = ItemProvider.getItemAmount(player, material, ItemProvider.MAX_AMOUNT);
+        int amount = ItemProvider.getItemAmount(player, material, ItemProvider.MODIFICATION_BLOCK_LIMIT);
         AtomicInteger filled = new AtomicInteger(0);
         WorldUtils.doWorldEdit(loc1, loc2, location -> {
             if (filled.get() >= amount) {
@@ -656,6 +660,7 @@ public class WandUtil {
                         || material == Material.CRIMSON_FUNGUS
                         || material == Material.WARPED_FUNGUS
                         || material == Material.SHORT_GRASS
+                        || material == Material.FIREFLY_BUSH
                         || material == Material.FERN
                         || material == Material.DEAD_BUSH
                         || material == Material.DANDELION

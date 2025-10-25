@@ -14,6 +14,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * @author balugaq
+ * @since 1.0
+ */
 @Getter
 public class BreakingWand extends PylonItem implements Wand, PylonBlockInteractor {
     private final int limitBlocks = getOrThrow("limit-blocks", ConfigAdapter.INT);

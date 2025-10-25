@@ -4,6 +4,7 @@ import com.balugaq.constructionwand.core.listeners.PlayerInteractListener;
 import com.balugaq.constructionwand.core.listeners.PrepareBreakingListener;
 import com.balugaq.constructionwand.core.listeners.PrepareBuildingListener;
 import com.balugaq.constructionwand.core.listeners.WandModeSwitchListener;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -13,6 +14,11 @@ import org.jspecify.annotations.NullMarked;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author balugaq
+ * @since 1.0
+ */
+@Getter
 @NullMarked
 public class ListenerManager implements IManager {
     private final JavaPlugin plugin;

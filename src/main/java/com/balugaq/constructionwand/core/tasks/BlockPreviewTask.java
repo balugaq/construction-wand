@@ -21,9 +21,13 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.UUID;
 
+/**
+ * @author balugaq
+ * @since 1.0
+ */
+@Getter
 @NullMarked
 public class BlockPreviewTask extends BukkitRunnable {
-    @Getter
     private final DisplayManager manager;
 
     public BlockPreviewTask() {

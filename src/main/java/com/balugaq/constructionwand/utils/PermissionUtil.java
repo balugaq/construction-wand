@@ -10,6 +10,10 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.jspecify.annotations.NullMarked;
 
+/**
+ * @author balugaq
+ * @since 1.0
+ */
 @UtilityClass
 @NullMarked
 public class PermissionUtil {

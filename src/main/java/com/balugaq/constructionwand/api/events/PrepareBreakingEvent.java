@@ -8,6 +8,10 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.jspecify.annotations.NullMarked;
 
+/**
+ * @author balugaq
+ * @since 1.0
+ */
 @SuppressWarnings("unused")
 @Getter
 @NullMarked

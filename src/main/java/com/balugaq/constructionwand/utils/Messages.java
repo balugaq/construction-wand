@@ -11,49 +11,50 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * @author balugaq
+ * @since 1.0
+ */
 @NullMarked
 public class Messages {
     public static final String PREFIX = "pylon.constructionwand.message.";
 
-    public static final Component NOT_SET_LOC1 = Component.translatable(PREFIX + "common.not-set-loc1");
-    public static final Component NOT_SET_LOC2 = Component.translatable(PREFIX + "common.not-set-loc2");
+    public static final Component NOT_SET_START_LOCATION = Component.translatable(PREFIX + "common.not-set-start-location");
+    public static final Component NOT_SET_END_LOCATION = Component.translatable(PREFIX + "common.not-set-end-location");
     public static final Component NOT_SET_MATERIAL = Component.translatable(PREFIX + "common.not-set-material");
     public static final Component DIFFERENT_WORLDS = Component.translatable(PREFIX + "common.locations-in-different-worlds");
     public static final Component TOO_MANY_BLOCKS = Component.translatable(PREFIX + "common.too-many-blocks");
     public static final Component INVALID_BLOCK = Component.translatable(PREFIX + "common.invalid-block");
     public static final Component DISABLED_BLOCK = Component.translatable(PREFIX + "common.disabled-block");
 
-    // arg: %loc1% - Humanized loc: ex: "X:1 | Y:1 | Z:1"
-    public static final String KEY_SET_LOC1 = PREFIX + "common.set-loc1";
-    // arg: %loc2% - Humanized loc: ex: "X:1 | Y:1 | Z:1"
-    public static final String KEY_SET_LOC2 = PREFIX + "common.set-loc2";
+    // arg: %start-location% - Location
+    public static final String KEY_SET_START_LOCATION = PREFIX + "common.set-start-location";
+    // arg: %end-location% - Location
+    public static final String KEY_SET_END_LOCATION = PREFIX + "common.set-end-location";
 
-    // arg: %loc1% - Humanized loc
-    // arg: %total% - Total blocks selected: ex: "X:1 | Y:1 | Z:1 ( 10 Blocks )"
-    public static final String KEY_SET_LOC1_WITH_RANGE = PREFIX + "common.set-loc1-with-range";
-    // arg: %loc2% - Humanized loc
-    // arg: %total% - Total blocks selected: ex: "X:1 | Y:1 | Z:1 ( 10 Blocks )"
-    public static final String KEY_SET_LOC2_WITH_RANGE = PREFIX + "common.set-loc2-with-range";
-
-    // arg: %material% - Translated material: ex: "Dirt" in English, "泥土" in Chinese
-    public static final String KEY_SET_MATERIAL = PREFIX + "common.set-material";
-
-    // arg: %blocks% - The number of blocks filled: ex: "1"
-    public static final String KEY_FILLED_BLOCKS = PREFIX + "fill-wand.filled-blocks";
-
-    // arg: %loc1% - Humanized loc
-    public static final String KEY_LOC1 = PREFIX + "common.loc1";
-
-    // arg: %loc2% - Humanized loc
-    public static final String KEY_LOC2 = PREFIX + "common.loc2";
+    // arg: %start-location% - Location
+    // arg: %total% - Total selected blocks
+    public static final String KEY_SET_START_LOCATION_WITH_RANGE = PREFIX + "common.set-start-location-with-range";
+    // arg: %end-location% - Location
+    // arg: %total% - Total selected blocks
+    public static final String KEY_SET_END_LOCATION_WITH_RANGE = PREFIX + "common.set-end-location-with-range";
 
     // arg: %material% - Translated material
-    public static final String KEY_MATERIAL = PREFIX + "common.material";
+    public static final String KEY_SET_MATERIAL = PREFIX + "common.set-material";
+
+    // arg: %blocks% - The number of blocks filled
+    public static final String KEY_FILLED_BLOCKS = PREFIX + "fill-wand.filled-blocks";
+
+    // arg: %start-location% - Location
+    public static final String KEY_START_LOCATION = PREFIX + "common.start-location";
+
+    // arg: %end-location% - Location
+    public static final String KEY_END_LOCATION = PREFIX + "common.end-location";
 
     // arg: %material% - Translated material
     public static final String KEY_NO_ENOUGH_ITEMS = PREFIX + "common.no-enough-items";
 
-    public static Component argsWithed(@Nullable Locale locale, String translationKey, Object... args) {
+    public static Component arguments(@Nullable Locale locale, String translationKey, Object... args) {
         List<PylonArgument> pargs = new ArrayList<>();
         for (int i = 0; i <= args.length / 2; i += 2) {
             String argkey = args[i].toString();

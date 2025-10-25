@@ -1,0 +1,131 @@
+constructionwand:building-wand-common:
+  pattern:
+    - "  I"
+    - " S "
+    - "S  "
+  key:
+    I: minecraft:iron_ingot
+    S: minecraft:stick
+  result: constructionwand:building-wand-common
+
+constructionwand:building-wand-rare:
+  pattern:
+    - " II"
+    - " AI"
+    - "S  "
+  key:
+    A: constructionwand:building-wand-common
+    I: minecraft:iron_ingot
+    S: minecraft:stick
+  result: constructionwand:building-wand-rare
+
+constructionwand:building-wand-epic:
+  pattern:
+    - " GG"
+    - " AG"
+    - "S  "
+  key:
+    A: constructionwand:building-wand-rare
+    G: minecraft:gold_ingot
+    S: minecraft:stick
+  result: constructionwand:building-wand-epic
+
+constructionwand:building-wand-block-strict-common:
+  pattern:
+    - "I  "
+    - " S "
+    - "  S"
+  key:
+    I: minecraft:iron_ingot
+    S: minecraft:stick
+  result: constructionwand:building-wand-block-strict-common
+
+constructionwand:building-wand-block-strict-rare:
+  pattern:
+    - "II "
+    - "IA "
+    - "  S"
+  key:
+    A: constructionwand:building-wand-block-strict-common
+    I: minecraft:iron_ingot
+    S: minecraft:stick
+  result: constructionwand:building-wand-block-strict-rare
+
+constructionwand:building-wand-block-strict-epic:
+  pattern:
+    - "GG "
+    - "GA "
+    - "  S"
+  key:
+    A: constructionwand:building-wand-block-strict-rare
+    G: minecraft:gold_ingot
+    S: minecraft:stick
+  result: constructionwand:building-wand-block-strict-epic
+
+constructionwand:breaking-wand-common:
+  pattern:
+    - " OI"
+    - "OSO"
+    - "SO "
+  key:
+    O: minecraft:obsidian
+    I: minecraft:iron_ingot
+    S: minecraft:stick
+  result: constructionwand:breaking-wand-common
+
+constructionwand:breaking-wand-rare:
+  pattern:
+    - " OI"
+    - "OAO"
+    - "SO "
+  key:
+    A: constructionwand:breaking-wand-common
+    O: minecraft:obsidian
+    I: minecraft:iron_ingot
+    S: minecraft:stick
+  result: constructionwand:breaking-wand-rare
+
+constructionwand:breaking-wand-epic:
+  pattern:
+    - "OOI"
+    - "OAO"
+    - "SOO"
+  key:
+    A: constructionwand:breaking-wand-rare
+    O: minecraft:obsidian
+    I: minecraft:iron_ingot
+    S: minecraft:stick
+  result: constructionwand:breaking-wand-epic
+
+constructionwand:fill-wand-common:
+  pattern:
+    - "  D"
+    - " N "
+    - "S  "
+  key:
+    D: minecraft:diamond
+    N: minecraft:nether_star
+    S: minecraft:stick
+  result: constructionwand:fill-wand-common
+
+constructionwand:fill-wand-rare:
+  pattern:
+    - "  N"
+    - " A "
+    - "S  "
+  key:
+    A: constructionwand:fill-wand-common
+    N: minecraft:nether_star
+    S: minecraft:stick
+  result: constructionwand:fill-wand-rare
+
+constructionwand:fill-wand-epic:
+  pattern:
+    - "  N"
+    - " A "
+    - "S  "
+  key:
+    A: constructionwand:fill-wand-rare
+    N: minecraft:nether_star
+    S: minecraft:stick
+  result: constructionwand:fill-wand-epic

@@ -21,11 +21,11 @@ import org.jspecify.annotations.NullMarked;
  * So this listener is important for playing building wand.
  *
  * @author balugaq
+ * @since 1.0
  */
 @NullMarked
 public class PlayerInteractListener implements Listener {
-
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         ItemStack itemInMainHand = player.getInventory().getItemInMainHand();

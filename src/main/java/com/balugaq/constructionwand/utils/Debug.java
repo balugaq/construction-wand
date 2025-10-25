@@ -10,7 +10,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NullMarked;
 
-@SuppressWarnings("unused")
+import java.util.Arrays;
+
+/**
+ * @author balugaq
+ * @since 1.0
+ */
+@SuppressWarnings({"unused", "CallToPrintStackTrace", "deprecation"})
 @UtilityClass
 @NullMarked
 public class Debug {
@@ -45,19 +51,11 @@ public class Debug {
         }
     }
 
-    public static void sendMessage(@NotNull Player player, Object @NotNull ... objects) {
-        StringBuilder sb = new StringBuilder();
-        for (Object obj : objects) {
-            if (obj == null) {
-                sb.append("null");
-            } else {
-                sb.append(obj);
-            }
-        }
-        sendMessage(player, sb.toString());
+    public static void sendMessage(Player player, @Nullable Object... objects) {
+        sendMessage(player, Arrays.toString(objects));
     }
 
-    public static void sendMessage(@NotNull Player player, @Nullable Object object) {
+    public static void sendMessage(Player player, @Nullable Object object) {
         if (object == null) {
             sendMessage(player, "null");
             return;
@@ -79,34 +77,23 @@ public class Debug {
         Thread.dumpStack();
     }
 
-    public static void log(Object @NotNull ... object) {
-        StringBuilder sb = new StringBuilder();
-        for (Object obj : object) {
-            if (obj == null) {
-                sb.append("null");
-            } else {
-                sb.append(obj);
-            }
-        }
-
-        log(sb.toString());
+    public static void log(@Nullable Object @Nullable ... object) {
+        log(Arrays.toString(object));
     }
 
-    public static void log(@NotNull Object object) {
+    public static void log(Object object) {
         log(object.toString());
     }
 
-    public static void log(String @NotNull ... messages) {
-        for (String message : messages) {
-            log(message);
-        }
+    public static void log(@Nullable String @Nullable ... messages) {
+        log(Arrays.toString(messages));
     }
 
-    public static void log(@NotNull String message) {
+    public static void log(String message) {
         plugin.getLogger().info(ChatColor.translateAlternateColorCodes('&', message));
     }
 
-    public static void log(@NotNull Throwable e) {
+    public static void log(Throwable e) {
         e.printStackTrace();
     }
 

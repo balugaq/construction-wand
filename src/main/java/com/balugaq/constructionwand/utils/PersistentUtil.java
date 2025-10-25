@@ -12,6 +12,10 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NullMarked;
 
+/**
+ * @author balugaq
+ * @since 1.0
+ */
 @SuppressWarnings("unused")
 @UtilityClass
 @NullMarked

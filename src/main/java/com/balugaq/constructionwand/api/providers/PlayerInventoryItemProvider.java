@@ -9,6 +9,10 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Range;
 import org.jspecify.annotations.NullMarked;
 
+/**
+ * @author balugaq
+ * @since 1.0
+ */
 @NullMarked
 public class PlayerInventoryItemProvider implements ItemProvider {
     /**
@@ -33,7 +37,7 @@ public class PlayerInventoryItemProvider implements ItemProvider {
     @Range(from = 0, to = Integer.MAX_VALUE)
     public int getAmount(Player player, Material material, @Range(from = 1, to = Integer.MAX_VALUE) int requireAmount) {
         if (player.getGameMode() == GameMode.CREATIVE) {
-            return MAX_AMOUNT;
+            return MODIFICATION_BLOCK_LIMIT;
         }
 
         int existing = 0;

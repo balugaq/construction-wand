@@ -1,19 +1,25 @@
 package com.balugaq.constructionwand.api.providers;
 
 import com.balugaq.constructionwand.implementation.ConstructionWandPlugin;
-import com.destroystokyo.paper.MaterialTags;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ItemContainerContents;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Range;
 import org.jspecify.annotations.NullMarked;
 
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author balugaq
+ * @since 1.0
+ */
+@SuppressWarnings("DuplicatedCode")
 @NullMarked
 public class ShulkerBoxItemProvider implements ItemProvider {
     /**
@@ -39,7 +45,7 @@ public class ShulkerBoxItemProvider implements ItemProvider {
     @Range(from = 0, to = Integer.MAX_VALUE)
     public int getAmount(Player player, Material material, @Range(from = 1, to = Integer.MAX_VALUE) int requireAmount) {
         if (player.getGameMode() == GameMode.CREATIVE) {
-            return MAX_AMOUNT;
+            return MODIFICATION_BLOCK_LIMIT;
         }
 
         int existing = 0;
@@ -49,7 +55,7 @@ public class ShulkerBoxItemProvider implements ItemProvider {
                 continue;
             }
 
-            if (!MaterialTags.SHULKER_BOXES.isTagged(itemStack.getType())) {
+            if (!Tag.SHULKER_BOXES.isTagged(itemStack.getType())) {
                 continue;
             }
 
@@ -59,7 +65,7 @@ public class ShulkerBoxItemProvider implements ItemProvider {
             }
 
             List<ItemStack> stacks = contents.contents();
-            if (stacks == null || stacks.isEmpty()) {
+            if (stacks.isEmpty()) {
                 continue;
             }
 
@@ -107,7 +113,7 @@ public class ShulkerBoxItemProvider implements ItemProvider {
                 continue;
             }
 
-            if (!MaterialTags.SHULKER_BOXES.isTagged(itemStack.getType())) {
+            if (!Tag.SHULKER_BOXES.isTagged(itemStack.getType())) {
                 continue;
             }
 
@@ -116,13 +122,13 @@ public class ShulkerBoxItemProvider implements ItemProvider {
                 continue;
             }
 
-            List<ItemStack> stacks = contents.contents();
-            if (stacks == null || stacks.isEmpty()) {
+            List<ItemStack> stacks = new ArrayList<>(contents.contents());
+            if (stacks.isEmpty()) {
                 continue;
             }
 
             for (ItemStack stack : stacks) {
-                if (stack == null || stack.getType() == Material.AIR) {
+                if (stack.getType() == Material.AIR) {
                     continue;
                 }
 

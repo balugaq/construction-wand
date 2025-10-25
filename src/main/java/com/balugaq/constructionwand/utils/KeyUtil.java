@@ -6,6 +6,10 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.Plugin;
 import org.jspecify.annotations.NullMarked;
 
+/**
+ * @author balugaq
+ * @since 1.0
+ */
 @SuppressWarnings("unused")
 @UtilityClass
 @NullMarked

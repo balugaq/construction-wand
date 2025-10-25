@@ -18,10 +18,14 @@ import org.jspecify.annotations.NullMarked;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author balugaq
+ * @since 1.0
+ */
 @SuppressWarnings("deprecation")
 @NullMarked
 public class WandModeSwitchListener implements Listener {
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onWandModeSwitch(PlayerSwapHandItemsEvent event) {
         Player player = event.getPlayer();
         ItemStack itemInOffHand = event.getOffHandItem();
@@ -36,7 +40,7 @@ public class WandModeSwitchListener implements Listener {
                     case X -> nextAxis = Axis.Y;
                     case Y -> nextAxis = Axis.Z;
                     case Z -> nextAxis = null;
-                    default -> nextAxis = null;
+                    default -> throw new AssertionError("Unknown axis: " + axis);
                 }
             }
 

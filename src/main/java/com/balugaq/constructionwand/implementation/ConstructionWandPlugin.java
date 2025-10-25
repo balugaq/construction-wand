@@ -18,6 +18,10 @@ import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Set;
 
+/**
+ * @author balugaq
+ * @since 1.0
+ */
 @SuppressWarnings({"unused", "NotNullFieldNotInitialized"})
 @NullMarked
 public class ConstructionWandPlugin extends JavaPlugin implements PylonAddon {
@@ -51,8 +55,8 @@ public class ConstructionWandPlugin extends JavaPlugin implements PylonAddon {
         configManager = new ConfigManager(this);
         configManager.setup();
 
-        ItemProvider.PROVIDERS.add(new PlayerInventoryItemProvider());
-        ItemProvider.PROVIDERS.add(new ShulkerBoxItemProvider());
+        ItemProvider.registerProvider(new PlayerInventoryItemProvider());
+        ItemProvider.registerProvider(new ShulkerBoxItemProvider());
 
         Debug.log("Loading display manager");
         displayManager = new DisplayManager(this);

@@ -17,6 +17,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * @author balugaq
+ * @since 1.0
+ */
 @Getter
 @NullMarked
 public class DisplayManager implements IManager {
