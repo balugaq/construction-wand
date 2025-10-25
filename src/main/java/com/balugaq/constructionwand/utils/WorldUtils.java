@@ -19,7 +19,7 @@ import java.util.function.Consumer;
  * @since 1.0
  */
 @ApiStatus.Experimental
-@SuppressWarnings({"unused", "SequencedCollectionMethodCanBeUsed", "DataFlowIssue"})
+@SuppressWarnings({"unused", "SequencedCollectionMethodCanBeUsed", "DataFlowIssue", "DuplicatedCode"})
 @NullMarked
 public class WorldUtils {
     protected static @Nullable Class<?> craftBlockStateClass;

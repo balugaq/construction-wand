@@ -52,9 +52,6 @@ public class Messages {
     public static final String KEY_END_LOCATION = PREFIX + "common.end-location";
 
     // arg: %material% - Translated material
-    public static final String KEY_MATERIAL = PREFIX + "common.material";
-
-    // arg: %material% - Translated material
     public static final String KEY_NO_ENOUGH_ITEMS = PREFIX + "common.no-enough-items";
 
     public static Component arguments(@Nullable Locale locale, String translationKey, Object... args) {

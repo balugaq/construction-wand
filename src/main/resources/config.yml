@@ -1,5 +1,5 @@
+modification-block-limit: 40960
 display-projection: true
-debug: false
 tasks:
   block-preview:
     period: 1 # game tick
@@ -7,3 +7,4 @@ tasks:
     period: 6000 # game tick
   fill-wand-sui:
     period: 10 # game tick
+debug: false

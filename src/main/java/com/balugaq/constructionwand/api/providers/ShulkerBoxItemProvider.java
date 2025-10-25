@@ -1,11 +1,11 @@
 package com.balugaq.constructionwand.api.providers;
 
 import com.balugaq.constructionwand.implementation.ConstructionWandPlugin;
-import com.destroystokyo.paper.MaterialTags;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ItemContainerContents;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -18,6 +18,7 @@ import java.util.List;
  * @author balugaq
  * @since 1.0
  */
+@SuppressWarnings("DuplicatedCode")
 @NullMarked
 public class ShulkerBoxItemProvider implements ItemProvider {
     /**
@@ -53,7 +54,7 @@ public class ShulkerBoxItemProvider implements ItemProvider {
                 continue;
             }
 
-            if (!MaterialTags.SHULKER_BOXES.isTagged(itemStack.getType())) {
+            if (!Tag.SHULKER_BOXES.isTagged(itemStack.getType())) {
                 continue;
             }
 
@@ -63,7 +64,7 @@ public class ShulkerBoxItemProvider implements ItemProvider {
             }
 
             List<ItemStack> stacks = contents.contents();
-            if (stacks == null || stacks.isEmpty()) {
+            if (stacks.isEmpty()) {
                 continue;
             }
 
@@ -111,7 +112,7 @@ public class ShulkerBoxItemProvider implements ItemProvider {
                 continue;
             }
 
-            if (!MaterialTags.SHULKER_BOXES.isTagged(itemStack.getType())) {
+            if (!Tag.SHULKER_BOXES.isTagged(itemStack.getType())) {
                 continue;
             }
 
@@ -121,12 +122,12 @@ public class ShulkerBoxItemProvider implements ItemProvider {
             }
 
             List<ItemStack> stacks = contents.contents();
-            if (stacks == null || stacks.isEmpty()) {
+            if (stacks.isEmpty()) {
                 continue;
             }
 
             for (ItemStack stack : stacks) {
-                if (stack == null || stack.getType() == Material.AIR) {
+                if (stack.getType() == Material.AIR) {
                     continue;
                 }
 

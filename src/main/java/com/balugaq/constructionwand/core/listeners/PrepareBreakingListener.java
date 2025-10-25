@@ -2,7 +2,6 @@ package com.balugaq.constructionwand.core.listeners;
 
 import com.balugaq.constructionwand.api.events.PrepareBreakingEvent;
 import com.balugaq.constructionwand.api.items.BreakingWand;
-import com.balugaq.constructionwand.api.providers.ItemProvider;
 import com.balugaq.constructionwand.core.managers.ConfigManager;
 import com.balugaq.constructionwand.implementation.ConstructionWandPlugin;
 import com.balugaq.constructionwand.utils.Debug;
@@ -20,7 +19,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
-import org.jetbrains.annotations.Range;
 import org.jspecify.annotations.NullMarked;
 import org.metamechanists.displaymodellib.models.components.ModelCuboid;
 
@@ -36,6 +34,7 @@ import java.util.UUID;
  * @author balugaq
  * @since 1.0
  */
+@SuppressWarnings("DuplicatedCode")
 @NullMarked
 public class PrepareBreakingListener implements Listener {
     private static final ModelCuboid BORDER = new ModelCuboid()
@@ -57,7 +56,7 @@ public class PrepareBreakingListener implements Listener {
         showBreakingBlocksFor(player, event.getLookingAtBlock(), breakingWand.getLimitBlocks(), breakingWand);
     }
 
-    private void showBreakingBlocksFor(Player player, Block lookingAtBlock, @Range(from = 1, to = ItemProvider.MAX_AMOUNT) int limitBlocks, BreakingWand breakingWand) {
+    private void showBreakingBlocksFor(Player player, Block lookingAtBlock, int limitBlocks, BreakingWand breakingWand) {
         if (!player.isOp() && !PermissionUtil.canBreakBlock(player, lookingAtBlock)) {
             return;
         }

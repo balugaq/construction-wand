@@ -51,7 +51,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
     }
 
     @SuppressWarnings("UnstableApiUsage")
-    public static void resolveWandLore(@NotNull Player player, @NotNull NamespacedKey key, @NotNull ItemStack wand) {
+    public static void resolveWandLore(@NotNull Player player, @NotNull ItemStack wand) {
         ItemLore.Builder lore = ItemLore.lore();
         lore.addLines(wand.lore().stream().limit(5).toList());
         PersistentDataContainerView view = wand.getPersistentDataContainer();
@@ -192,7 +192,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                     ));
                 }
                 PersistentUtil.set(wand, PersistentDataType.STRING, START_LOCATION_KEY, resolveLoc2str(location));
-                resolveWandLore(player, getKey(), wand);
+                resolveWandLore(player, wand);
                 return;
             }
 
@@ -217,7 +217,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                             humanizeMaterialName(player, material)
                     ));
                     PersistentUtil.set(wand, PersistentDataType.STRING, MATERIAL_KEY, resolveMaterial2str(material));
-                    resolveWandLore(player, getKey(), wand);
+                    resolveWandLore(player, wand);
                 } else {
                     // Set loc2
                     Location loc1 = resolveStr2Loc(PersistentUtil.get(wand, PersistentDataType.STRING, START_LOCATION_KEY));
@@ -239,7 +239,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                         ));
                     }
                     PersistentUtil.set(wand, PersistentDataType.STRING, END_LOCATION_KEY, resolveLoc2str(location));
-                    resolveWandLore(player, getKey(), wand);
+                    resolveWandLore(player, wand);
                 }
             }
         } else {
@@ -288,7 +288,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                         "blocks",
                         filled
                 ));
-                resolveWandLore(player, getKey(), wand);
+                resolveWandLore(player, wand);
             }
         }
     }

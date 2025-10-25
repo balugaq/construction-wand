@@ -13,6 +13,7 @@ import java.util.Map;
  * @author balugaq
  * @since 1.0
  */
+@SuppressWarnings("SameReturnValue")
 @NullMarked
 public interface Wand extends Keyed {
     Map<NamespacedKey, Map<String, Object>> CACHE = new HashMap<>();
@@ -23,6 +24,7 @@ public interface Wand extends Keyed {
 
     int getLimitBlocks();
 
+    @SuppressWarnings("unchecked")
     default <T> T getOrThrow(String key, ConfigAdapter<T> adapter) {
         NamespacedKey ik = getKey();
         if (!CACHE.containsKey(ik)) {

@@ -67,6 +67,7 @@ public class ParticleUtil {
         }
     }
 
+    @SuppressWarnings("ExtractMethodRecommender")
     public static void drawRegionOutline(Plugin plugin, Particle particle, long interval, Location corner1, Location corner2) {
         World world = corner1.getWorld();
         if (world == null || corner1.getWorld() != corner2.getWorld()) {

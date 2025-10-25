@@ -36,10 +36,10 @@ public class ConfigManager implements IManager {
         FileConfiguration config = plugin.getConfig();
         displayProjection = config.getBoolean("display-projection");
         debug = config.getBoolean("debug");
-        blockPreviewTaskPeriod = config.getInt("tasks.block-preview.period");
-        displaysClearTaskPeriod = config.getInt("tasks.displays-clear.period");
-        fillWandSUITaskPeriod = config.getInt("tasks.fill-wand-sui.period");
-        modificationBlockLimit = config.getInt("modification-block-limit");
+        blockPreviewTaskPeriod = config.getInt("tasks.block-preview.period", 1);
+        displaysClearTaskPeriod = config.getInt("tasks.displays-clear.period", 6000);
+        fillWandSUITaskPeriod = config.getInt("tasks.fill-wand-sui.period", 10);
+        modificationBlockLimit = config.getInt("modification-block-limit", 40960);
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")

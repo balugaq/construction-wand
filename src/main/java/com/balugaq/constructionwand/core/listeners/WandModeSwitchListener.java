@@ -40,7 +40,7 @@ public class WandModeSwitchListener implements Listener {
                     case X -> nextAxis = Axis.Y;
                     case Y -> nextAxis = Axis.Z;
                     case Z -> nextAxis = null;
-                    default -> nextAxis = null;
+                    default -> throw new AssertionError("Unknown axis: " + axis);
                 }
             }
 

@@ -8,12 +8,9 @@ import io.github.pylonmc.pylon.core.content.guide.PylonGuide;
 import io.github.pylonmc.pylon.core.guide.pages.base.SimpleStaticGuidePage;
 import io.github.pylonmc.pylon.core.item.PylonItem;
 import io.github.pylonmc.pylon.core.item.builder.ItemStackBuilder;
-import io.github.pylonmc.pylon.core.recipe.RecipeType;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.recipe.CraftingBookCategory;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NullMarked;
 
@@ -23,7 +20,7 @@ import org.jspecify.annotations.NullMarked;
  */
 @NullMarked
 public class WandSetup implements IManager {
-    public static SimpleStaticGuidePage MAIN;
+    public static final SimpleStaticGuidePage MAIN;
 
     static {
         MAIN = new SimpleStaticGuidePage(key("construction-wand"), Material.BLAZE_ROD);
@@ -105,7 +102,7 @@ public class WandSetup implements IManager {
                 key("building-wand-block-strict-epic"),
                 Material.DIAMOND_SWORD
         );
-        
+
         registerBuildingWand(
                 key("building-wand-cheat"),
                 Material.NETHERITE_SWORD
@@ -130,7 +127,7 @@ public class WandSetup implements IManager {
                 key("breaking-wand-epic"),
                 Material.GOLDEN_SWORD
         );
-        
+
         registerBreakingWand(
                 key("breaking-wand-cheat"),
                 Material.NETHERITE_SWORD
@@ -150,7 +147,7 @@ public class WandSetup implements IManager {
                 key("fill-wand-epic"),
                 Material.NETHERITE_SWORD
         );
-        
+
         registerFillWand(
                 key("fill-wand-cheat"),
                 Material.NETHERITE_SWORD

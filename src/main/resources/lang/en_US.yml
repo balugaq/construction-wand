@@ -131,6 +131,5 @@ message:
     no-enough-items: "<red>No enough %material%!"
     start-location: "<attr>Start location:</attr> %start-location%"
     end-location: "<attr>End location:</attr> %end-location%"
-    material: "<attr>Material:</attr> %material%"
   fill-wand:
     filled-blocks: "<green>Filled %blocks% blocks"
