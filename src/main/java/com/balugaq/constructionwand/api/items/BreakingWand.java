@@ -23,6 +23,7 @@ public class BreakingWand extends PylonItem implements Wand, PylonBlockInteracto
     private final int limitBlocks = getOrThrow("limit-blocks", ConfigAdapter.INT);
     private final boolean blockStrict = getOrThrow("block-strict", ConfigAdapter.BOOLEAN);
     private final boolean opOnly = getOrThrow("op-only", ConfigAdapter.BOOLEAN);
+    private final boolean allowHandlePylonBlock = getOrThrow("allow-handle-pylon-block", ConfigAdapter.BOOLEAN);
 
     public BreakingWand(@NotNull ItemStack stack) {
         super(stack);
@@ -34,7 +35,7 @@ public class BreakingWand extends PylonItem implements Wand, PylonBlockInteracto
             return;
         }
 
-        WandUtil.breakBlocks(ConstructionWandPlugin.getInstance(), event, isDisabled(), this.limitBlocks, this.blockStrict, this.opOnly);
+        WandUtil.breakBlocks(ConstructionWandPlugin.getInstance(), event.getHand(), event.getPlayer(), this);
     }
 
     @Override

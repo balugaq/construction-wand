@@ -29,19 +29,19 @@ public class PlayerInventoryItemProvider implements ItemProvider {
      * Counts the amount of items the player has
      *
      * @param player        The player
-     * @param material      The item material, item must be a pure vanilla item.
+     * @param target        The item
      * @param requireAmount The max amount to consume
      * @return The amount of items the player has
      */
     @Override
     @Range(from = 0, to = Integer.MAX_VALUE)
-    public int getAmount(Player player, Material material, @Range(from = 1, to = Integer.MAX_VALUE) int requireAmount) {
+    public int getAmount(Player player, ItemStack target, @Range(from = 1, to = Integer.MAX_VALUE) int requireAmount) {
         if (player.getGameMode() == GameMode.CREATIVE) {
             return MODIFICATION_BLOCK_LIMIT;
         }
 
         int existing = 0;
-        ItemStack target = new ItemStack(material, 1);
+        target = target.asOne();
         for (ItemStack itemStack : player.getInventory().getContents()) {
             if (itemStack == null || itemStack.getType() == Material.AIR) {
                 continue;
@@ -66,20 +66,20 @@ public class PlayerInventoryItemProvider implements ItemProvider {
      * Call `player.updateInventory()` after calling this method.
      *
      * @param player   The player
-     * @param material The item material, item must be a pure vanilla item.
+     * @param target   The item
      * @param amount   The amount to consume
      * @return The amount of items consumed
      */
     @SuppressWarnings("DuplicatedCode")
     @Override
     @Range(from = 0, to = Integer.MAX_VALUE)
-    public int consumeItem(Player player, Material material, @Range(from = 1, to = Integer.MAX_VALUE) int amount) {
+    public int consumeItem(Player player, ItemStack target, @Range(from = 1, to = Integer.MAX_VALUE) int amount) {
         if (player.getGameMode() == GameMode.CREATIVE) {
             return amount;
         }
 
         int total = 0;
-        ItemStack target = new ItemStack(material, 1);
+        target = target.asOne();
         for (ItemStack itemStack : player.getInventory().getContents()) {
             if (itemStack == null || itemStack.getType() == Material.AIR) {
                 continue;

@@ -66,8 +66,8 @@ public class PrepareBreakingListener implements Listener {
             return;
         }
 
-        Material material = lookingAtBlock.getType();
-        if (WandUtil.isMaterialDisabledToBreak(material)) {
+        ItemStack item = WandUtil.getItemType(breakingWand, lookingAtBlock);
+        if (WandUtil.isItemDisabledToBreak(item)) {
             return;
         }
 

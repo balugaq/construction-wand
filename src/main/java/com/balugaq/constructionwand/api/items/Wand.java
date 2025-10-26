@@ -22,7 +22,11 @@ public interface Wand extends Keyed {
 
     boolean isOpOnly();
 
+    boolean isDisabled();
+
     int getLimitBlocks();
+
+    boolean isAllowHandlePylonBlock();
 
     @SuppressWarnings("unchecked")
     default <T> T getOrThrow(String key, ConfigAdapter<T> adapter) {

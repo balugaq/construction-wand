@@ -21,7 +21,7 @@ public class Messages {
 
     public static final Component NOT_SET_START_LOCATION = Component.translatable(PREFIX + "common.not-set-start-location");
     public static final Component NOT_SET_END_LOCATION = Component.translatable(PREFIX + "common.not-set-end-location");
-    public static final Component NOT_SET_MATERIAL = Component.translatable(PREFIX + "common.not-set-material");
+    public static final Component NOT_SET_ITEM = Component.translatable(PREFIX + "common.not-set-material");
     public static final Component DIFFERENT_WORLDS = Component.translatable(PREFIX + "common.locations-in-different-worlds");
     public static final Component TOO_MANY_BLOCKS = Component.translatable(PREFIX + "common.too-many-blocks");
     public static final Component INVALID_BLOCK = Component.translatable(PREFIX + "common.invalid-block");
@@ -40,7 +40,7 @@ public class Messages {
     public static final String KEY_SET_END_LOCATION_WITH_RANGE = PREFIX + "common.set-end-location-with-range";
 
     // arg: %material% - Translated material
-    public static final String KEY_SET_MATERIAL = PREFIX + "common.set-material";
+    public static final String KEY_SET_ITEM = PREFIX + "common.set-material";
 
     // arg: %blocks% - The number of blocks filled
     public static final String KEY_FILLED_BLOCKS = PREFIX + "fill-wand.filled-blocks";

@@ -77,7 +77,7 @@ public class BlockPreviewTask extends BukkitRunnable {
                         continue;
                     }
 
-                    if (WandUtil.isMaterialDisabledToBuild(block.getType())) {
+                    if (WandUtil.isItemDisabledToBuild(WandUtil.getItemType(buildingWand, block))) {
                         continue;
                     }
 
@@ -90,7 +90,7 @@ public class BlockPreviewTask extends BukkitRunnable {
                         continue;
                     }
 
-                    if (WandUtil.isMaterialDisabledToBreak(block.getType())) {
+                    if (WandUtil.isItemDisabledToBreak(WandUtil.getItemType(breakingWand, block))) {
                         continue;
                     }
 
