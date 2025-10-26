@@ -9,7 +9,6 @@ import com.balugaq.constructionwand.utils.Debug;
 import com.balugaq.constructionwand.utils.PermissionUtil;
 import com.balugaq.constructionwand.utils.WandUtil;
 import dev.sefiraat.sefilib.entity.display.DisplayGroup;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -48,7 +47,7 @@ public class PrepareBuildingListener implements Listener {
         if (buildingWand.isOpOnly() && !player.isOp()) {
             return;
         }
-        showBuildingBlocksFor(player, event.getLookingAtBlock(), buildingWand.getLimitBlocks(), event.getBuildingWand());
+        showBuildingBlocksFor(player, event.getLookingAtBlock(), buildingWand.getHandleableBlocks(), event.getBuildingWand());
     }
 
     private void showBuildingBlocksFor(Player player, Block lookingAtBlock, int limitBlocks, BuildingWand buildingWand) {

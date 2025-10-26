@@ -4,6 +4,9 @@ import io.github.pylonmc.pylon.core.config.Settings;
 import io.github.pylonmc.pylon.core.config.adapter.ConfigAdapter;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Range;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.HashMap;
@@ -27,6 +30,24 @@ public interface Wand extends Keyed {
     int getLimitBlocks();
 
     boolean isAllowHandlePylonBlock();
+
+    @Range(from = -1, to = Integer.MAX_VALUE)
+    int getDurability();
+
+    ItemStack getStack();
+
+    int getCooldownTicks();
+
+    default int getHandleableBlocks() {
+        return Math.max(getLimitBlocks(), getDurability());
+    }
+
+    default void handleInteract(Player player, int blocks) {
+        getStack().damage(blocks, player);
+        if (getCooldownTicks() > 0) {
+            player.setCooldown(getStack(), getCooldownTicks());
+        }
+    }
 
     @SuppressWarnings("unchecked")
     default <T> T getOrThrow(String key, ConfigAdapter<T> adapter) {

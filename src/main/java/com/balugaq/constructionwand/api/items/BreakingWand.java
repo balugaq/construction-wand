@@ -6,11 +6,13 @@ import io.github.pylonmc.pylon.core.config.adapter.ConfigAdapter;
 import io.github.pylonmc.pylon.core.i18n.PylonArgument;
 import io.github.pylonmc.pylon.core.item.PylonItem;
 import io.github.pylonmc.pylon.core.item.base.PylonBlockInteractor;
+import io.github.pylonmc.pylon.core.util.gui.unit.UnitFormat;
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import lombok.Getter;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
@@ -18,19 +20,27 @@ import java.util.List;
  * @author balugaq
  * @since 1.0
  */
+@NullMarked
 @Getter
 public class BreakingWand extends PylonItem implements Wand, PylonBlockInteractor {
     private final int limitBlocks = getOrThrow("limit-blocks", ConfigAdapter.INT);
     private final boolean blockStrict = getOrThrow("block-strict", ConfigAdapter.BOOLEAN);
     private final boolean opOnly = getOrThrow("op-only", ConfigAdapter.BOOLEAN);
     private final boolean allowHandlePylonBlock = getOrThrow("allow-handle-pylon-block", ConfigAdapter.BOOLEAN);
+    private final int durability = getOrThrow("durability", ConfigAdapter.INT);
+    private final int cooldownTicks = getOrThrow("cooldown-ticks", ConfigAdapter.INT);
 
-    public BreakingWand(@NotNull ItemStack stack) {
+    public BreakingWand(ItemStack stack) {
         super(stack);
+        if (durability > 0) {
+            stack.setData(DataComponentTypes.MAX_DAMAGE, durability);
+        } else {
+            stack.unsetData(DataComponentTypes.MAX_DAMAGE);
+        }
     }
 
     @Override
-    public void onUsedToClickBlock(@NotNull PlayerInteractEvent event) {
+    public void onUsedToClickBlock(PlayerInteractEvent event) {
         if (event.getHand() != EquipmentSlot.HAND) {
             return;
         }
@@ -39,9 +49,9 @@ public class BreakingWand extends PylonItem implements Wand, PylonBlockInteracto
     }
 
     @Override
-    public @NotNull List<PylonArgument> getPlaceholders() {
+    public List<PylonArgument> getPlaceholders() {
         return List.of(
-                PylonArgument.of("range", getLimitBlocks())
+                PylonArgument.of("range", UnitFormat.BLOCKS.format(getLimitBlocks()))
         );
     }
 }

@@ -93,9 +93,9 @@ public class ShulkerBoxItemProvider implements ItemProvider {
      * Consume items when player uses filling wand / building wand
      * Call `player.updateInventory()` after calling this method.
      *
-     * @param player   The player
-     * @param target   The item
-     * @param amount   The amount to consume
+     * @param player The player
+     * @param target The item
+     * @param amount The amount to consume
      * @return The amount of items consumed
      */
     @SuppressWarnings("UnstableApiUsage")

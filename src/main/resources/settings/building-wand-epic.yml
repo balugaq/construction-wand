@@ -2,3 +2,4 @@ limit-blocks: 256
 block-strict: false
 op-only: false
 allow-handle-pylon-block: false
+durability: 6536

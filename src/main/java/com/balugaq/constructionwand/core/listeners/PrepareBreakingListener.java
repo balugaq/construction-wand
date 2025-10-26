@@ -53,7 +53,7 @@ public class PrepareBreakingListener implements Listener {
         if (breakingWand.isOpOnly() && !player.isOp()) {
             return;
         }
-        showBreakingBlocksFor(player, event.getLookingAtBlock(), breakingWand.getLimitBlocks(), breakingWand);
+        showBreakingBlocksFor(player, event.getLookingAtBlock(), breakingWand.getHandleableBlocks(), breakingWand);
     }
 
     private void showBreakingBlocksFor(Player player, Block lookingAtBlock, int limitBlocks, BreakingWand breakingWand) {

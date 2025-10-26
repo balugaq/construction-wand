@@ -248,7 +248,7 @@ public class WandUtil {
             return;
         }
 
-        int playerHas = ItemProvider.getItemAmount(player, itemInHand, wand.getLimitBlocks());
+        int playerHas = ItemProvider.getItemAmount(player, itemInHand, wand.getHandleableBlocks());
         if (playerHas == 0) {
             return;
         }
@@ -261,7 +261,7 @@ public class WandUtil {
         BlockFace lookingFacing = getBlockFaceAsCartesian(originalFacing);
 
         ItemStack wandItem = player.getInventory().getItemInMainHand();
-        Set<Location> buildingLocations = WandUtil.getBuildingLocations(player, Math.min(wand.getLimitBlocks(), playerHas), WandUtil.getAxis(wandItem), wand.isBlockStrict());
+        Set<Location> buildingLocations = WandUtil.getBuildingLocations(player, Math.min(wand.getHandleableBlocks(), playerHas), WandUtil.getAxis(wandItem), wand.isBlockStrict());
 
         int consumed = 0;
 
@@ -333,7 +333,7 @@ public class WandUtil {
         BlockFace lookingFacing = getBlockFaceAsCartesian(originalFacing);
         ItemStack wandItem = player.getInventory().getItemInMainHand();
 
-        Set<Location> rawLocations = WandUtil.getRawLocations(lookingAtBlock, lookingFacing, wand.getLimitBlocks(), getAxis(wandItem), wand.isBlockStrict(), true);
+        Set<Location> rawLocations = WandUtil.getRawLocations(lookingAtBlock, lookingFacing, wand.getHandleableBlocks(), getAxis(wandItem), wand.isBlockStrict(), true);
 
         World world = lookingLocation.getWorld();
         Map<Location, Double> distances = new HashMap<>();
@@ -350,7 +350,7 @@ public class WandUtil {
         Set<Location> result = new HashSet<>();
         AtomicInteger count = new AtomicInteger(0);
         sortedLocations.forEach(location -> {
-            if (count.incrementAndGet() > wand.getLimitBlocks()) {
+            if (count.incrementAndGet() > wand.getHandleableBlocks()) {
                 return;
             }
             result.add(location);

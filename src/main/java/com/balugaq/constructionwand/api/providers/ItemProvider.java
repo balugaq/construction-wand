@@ -58,9 +58,9 @@ public interface ItemProvider {
      * Consume items when player uses filling wand / building wand
      * Call {@link Player#updateInventory()} after calling this method.
      *
-     * @param player   The player
-     * @param target   The item
-     * @param amount   The amount to consume
+     * @param player The player
+     * @param target The item
+     * @param amount The amount to consume
      * @return The amount of items consumed
      */
     @CanIgnoreReturnValue
@@ -103,9 +103,9 @@ public interface ItemProvider {
     /**
      * Consume items when player uses filling wand / building wand
      *
-     * @param player   The player
-     * @param target        The item
-     * @param amount   The amount to consume
+     * @param player The player
+     * @param target The item
+     * @param amount The amount to consume
      * @return The amount of items consumed
      */
     @CanIgnoreReturnValue

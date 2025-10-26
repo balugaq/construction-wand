@@ -12,6 +12,7 @@ import io.github.pylonmc.pylon.core.item.PylonItem;
 import io.github.pylonmc.pylon.core.item.PylonItemSchema;
 import io.github.pylonmc.pylon.core.item.base.PylonInteractor;
 import io.github.pylonmc.pylon.core.registry.PylonRegistry;
+import io.github.pylonmc.pylon.core.util.gui.unit.UnitFormat;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ItemLore;
 import io.papermc.paper.persistence.PersistentDataContainerView;
@@ -31,8 +32,8 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
@@ -41,6 +42,7 @@ import java.util.List;
  * @since 1.0
  */
 @Getter
+@NullMarked
 public class FillWand extends PylonItem implements Wand, PylonInteractor {
     public static final NamespacedKey START_LOCATION_KEY = KeyUtil.newKey("start-location");
     public static final NamespacedKey END_LOCATION_KEY = KeyUtil.newKey("end-location");
@@ -48,13 +50,20 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
     private final int limitBlocks = getOrThrow("limit-blocks", ConfigAdapter.INT);
     private final boolean opOnly = getOrThrow("op-only", ConfigAdapter.BOOLEAN);
     private final boolean allowHandlePylonBlock = getOrThrow("allow-handle-pylon-block", ConfigAdapter.BOOLEAN);
+    private final int durability = getOrThrow("durability", ConfigAdapter.INT);
+    private final int cooldownTicks = getOrThrow("cooldown-ticks", ConfigAdapter.INT);
 
-    public FillWand(@NotNull ItemStack stack) {
+    public FillWand(ItemStack stack) {
         super(stack);
+        if (durability > 0) {
+            stack.setData(DataComponentTypes.MAX_DAMAGE, durability);
+        } else {
+            stack.unsetData(DataComponentTypes.MAX_DAMAGE);
+        }
     }
 
-    @SuppressWarnings("UnstableApiUsage")
-    public static void resolveWandLore(@NotNull Player player, @NotNull ItemStack wand) {
+    @SuppressWarnings({"UnstableApiUsage", "DataFlowIssue"})
+    public static void resolveWandLore(Player player, ItemStack wand) {
         ItemLore.Builder lore = ItemLore.lore();
         lore.addLines(wand.lore().stream().limit(5).toList());
         PersistentDataContainerView view = wand.getPersistentDataContainer();
@@ -89,6 +98,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
     }
 
     @Contract("null -> null")
+    @Nullable
     public static ItemStack resolveStr2item(@Nullable String str) {
         if (str == null) return null;
         if (str.startsWith("minecraft:")) {
@@ -106,6 +116,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
     }
 
     @Contract("null -> null; !null -> !null")
+    @Nullable
     public static String resolveItem2str(@Nullable ItemStack itemStack) {
         if (itemStack == null) {
             return null;
@@ -127,6 +138,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
     // str: world_name;x;y;z
     @SuppressWarnings("SequencedCollectionMethodCanBeUsed")
     @Contract("null -> null; !null -> !null")
+    @Nullable
     public static Location resolveStr2Loc(@Nullable String str) {
         if (str == null) return null;
 
@@ -147,18 +159,15 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
     }
 
     // str: world_name;x;y;z
-    @NotNull
-    public static String resolveLoc2str(@NotNull Location location) {
+    public static String resolveLoc2str(Location location) {
         return location.getWorld().getName() + ";" + location.getBlockX() + ";" + location.getBlockY() + ";" + location.getBlockZ();
     }
 
-    @NotNull
-    public static String humanizeLoc(@NotNull Location location) {
+    public static String humanizeLoc(Location location) {
         return "X: " + location.getBlockX() + " | Y: " + location.getBlockY() + " | Z: " + location.getBlockZ();
     }
 
-    @NotNull
-    public static Component humanizeItemName(@NotNull Player player, @NotNull ItemStack itemStack) {
+    public static Component humanizeItemName(Player player, ItemStack itemStack) {
         PylonItem item = PylonItem.fromStack(itemStack);
         if (item != null) {
             return GlobalTranslator.render(itemStack.displayName(), player.locale());
@@ -168,7 +177,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
     }
 
     @Override
-    public void onUsedToRightClick(@NotNull PlayerInteractEvent event) {
+    public void onUsedToRightClick(PlayerInteractEvent event) {
         if (isDisabled()) {
             return;
         }
@@ -297,7 +306,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
                     return;
                 }
 
-                if (WorldUtils.totalBlocks(startLocation, endLocation) > getLimitBlocks()) {
+                if (WorldUtils.totalBlocks(startLocation, endLocation) > getHandleableBlocks()) {
                     player.sendMessage(Messages.TOO_MANY_BLOCKS);
                     return;
                 }
@@ -329,9 +338,9 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
     }
 
     @Override
-    public @NotNull List<PylonArgument> getPlaceholders() {
+    public List<PylonArgument> getPlaceholders() {
         return List.of(
-                PylonArgument.of("range", getLimitBlocks())
+                PylonArgument.of("range", UnitFormat.BLOCKS.format(getLimitBlocks()))
         );
     }
 

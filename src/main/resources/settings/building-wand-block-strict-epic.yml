@@ -2,3 +2,5 @@ limit-blocks: 256
 block-strict: true
 op-only: false
 allow-handle-pylon-block: false
+durability: 6536
+cooldown-ticks: 0
