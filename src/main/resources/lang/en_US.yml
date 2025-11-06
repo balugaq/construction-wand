@@ -4,109 +4,109 @@ item:
   building-wand-common:
     name: "<green>Build Wand | <blue>Common"
     lore: |-
-      <gray>Right-click to place blocks
+      <gray><insn>Right click</insn> to place blocks
       <attr>Max Range:</attr> %range% Blocks
       <green>Selected area can be formed by any block
   building-wand-rare:
     name: "<green>Build Wand | <gold>Rare"
     lore: |-
-      <gray>Right-click to place blocks
+      <gray><insn>Right click</insn> to place blocks
       <attr>Max Range:</attr> %range% Blocks
       <green>Selected area can be formed by any block
   building-wand-epic:
     name: "<green>Build Wand | <yellow>Epic"
     lore: |-
-      <gray>Right-click to place blocks
+      <gray><insn>Right click</insn> to place blocks
       <attr>Max Range:</attr> %range% Blocks
       <green>Selected area can be formed by any block
   building-wand-block-strict-common:
     name: "<green>Build Wand | <blue>Common"
     lore: |-
-      <gray>Right-click to place blocks
+      <gray><insn>Right click</insn> to place blocks
       <attr>Max Range:</attr> %range% Blocks
       <red>Selected area can be formed only by one kind of block
   building-wand-block-strict-rare:
     name: "<green>Build Wand | <gold>Rare"
     lore: |-
-      <gray>Right-click to place blocks
+      <gray><insn>Right click</insn> to place blocks
       <attr>Max Range:</attr> %range% Blocks
       <red>Selected area can be formed only by one kind of block
   building-wand-block-strict-epic:
     name: "<green>Build Wand | <yellow>Epic"
     lore: |-
-      <gray>Right-click to place blocks
+      <gray><insn>Right click</insn> to place blocks
       <attr>Max Range:</attr> %range% Blocks
       <red>Selected area can be formed only by one kind of block
   building-wand-cheat:
     name: "<green>Build Wand | <dark_red>Cheat"
     lore: |-
-      <gray>Right-click to place blocks
+      <gray><insn>Right click</insn> to place blocks
       <attr>Max Range:</attr> %range% Blocks
       <green>Selected area can be formed by any block
       <red>OP only
   building-wand-block-strict-cheat:
     name: "<green>Build Wand | <dark_red>Cheat"
     lore: |-
-      <gray>Right-click to place blocks
+      <gray><insn>Right click</insn> to place blocks
       <attr>Max Range:</attr> %range% Blocks
       <red>Selected area can be formed only by one kind of block
       <red>OP only
   breaking-wand-common:
     name: "<red>Break Wand | <blue>Common"
     lore: |-
-      <gray>Right-click to break blocks
+      <gray><insn>Right click</insn> to break blocks
       <attr>Max Range:</attr> %range% Blocks
       <red>Selected area can be formed only by one kind of block
   breaking-wand-rare:
     name: "<red>Break Wand | <gold>Rare"
     lore: |-
-      <gray>Right-click to break blocks
+      <gray><insn>Right click</insn> to break blocks
       <attr>Max Range:</attr> %range% Blocks
       <red>Selected area can be formed only by one kind of block
   breaking-wand-epic:
     name: "<red>Break Wand | <yellow>Epic"
     lore: |-
-      <gray>Right-click to break blocks
+      <gray><insn>Right click</insn> to break blocks
       <attr>Max Range:</attr> %range% Blocks
       <red>Selected area can be formed only by one kind of block
   breaking-wand-cheat:
     name: "<red>Break Wand | <dark_red>Cheat"
     lore: |-
-      <gray>Right-click to break blocks
+      <gray><insn>Right click</insn> to break blocks
       <attr>Max Range:</attr> %range% Blocks
       <red>Selected area can be formed only by one kind of block
       <red>OP only
   fill-wand-common:
     name: "<red>Fill Wand | <blue>Common"
     lore: |-
-      <green>Left-click on block to set start location
-      <green>Right-click on block to set end location
-      <green>Shift+Right-click on block to set block to fill
-      <green>Right-click on air to fill blocks
+      <green><insn>Left click</insn> on block to set start location
+      <green><insn>Right click</insn> on block to set end location
+      <green><insn>Shift right click</insn> on block to set block to fill
+      <green><insn>Right click</insn> on air to fill blocks
       <attr>Max Range:</attr> %range% Blocks
   fill-wand-rare:
     name: "<red>Fill Wand | <gold>Rare"
     lore: |-
-      <green>Left-click on block to set start location
-      <green>Right-click on block to set end location
-      <green>Shift+Right-click on block to set block to fill
-      <green>Right-click on air to fill blocks
+      <green><insn>Left click</insn> on block to set start location
+      <green><insn>Right click</insn> on block to set end location
+      <green><insn>Shift right click</insn> on block to set block to fill
+      <green><insn>Right click</insn> on air to fill blocks
       <attr>Max Range:</attr> %range% Blocks
   fill-wand-epic:
     name: "<red>Fill Wand | <yellow>Epic"
     lore: |-
-      <green>Left-click on block to set start location
-      <green>Right-click on block to set end location
-      <green>Shift+Right-click on block to set block to fill
-      <green>Right-click on air to fill blocks
+      <green><insn>Left click</insn> on block to set start location
+      <green><insn>Right click</insn> on block to set end location
+      <green><insn>Shift right click</insn> on block to set block to fill
+      <green><insn>Right click</insn> on air to fill blocks
       <attr>Max Range:</attr> %range% Blocks
   fill-wand-cheat:
     name: "<red>Fill Wand | <dark_red>Cheat"
     lore: |-
-      <green>Left-click on block to set start location
-      <green>Right-click on block to set end location
-      <green>Shift+Right-click on block to set block to fill
-      <green>Right-click on air to fill blocks
+      <green><insn>Left click</insn> on block to set start location
+      <green><insn>Right click</insn> on block to set end location
+      <green><insn>Shift right click</insn> on block to set block to fill
+      <green><insn>Right click</insn> on air to fill blocks
       <attr>Max Range:</attr> %range% Blocks
       <red>OP only
 
