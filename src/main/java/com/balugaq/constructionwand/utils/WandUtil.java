@@ -63,7 +63,8 @@ public class WandUtil {
     }
 
 
-    public static Set<Location> getBuildingLocations(Player player, int limitBlocks, @Nullable Axis onlyAxis, boolean blockStrict) {
+    public static Set<Location> getBuildingLocations(Player player, int limitBlocks, @Nullable Axis onlyAxis,
+                                                     boolean blockStrict) {
         if (limitBlocks <= 0) {
             return new HashSet<>();
         }
@@ -97,7 +98,8 @@ public class WandUtil {
     }
 
     @SuppressWarnings("DuplicatedCode")
-    public static Set<Location> getLocations(Block lookingBlock, BlockFace lookingFacing, int limitBlocks, @Nullable Axis onlyAxis, boolean blockStrict) {
+    public static Set<Location> getLocations(Block lookingBlock, BlockFace lookingFacing, int limitBlocks,
+                                             @Nullable Axis onlyAxis, boolean blockStrict) {
         Set<Location> rawLocations = getRawLocations(lookingBlock, lookingFacing, limitBlocks, onlyAxis, blockStrict);
         Set<Location> outwardLocations = new HashSet<>();
         for (Location location : rawLocations) {
@@ -121,7 +123,8 @@ public class WandUtil {
 
         // sort by shortest distance
         Set<Location> locations = new HashSet<>(distances.keySet());
-        List<Location> sortedLocations = locations.stream().sorted(Comparator.comparingDouble(distances::get)).limit(limitBlocks).toList();
+        List<Location> sortedLocations =
+                locations.stream().sorted(Comparator.comparingDouble(distances::get)).limit(limitBlocks).toList();
 
         return new HashSet<>(sortedLocations);
     }
@@ -130,15 +133,18 @@ public class WandUtil {
         return getRawLocations(lookingBlock, lookingFacing, limitBlocks, null);
     }
 
-    public static Set<Location> getRawLocations(Block lookingBlock, BlockFace lookingFacing, int limitBlocks, @Nullable Axis onlyAxis) {
+    public static Set<Location> getRawLocations(Block lookingBlock, BlockFace lookingFacing, int limitBlocks,
+                                                @Nullable Axis onlyAxis) {
         return getRawLocations(lookingBlock, lookingFacing, limitBlocks, onlyAxis, true);
     }
 
-    public static Set<Location> getRawLocations(Block lookingBlock, BlockFace lookingFacing, int limitBlocks, @Nullable Axis onlyAxis, boolean blockStrict) {
+    public static Set<Location> getRawLocations(Block lookingBlock, BlockFace lookingFacing, int limitBlocks,
+                                                @Nullable Axis onlyAxis, boolean blockStrict) {
         return getRawLocations(lookingBlock, lookingFacing, limitBlocks, onlyAxis, blockStrict, true);
     }
 
-    public static Set<Location> getRawLocations(Block lookingBlock, BlockFace lookingFacing, int limitBlocks, @Nullable Axis onlyAxis, boolean blockStrict, boolean checkOutward) {
+    public static Set<Location> getRawLocations(Block lookingBlock, BlockFace lookingFacing, int limitBlocks,
+                                                @Nullable Axis onlyAxis, boolean blockStrict, boolean checkOutward) {
         Set<Location> locations = new HashSet<>();
         Queue<Location> queue = new LinkedList<>();
         Location lookingLocation = lookingBlock.getLocation();
@@ -261,7 +267,10 @@ public class WandUtil {
         BlockFace lookingFacing = getBlockFaceAsCartesian(originalFacing);
 
         ItemStack wandItem = player.getInventory().getItemInMainHand();
-        Set<Location> buildingLocations = WandUtil.getBuildingLocations(player, Math.min(wand.getHandleableBlocks(), playerHas), WandUtil.getAxis(wandItem), wand.isBlockStrict());
+        Set<Location> buildingLocations = WandUtil.getBuildingLocations(player, Math.min(wand.getHandleableBlocks(),
+                                                                                         playerHas),
+                                                                        WandUtil.getAxis(wandItem),
+                                                                        wand.isBlockStrict());
 
         int consumed = 0;
 
@@ -277,16 +286,18 @@ public class WandUtil {
         }
 
         // I don't know why, but it must be run later, or it will create PlayerInteractEvent AGAIN!
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            for (Block block : blocks) {
-                if (isMaterialStateCopyableToBuild(itemInHand)) {
-                    WorldUtils.copyBlockState(lookingAtBlock.getState(), block);
-                } else {
-                    setBlock(block, itemInHand);
-                }
-                block.getState().update(true, true);
-            }
-        }, 2); // The lagger the server is, the more delay it should take.
+        Bukkit.getScheduler().runTaskLater(
+                plugin, () -> {
+                    for (Block block : blocks) {
+                        if (isMaterialStateCopyableToBuild(itemInHand)) {
+                            WorldUtils.copyBlockState(lookingAtBlock.getState(), block);
+                        } else {
+                            setBlock(block, itemInHand);
+                        }
+                        block.getState().update(true, true);
+                    }
+                }, 2
+        ); // The lagger the server is, the more delay it should take.
 
         if (player.getGameMode() == GameMode.CREATIVE) {
             return;
@@ -333,7 +344,9 @@ public class WandUtil {
         BlockFace lookingFacing = getBlockFaceAsCartesian(originalFacing);
         ItemStack wandItem = player.getInventory().getItemInMainHand();
 
-        Set<Location> rawLocations = WandUtil.getRawLocations(lookingAtBlock, lookingFacing, wand.getHandleableBlocks(), getAxis(wandItem), wand.isBlockStrict(), true);
+        Set<Location> rawLocations = WandUtil.getRawLocations(lookingAtBlock, lookingFacing,
+                                                              wand.getHandleableBlocks(), getAxis(wandItem),
+                                                              wand.isBlockStrict(), true);
 
         World world = lookingLocation.getWorld();
         Map<Location, Double> distances = new HashMap<>();
@@ -395,7 +408,8 @@ public class WandUtil {
     }
 
     @Range(from = -1, to = Integer.MAX_VALUE)
-    public static int fillBlocks(Plugin plugin, PlayerInteractEvent event, Location startLocation, Location endLocation, ItemStack item, int limitBlocks) {
+    public static int fillBlocks(Plugin plugin, PlayerInteractEvent event, Location startLocation,
+                                 Location endLocation, ItemStack item, int limitBlocks) {
         Player player = event.getPlayer();
 
         if (player.getGameMode() == GameMode.SPECTATOR) {
@@ -408,24 +422,26 @@ public class WandUtil {
 
         int amount = ItemProvider.getItemAmount(player, item, ItemProvider.MODIFICATION_BLOCK_LIMIT);
         AtomicInteger filled = new AtomicInteger(0);
-        WorldUtils.doWorldEdit(startLocation, endLocation, location -> {
-            if (filled.get() >= amount) {
-                return;
-            }
+        WorldUtils.doWorldEdit(
+                startLocation, endLocation, location -> {
+                    if (filled.get() >= amount) {
+                        return;
+                    }
 
-            Block block = location.getBlock();
-            if (!block.getType().isAir()) {
-                // neither AIR nor CAVE_AIR
-                return;
-            }
+                    Block block = location.getBlock();
+                    if (!block.getType().isAir()) {
+                        // neither AIR nor CAVE_AIR
+                        return;
+                    }
 
-            if (!PermissionUtil.canPlaceBlock(player, block, block)) {
-                return;
-            }
+                    if (!PermissionUtil.canPlaceBlock(player, block, block)) {
+                        return;
+                    }
 
-            setBlock(block, item);
-            filled.incrementAndGet();
-        });
+                    setBlock(block, item);
+                    filled.incrementAndGet();
+                }
+        );
         ItemProvider.consumeItems(player, item, filled.get());
         player.updateInventory();
 

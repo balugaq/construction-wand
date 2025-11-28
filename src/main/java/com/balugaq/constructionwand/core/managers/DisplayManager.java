@@ -38,11 +38,14 @@ public class DisplayManager implements IManager {
     public void setup() {
         ConfigManager config = ConstructionWandPlugin.getInstance().getConfigManager();
         // Entities needs to running on the main thread
-        Bukkit.getScheduler().runTaskTimer(plugin, () -> new BlockPreviewTask().run(), 1, config.getBlockPreviewTaskPeriod());
-        Bukkit.getScheduler().runTaskTimer(plugin, () -> new DisplaysClearTask().run(), 1, config.getDisplaysClearTaskPeriod());
+        Bukkit.getScheduler().runTaskTimer(plugin, () -> new BlockPreviewTask().run(), 1,
+                                           config.getBlockPreviewTaskPeriod());
+        Bukkit.getScheduler().runTaskTimer(plugin, () -> new DisplaysClearTask().run(), 1,
+                                           config.getDisplaysClearTaskPeriod());
 
         // Particles are asyncable
-        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> new FillWandSUITask().run(), 1, config.getFillWandSUITaskPeriod());
+        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> new FillWandSUITask().run(), 1,
+                                                         config.getFillWandSUITaskPeriod());
     }
 
     @Override

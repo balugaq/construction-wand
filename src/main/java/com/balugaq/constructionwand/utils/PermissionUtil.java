@@ -19,17 +19,6 @@ import org.jspecify.annotations.NullMarked;
 public class PermissionUtil {
     public static boolean canPlaceBlock(
             Player player,
-            Block placeBlock
-    ) {
-        return canPlaceBlock(
-                player,
-                placeBlock,
-                placeBlock
-        );
-    }
-
-    public static boolean canPlaceBlock(
-            Player player,
             Block placeBlock,
             Block blockAgainst
     ) {
@@ -53,19 +42,6 @@ public class PermissionUtil {
             boolean canBuild,
             EquipmentSlot hand
     ) {
-        FakeBlockPlaceEvent event = simulateBlockPlace(placeBlock, replacedBlockState, blockAgainst, itemInMainHand, player, canBuild, hand);
-        return !event.isCancelled();
-    }
-
-    public static FakeBlockPlaceEvent simulateBlockPlace(
-            Block placeBlock,
-            BlockState replacedBlockState,
-            Block blockAgainst,
-            ItemStack itemInMainHand,
-            Player player,
-            boolean canBuild,
-            EquipmentSlot hand
-    ) {
         FakeBlockPlaceEvent event = new FakeBlockPlaceEvent(
                 placeBlock,
                 replacedBlockState,
@@ -76,7 +52,7 @@ public class PermissionUtil {
                 hand
         );
         event.callEvent();
-        return event;
+        return !event.isCancelled();
     }
 
     public static boolean canBreakBlock(

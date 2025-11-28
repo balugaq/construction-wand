@@ -15,6 +15,8 @@ import java.lang.reflect.Field;
 import java.util.function.Consumer;
 
 /**
+ * This class is for {@link #copyBlockState(BlockState, Block)}
+ *
  * @author m1919810
  * @since 1.0
  */

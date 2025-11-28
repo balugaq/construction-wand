@@ -56,7 +56,8 @@ public class PrepareBreakingListener implements Listener {
         showBreakingBlocksFor(player, event.getLookingAtBlock(), breakingWand.getHandleableBlocks(), breakingWand);
     }
 
-    private void showBreakingBlocksFor(Player player, Block lookingAtBlock, int limitBlocks, BreakingWand breakingWand) {
+    private void showBreakingBlocksFor(Player player, Block lookingAtBlock, int limitBlocks,
+                                       BreakingWand breakingWand) {
         if (!player.isOp() && !PermissionUtil.canBreakBlock(player, lookingAtBlock)) {
             return;
         }

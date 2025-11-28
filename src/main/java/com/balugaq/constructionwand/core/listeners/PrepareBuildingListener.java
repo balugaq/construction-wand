@@ -37,27 +37,28 @@ public class PrepareBuildingListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPrepareBuilding(PrepareBuildingEvent event) {
-        if (!ConfigManager.displayProjection()) {
-            return;
-        }
+        if (!ConfigManager.displayProjection()) return;
 
         Player player = event.getPlayer();
         Debug.debug("Preparing building blocks...");
         BuildingWand buildingWand = event.getBuildingWand();
-        if (buildingWand.isOpOnly() && !player.isOp()) {
-            return;
-        }
-        showBuildingBlocksFor(player, event.getLookingAtBlock(), buildingWand.getHandleableBlocks(), event.getBuildingWand());
+        if (buildingWand.isOpOnly() && !player.isOp()) return;
+
+        showBuildingBlocksFor(player, event.getLookingAtBlock(), buildingWand.getHandleableBlocks(),
+                              event.getBuildingWand());
     }
 
-    private void showBuildingBlocksFor(Player player, Block lookingAtBlock, int limitBlocks, BuildingWand buildingWand) {
-        if (!player.isOp() && !PermissionUtil.canPlaceBlock(player, lookingAtBlock)) {
-            return;
-        }
+    private void showBuildingBlocksFor(Player player, Block lookingAtBlock, int limitBlocks,
+                                       BuildingWand buildingWand) {
+        if (!player.isOp() && !PermissionUtil.canPlaceBlock(player, lookingAtBlock, lookingAtBlock)) return;
+
         ItemStack item = WandUtil.getItemType(buildingWand, lookingAtBlock);
+        if (item == null) return;
+
         int playerHas = ItemProvider.getItemAmount(player, item, limitBlocks);
 
-        Set<Location> showingBlocks = WandUtil.getBuildingLocations(player, Math.min(limitBlocks, playerHas), WandUtil.getAxis(player.getInventory().getItemInMainHand()), buildingWand.isBlockStrict());
+        Set<Location> showingBlocks = WandUtil.getBuildingLocations(player, Math.min(limitBlocks, playerHas),
+                                                                    WandUtil.getAxis(player.getInventory().getItemInMainHand()), buildingWand.isBlockStrict());
         DisplayGroup displayGroup = new DisplayGroup(player.getLocation(), 0.0F, 0.0F);
         for (Location location : showingBlocks) {
             String ls = location.getBlockX() + "_" + location.getBlockY() + "_" + location.getBlockZ();
@@ -67,9 +68,9 @@ public class PrepareBuildingListener implements Listener {
         }
 
         displayGroup.getDisplays().forEach((name, display) ->
-                display.setMetadata(ConstructionWandPlugin.getInstance().getName(), new FixedMetadataValue(ConstructionWandPlugin.getInstance(), true))
+                                                   display.setMetadata(ConstructionWandPlugin.getInstance().getName()
+                                                           , new FixedMetadataValue(ConstructionWandPlugin.getInstance(), true))
         );
-
 
         UUID uuid = player.getUniqueId();
 

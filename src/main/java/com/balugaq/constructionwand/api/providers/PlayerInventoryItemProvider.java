@@ -28,9 +28,13 @@ public class PlayerInventoryItemProvider implements ItemProvider {
     /**
      * Counts the amount of items the player has
      *
-     * @param player        The player
-     * @param target        The item
-     * @param requireAmount The max amount to consume
+     * @param player
+     *         The player
+     * @param target
+     *         The item
+     * @param requireAmount
+     *         The max amount to consume
+     *
      * @return The amount of items the player has
      */
     @Override
@@ -62,12 +66,16 @@ public class PlayerInventoryItemProvider implements ItemProvider {
     }
 
     /**
-     * Consume items when player uses filling wand / building wand
-     * Call `player.updateInventory()` after calling this method.
+     * Consume items when player uses filling wand / building wand Call `player.updateInventory()` after calling this
+     * method.
      *
-     * @param player The player
-     * @param target The item
-     * @param amount The amount to consume
+     * @param player
+     *         The player
+     * @param target
+     *         The item
+     * @param amount
+     *         The amount to consume
+     *
      * @return The amount of items consumed
      */
     @SuppressWarnings("DuplicatedCode")

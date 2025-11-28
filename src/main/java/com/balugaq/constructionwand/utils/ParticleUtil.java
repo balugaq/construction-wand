@@ -16,7 +16,8 @@ import java.util.List;
  */
 @NullMarked
 public class ParticleUtil {
-    public static void drawLineByDistance(Plugin plugin, Particle particle, long interval, double distance, Location... locations) {
+    public static void drawLineByDistance(Plugin plugin, Particle particle, long interval, double distance,
+                                          Location... locations) {
         int time = 0;
         for (int i = 0; i + 1 < locations.length; i++) {
             Location location1 = locations[i];
@@ -53,14 +54,22 @@ public class ParticleUtil {
                 lastTick = (int) (t / 50);
                 if (tick != lastTick) {
                     final List<Runnable> finalRunnableList = runnableList;
-                    plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, () -> finalRunnableList.forEach(Runnable::run), tick);
+                    plugin.getServer().getScheduler().runTaskLaterAsynchronously(
+                            plugin,
+                            () -> finalRunnableList.forEach(Runnable::run),
+                            tick
+                    );
                     tick = lastTick;
                     runnableList = new ArrayList<>();
                 }
             }
             if (!runnableList.isEmpty()) {
                 final List<Runnable> finalRunnableList = runnableList;
-                plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, () -> finalRunnableList.forEach(Runnable::run), tick);
+                plugin.getServer().getScheduler().runTaskLaterAsynchronously(
+                        plugin,
+                        () -> finalRunnableList.forEach(Runnable::run),
+                        tick
+                );
             }
 
             time += (int) interval;
@@ -68,7 +77,8 @@ public class ParticleUtil {
     }
 
     @SuppressWarnings("ExtractMethodRecommender")
-    public static void drawRegionOutline(Plugin plugin, Particle particle, long interval, Location corner1, Location corner2) {
+    public static void drawRegionOutline(Plugin plugin, Particle particle, long interval, Location corner1,
+                                         Location corner2) {
         World world = corner1.getWorld();
         if (world == null || corner1.getWorld() != corner2.getWorld()) {
             return;
@@ -81,7 +91,7 @@ public class ParticleUtil {
         double maxY = Math.max(corner1.getY(), corner2.getY());
         double maxZ = Math.max(corner1.getZ(), corner2.getZ());
 
-        Location[] corners = new Location[]{
+        Location[] corners = new Location[] {
                 new Location(world, minX, minY, minZ),
                 new Location(world, minX, minY, maxZ + 1),
                 new Location(world, maxX + 1, minY, maxZ + 1),

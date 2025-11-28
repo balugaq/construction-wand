@@ -197,7 +197,8 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
         }
 
         Action action = event.getAction();
-        boolean clickOnBlock = event.hasBlock() && (action == Action.LEFT_CLICK_BLOCK || action == Action.RIGHT_CLICK_BLOCK);
+        boolean clickOnBlock =
+                event.hasBlock() && (action == Action.LEFT_CLICK_BLOCK || action == Action.RIGHT_CLICK_BLOCK);
         boolean leftClick = action.isLeftClick();
         boolean rightClick = action.isRightClick();
         boolean shift = event.getPlayer().isSneaking();

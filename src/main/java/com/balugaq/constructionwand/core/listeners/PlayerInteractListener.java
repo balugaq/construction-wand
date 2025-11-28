@@ -14,11 +14,9 @@ import org.bukkit.inventory.ItemStack;
 import org.jspecify.annotations.NullMarked;
 
 /**
- * When a player hold a wand in his main hand and hold a block in his offhand,
- * the event is cancelled to prevent the player from placing blocks with the wand.
- * I don't know why {@link BlockPlaceEvent} or {@link Block#setType(Material)}
- * will make player interact with main hand again.
- * So this listener is important for playing building wand.
+ * When a player hold a wand in his main hand and hold a block in his offhand, the event is cancelled to prevent the
+ * player from placing blocks with the wand. I don't know why {@link BlockPlaceEvent} or {@link Block#setType(Material)}
+ * will make player interact with main hand again. So this listener is important for playing building wand.
  *
  * @author balugaq
  * @since 1.0

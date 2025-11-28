@@ -24,19 +24,24 @@ public interface ItemProvider {
     /**
      * Register an item provider, be used when player uses filling wand / building wand
      *
-     * @param provider The item provider
+     * @param provider
+     *         The item provider
      */
     static void registerProvider(ItemProvider provider) {
         PROVIDERS.add(provider);
     }
 
     /**
-     * Counts the amount of items the player has,
-     * If the player is in creative mode, then it will return {@link #MODIFICATION_BLOCK_LIMIT}
+     * Counts the amount of items the player has, If the player is in creative mode, then it will return
+     * {@link #MODIFICATION_BLOCK_LIMIT}
      *
-     * @param player        The player
-     * @param target        The item, item must be one amount
-     * @param requireAmount The max amount to consume
+     * @param player
+     *         The player
+     * @param target
+     *         The item, item must be one amount
+     * @param requireAmount
+     *         The max amount to consume
+     *
      * @return The amount of items the player has
      */
     static @Range(from = 0, to = Integer.MAX_VALUE) int getItemAmount(Player player, ItemStack target, @Range(from = 1, to = Integer.MAX_VALUE) int requireAmount) {
@@ -55,12 +60,16 @@ public interface ItemProvider {
     }
 
     /**
-     * Consume items when player uses filling wand / building wand
-     * Call {@link Player#updateInventory()} after calling this method.
+     * Consume items when player uses filling wand / building wand Call {@link Player#updateInventory()} after calling
+     * this method.
      *
-     * @param player The player
-     * @param target The item
-     * @param amount The amount to consume
+     * @param player
+     *         The player
+     * @param target
+     *         The item
+     * @param amount
+     *         The amount to consume
+     *
      * @return The amount of items consumed
      */
     @CanIgnoreReturnValue
@@ -87,9 +96,13 @@ public interface ItemProvider {
     /**
      * Counts the amount of items the player has
      *
-     * @param player        The player
-     * @param target        The item
-     * @param requireAmount The max amount to consume
+     * @param player
+     *         The player
+     * @param target
+     *         The item
+     * @param requireAmount
+     *         The max amount to consume
+     *
      * @return The amount of items the player has
      */
     @CanIgnoreReturnValue
@@ -103,9 +116,13 @@ public interface ItemProvider {
     /**
      * Consume items when player uses filling wand / building wand
      *
-     * @param player The player
-     * @param target The item
-     * @param amount The amount to consume
+     * @param player
+     *         The player
+     * @param target
+     *         The item
+     * @param amount
+     *         The amount to consume
+     *
      * @return The amount of items consumed
      */
     @CanIgnoreReturnValue

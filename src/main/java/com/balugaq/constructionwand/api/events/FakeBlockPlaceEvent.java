@@ -15,7 +15,8 @@ import org.jspecify.annotations.NullMarked;
 @NullMarked
 public class FakeBlockPlaceEvent extends BlockPlaceEvent implements FakeEvent {
     @SuppressWarnings("UnstableApiUsage")
-    public FakeBlockPlaceEvent(Block placedBlock, BlockState replacedBlockState, Block placedAgainst, ItemStack itemInHand, Player thePlayer, boolean canBuild, EquipmentSlot hand) {
+    public FakeBlockPlaceEvent(Block placedBlock, BlockState replacedBlockState, Block placedAgainst,
+                               ItemStack itemInHand, Player thePlayer, boolean canBuild, EquipmentSlot hand) {
         super(placedBlock, replacedBlockState, placedAgainst, itemInHand, thePlayer, canBuild, hand);
     }
 }

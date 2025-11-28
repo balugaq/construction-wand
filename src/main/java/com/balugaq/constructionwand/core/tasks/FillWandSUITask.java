@@ -57,7 +57,11 @@ public class FillWandSUITask extends BukkitRunnable {
                 continue;
             }
 
-            Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(ConstructionWandPlugin.getInstance(), () -> ParticleUtil.drawRegionOutline(ConstructionWandPlugin.getInstance(), Particle.WAX_OFF, 0, loc1, loc2), 10);
+            Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(
+                    ConstructionWandPlugin.getInstance(),
+                    () -> ParticleUtil.drawRegionOutline(ConstructionWandPlugin.getInstance(), Particle.WAX_OFF, 0, loc1, loc2),
+                    10
+            );
         }
     }
 }
