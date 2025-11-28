@@ -85,7 +85,12 @@ public class WandSetup implements IManager {
         );
         registerBuildingWand(
                 key("building-wand-epic"),
-                Material.DIAMOND_SWORD
+                Material.GOLDEN_SWORD
+        );
+
+        registerBuildingWand(
+                key("building-wand-cheat"),
+                Material.NETHERITE_SWORD
         );
 
         registerBuildingWand(
@@ -100,12 +105,7 @@ public class WandSetup implements IManager {
 
         registerBuildingWand(
                 key("building-wand-block-strict-epic"),
-                Material.DIAMOND_SWORD
-        );
-
-        registerBuildingWand(
-                key("building-wand-cheat"),
-                Material.NETHERITE_SWORD
+                Material.GOLDEN_SWORD
         );
 
         registerBuildingWand(
@@ -115,12 +115,12 @@ public class WandSetup implements IManager {
 
         registerBreakingWand(
                 key("breaking-wand-common"),
-                Material.GOLDEN_SWORD
+                Material.STONE_SWORD
         );
 
         registerBreakingWand(
                 key("breaking-wand-rare"),
-                Material.GOLDEN_SWORD
+                Material.IRON_SWORD
         );
 
         registerBreakingWand(
@@ -140,12 +140,12 @@ public class WandSetup implements IManager {
 
         registerFillWand(
                 key("fill-wand-rare"),
-                Material.DIAMOND_SWORD
+                Material.IRON_SWORD
         );
 
         registerFillWand(
                 key("fill-wand-epic"),
-                Material.NETHERITE_SWORD
+                Material.GOLDEN_SWORD
         );
 
         registerFillWand(

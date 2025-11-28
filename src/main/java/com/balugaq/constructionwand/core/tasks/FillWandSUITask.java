@@ -53,7 +53,7 @@ public class FillWandSUITask extends BukkitRunnable {
                 continue;
             }
 
-            if (WorldUtils.totalBlocks(loc1, loc2) > fw.getLimitBlocks()) {
+            if (WorldUtils.totalBlocks(loc1, loc2) > fw.getHandleableBlocks()) {
                 continue;
             }
 

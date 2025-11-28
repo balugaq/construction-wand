@@ -1,14 +1,22 @@
 package com.balugaq.constructionwand.utils;
 
 import com.balugaq.constructionwand.api.events.FakeBlockBreakEvent;
+import com.balugaq.constructionwand.api.items.Wand;
 import com.balugaq.constructionwand.api.providers.ItemProvider;
 import com.destroystokyo.paper.MaterialTags;
+import io.github.pylonmc.pylon.core.block.BlockStorage;
+import io.github.pylonmc.pylon.core.block.PylonBlock;
+import io.github.pylonmc.pylon.core.block.PylonBlockSchema;
+import io.github.pylonmc.pylon.core.item.PylonItem;
+import io.github.pylonmc.pylon.core.item.PylonItemSchema;
+import io.github.pylonmc.pylon.core.registry.PylonRegistry;
 import org.bukkit.Axis;
 import org.bukkit.Bukkit;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -18,11 +26,13 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ItemType;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -38,6 +48,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author balugaq
  * @since 1.0
  */
+@NullMarked
 @SuppressWarnings({"unused", "deprecation"})
 public class WandUtil {
     public static final Set<BlockFace> VALID_FACES = new HashSet<>();
@@ -52,7 +63,7 @@ public class WandUtil {
     }
 
 
-    public static @NotNull Set<Location> getBuildingLocations(@NotNull Player player, int limitBlocks, Axis onlyAxis, boolean blockStrict) {
+    public static Set<Location> getBuildingLocations(Player player, int limitBlocks, @Nullable Axis onlyAxis, boolean blockStrict) {
         if (limitBlocks <= 0) {
             return new HashSet<>();
         }
@@ -71,7 +82,7 @@ public class WandUtil {
         return getLocations(lookingBlock, lookingFacing, limitBlocks, onlyAxis, blockStrict);
     }
 
-    public static @NotNull BlockFace getLookingFacing(@NotNull BlockFace originalFacing) {
+    public static BlockFace getLookingFacing(BlockFace originalFacing) {
         BlockFace lookingFacing = originalFacing.getOppositeFace();
         if (!originalFacing.isCartesian()) {
             switch (originalFacing) {
@@ -86,14 +97,14 @@ public class WandUtil {
     }
 
     @SuppressWarnings("DuplicatedCode")
-    public static @NotNull Set<Location> getLocations(@NotNull Block lookingBlock, @NotNull BlockFace lookingFacing, int limitBlocks, Axis onlyAxis, boolean blockStrict) {
+    public static Set<Location> getLocations(Block lookingBlock, BlockFace lookingFacing, int limitBlocks, @Nullable Axis onlyAxis, boolean blockStrict) {
         Set<Location> rawLocations = getRawLocations(lookingBlock, lookingFacing, limitBlocks, onlyAxis, blockStrict);
         Set<Location> outwardLocations = new HashSet<>();
         for (Location location : rawLocations) {
             Location outwardLocation = location.clone().add(lookingFacing.getOppositeFace().getDirection());
             Block outwardBlock = outwardLocation.getBlock();
             Material outwardType = outwardBlock.getType();
-            if (outwardType == Material.AIR || outwardType == Material.WATER || outwardType == Material.LAVA) {
+            if (outwardType.isAir() || outwardType == Material.WATER || outwardType == Material.LAVA) {
                 outwardLocations.add(outwardLocation);
             }
         }
@@ -115,19 +126,19 @@ public class WandUtil {
         return new HashSet<>(sortedLocations);
     }
 
-    public static @NotNull Set<Location> getRawLocations(@NotNull Block lookingBlock, @NotNull BlockFace lookingFacing, int limitBlocks) {
+    public static Set<Location> getRawLocations(Block lookingBlock, BlockFace lookingFacing, int limitBlocks) {
         return getRawLocations(lookingBlock, lookingFacing, limitBlocks, null);
     }
 
-    public static @NotNull Set<Location> getRawLocations(@NotNull Block lookingBlock, @NotNull BlockFace lookingFacing, int limitBlocks, Axis onlyAxis) {
+    public static Set<Location> getRawLocations(Block lookingBlock, BlockFace lookingFacing, int limitBlocks, @Nullable Axis onlyAxis) {
         return getRawLocations(lookingBlock, lookingFacing, limitBlocks, onlyAxis, true);
     }
 
-    public static @NotNull Set<Location> getRawLocations(@NotNull Block lookingBlock, @NotNull BlockFace lookingFacing, int limitBlocks, Axis onlyAxis, boolean blockStrict) {
+    public static Set<Location> getRawLocations(Block lookingBlock, BlockFace lookingFacing, int limitBlocks, @Nullable Axis onlyAxis, boolean blockStrict) {
         return getRawLocations(lookingBlock, lookingFacing, limitBlocks, onlyAxis, blockStrict, true);
     }
 
-    public static @NotNull Set<Location> getRawLocations(@NotNull Block lookingBlock, @NotNull BlockFace lookingFacing, int limitBlocks, @Nullable Axis onlyAxis, boolean blockStrict, boolean checkOutward) {
+    public static Set<Location> getRawLocations(Block lookingBlock, BlockFace lookingFacing, int limitBlocks, @Nullable Axis onlyAxis, boolean blockStrict, boolean checkOutward) {
         Set<Location> locations = new HashSet<>();
         Queue<Location> queue = new LinkedList<>();
         Location lookingLocation = lookingBlock.getLocation();
@@ -184,7 +195,7 @@ public class WandUtil {
                             if (checkOutward) {
                                 Block outwardBlock = block.getRelative(lookingFacing.getOppositeFace());
                                 Material outwardType = outwardBlock.getType();
-                                if (outwardType != Material.AIR && outwardType != Material.WATER && outwardType != Material.LAVA) {
+                                if (!outwardType.isAir() && outwardType != Material.WATER && outwardType != Material.LAVA) {
                                     continue;
                                 }
                             }
@@ -202,24 +213,20 @@ public class WandUtil {
         return locations;
     }
 
-    public static int manhattanDistance(@NotNull Location a, @NotNull Location b) {
+    public static int manhattanDistance(Location a, Location b) {
         int dx = Math.abs(a.getBlockX() - b.getBlockX());
         int dy = Math.abs(a.getBlockY() - b.getBlockY());
         int dz = Math.abs(a.getBlockZ() - b.getBlockZ());
         return dx + dy + dz;
     }
 
-    public static void placeBlocks(@NotNull Plugin plugin, @NotNull PlayerInteractEvent event, boolean disabled, int limitBlocks, boolean blockStrict, boolean opOnly) {
-        placeBlocks(plugin, event.getHand(), event.getPlayer(), disabled, limitBlocks, blockStrict, opOnly);
-    }
-
     @SuppressWarnings("DuplicatedCode")
-    public static void placeBlocks(@NotNull Plugin plugin, @Nullable EquipmentSlot hand, @NotNull Player player, boolean disabled, int limitBlocks, boolean blockStrict, boolean opOnly) {
+    public static void placeBlocks(Plugin plugin, @Nullable EquipmentSlot hand, Player player, Wand wand) {
         if (hand != null && hand != EquipmentSlot.HAND) {
             return;
         }
 
-        if (opOnly && !player.isOp()) {
+        if (wand.isOpOnly() && !player.isOp()) {
             return;
         }
 
@@ -227,7 +234,7 @@ public class WandUtil {
             return;
         }
 
-        if (disabled) {
+        if (wand.isDisabled()) {
             return;
         }
 
@@ -236,12 +243,12 @@ public class WandUtil {
             return;
         }
 
-        Material material = lookingAtBlock.getType();
-        if (isMaterialDisabledToBuild(material)) {
+        ItemStack itemInHand = getItemType(wand, lookingAtBlock);
+        if (isItemDisabledToBuild(itemInHand)) {
             return;
         }
 
-        int playerHas = ItemProvider.getItemAmount(player, material, limitBlocks);
+        int playerHas = ItemProvider.getItemAmount(player, itemInHand, wand.getHandleableBlocks());
         if (playerHas == 0) {
             return;
         }
@@ -253,16 +260,15 @@ public class WandUtil {
 
         BlockFace lookingFacing = getBlockFaceAsCartesian(originalFacing);
 
-        ItemStack itemInHand = new ItemStack(material, 1);
-        ItemStack wand = player.getInventory().getItemInMainHand();
-        Set<Location> buildingLocations = WandUtil.getBuildingLocations(player, Math.min(limitBlocks, playerHas), WandUtil.getAxis(wand), blockStrict);
+        ItemStack wandItem = player.getInventory().getItemInMainHand();
+        Set<Location> buildingLocations = WandUtil.getBuildingLocations(player, Math.min(wand.getHandleableBlocks(), playerHas), WandUtil.getAxis(wandItem), wand.isBlockStrict());
 
         int consumed = 0;
 
         Set<Block> blocks = new HashSet<>();
         for (Location location : buildingLocations) {
             Block block = location.getBlock();
-            if (block.getType() == Material.AIR || block.getType() == Material.WATER || block.getType() == Material.LAVA) {
+            if (block.getType().isAir() || block.getType() == Material.WATER || block.getType() == Material.LAVA) {
                 if (PermissionUtil.canPlaceBlock(player, block, block.getRelative(lookingFacing.getOppositeFace()))) {
                     blocks.add(block);
                     consumed += 1;
@@ -273,14 +279,10 @@ public class WandUtil {
         // I don't know why, but it must be run later, or it will create PlayerInteractEvent AGAIN!
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             for (Block block : blocks) {
-                if (block == null) {
-                    continue;
-                }
-
-                if (isMaterialStateCopyableToBuild(material)) {
+                if (isMaterialStateCopyableToBuild(itemInHand)) {
                     WorldUtils.copyBlockState(lookingAtBlock.getState(), block);
                 } else {
-                    block.setType(material);
+                    setBlock(block, itemInHand);
                 }
                 block.getState().update(true, true);
             }
@@ -290,21 +292,17 @@ public class WandUtil {
             return;
         }
 
-        ItemProvider.consumeItems(player, material, consumed);
+        ItemProvider.consumeItems(player, itemInHand, consumed);
         player.updateInventory();
     }
 
-    public static void breakBlocks(@NotNull Plugin plugin, @NotNull PlayerInteractEvent event, boolean disabled, int limitBlocks, boolean blockStrict, boolean opOnly) {
-        breakBlocks(plugin, event.getHand(), event.getPlayer(), disabled, limitBlocks, blockStrict, opOnly);
-    }
-
     @SuppressWarnings({"ConstantValue", "DuplicatedCode"})
-    public static void breakBlocks(@NotNull Plugin plugin, @Nullable EquipmentSlot hand, @NotNull Player player, boolean disabled, int limitBlocks, boolean blockStrict, boolean opOnly) {
+    public static void breakBlocks(Plugin plugin, @Nullable EquipmentSlot hand, Player player, Wand wand) {
         if (hand != null && hand != EquipmentSlot.HAND) {
             return;
         }
 
-        if (opOnly && !player.isOp()) {
+        if (wand.isOpOnly() && !player.isOp()) {
             return;
         }
 
@@ -312,7 +310,7 @@ public class WandUtil {
             return;
         }
 
-        if (disabled) {
+        if (wand.isDisabled()) {
             return;
         }
 
@@ -321,8 +319,8 @@ public class WandUtil {
             return;
         }
 
-        Material material = lookingAtBlock.getType();
-        if (isMaterialDisabledToBreak(material)) {
+        ItemStack item = getItemType(wand, lookingAtBlock);
+        if (isItemDisabledToBreak(item)) {
             return;
         }
 
@@ -333,9 +331,9 @@ public class WandUtil {
 
         Location lookingLocation = lookingAtBlock.getLocation();
         BlockFace lookingFacing = getBlockFaceAsCartesian(originalFacing);
-        ItemStack item = player.getInventory().getItemInMainHand();
+        ItemStack wandItem = player.getInventory().getItemInMainHand();
 
-        Set<Location> rawLocations = WandUtil.getRawLocations(lookingAtBlock, lookingFacing, limitBlocks, getAxis(item), blockStrict, true);
+        Set<Location> rawLocations = WandUtil.getRawLocations(lookingAtBlock, lookingFacing, wand.getHandleableBlocks(), getAxis(wandItem), wand.isBlockStrict(), true);
 
         World world = lookingLocation.getWorld();
         Map<Location, Double> distances = new HashMap<>();
@@ -352,7 +350,7 @@ public class WandUtil {
         Set<Location> result = new HashSet<>();
         AtomicInteger count = new AtomicInteger(0);
         sortedLocations.forEach(location -> {
-            if (count.incrementAndGet() > limitBlocks) {
+            if (count.incrementAndGet() > wand.getHandleableBlocks()) {
                 return;
             }
             result.add(location);
@@ -378,10 +376,16 @@ public class WandUtil {
                     continue;
                 }
 
-                if (e2.isDropItems()) {
-                    block.breakNaturally();
-                } else {
+                PylonBlock pylon = BlockStorage.get(block);
+                if (pylon != null) {
+                    BlockStorage.breakBlock(block);
                     block.setType(Material.AIR);
+                } else {
+                    if (e2.isDropItems()) {
+                        block.breakNaturally();
+                    } else {
+                        block.setType(Material.AIR);
+                    }
                 }
 
                 BlockState state = block.getState();
@@ -391,20 +395,20 @@ public class WandUtil {
     }
 
     @Range(from = -1, to = Integer.MAX_VALUE)
-    public static int fillBlocks(@NotNull Plugin plugin, @NotNull PlayerInteractEvent event, @NotNull Location loc1, @NotNull Location loc2, @NotNull Material material, int limitBlocks) {
+    public static int fillBlocks(Plugin plugin, PlayerInteractEvent event, Location startLocation, Location endLocation, ItemStack item, int limitBlocks) {
         Player player = event.getPlayer();
 
         if (player.getGameMode() == GameMode.SPECTATOR) {
             return -1;
         }
 
-        if (WorldUtils.totalBlocks(loc1, loc2) > limitBlocks) {
+        if (WorldUtils.totalBlocks(startLocation, endLocation) > limitBlocks) {
             return -1;
         }
 
-        int amount = ItemProvider.getItemAmount(player, material, ItemProvider.MODIFICATION_BLOCK_LIMIT);
+        int amount = ItemProvider.getItemAmount(player, item, ItemProvider.MODIFICATION_BLOCK_LIMIT);
         AtomicInteger filled = new AtomicInteger(0);
-        WorldUtils.doWorldEdit(loc1, loc2, location -> {
+        WorldUtils.doWorldEdit(startLocation, endLocation, location -> {
             if (filled.get() >= amount) {
                 return;
             }
@@ -419,17 +423,27 @@ public class WandUtil {
                 return;
             }
 
-            block.setType(material);
+            setBlock(block, item);
             filled.incrementAndGet();
         });
-        ItemProvider.consumeItems(player, material, filled.get());
+        ItemProvider.consumeItems(player, item, filled.get());
         player.updateInventory();
 
         return filled.get();
     }
 
     @SuppressWarnings({"RedundantIfStatement", "DuplicatedCode"})
-    public static boolean isMaterialDisabledToBreak(@NotNull Material material) {
+    public static boolean isItemDisabledToBreak(@Nullable ItemStack itemStack) {
+        if (itemStack == null) return true;
+        PylonItem item = PylonItem.fromStack(itemStack);
+        if (item != null) {
+            NamespacedKey block = item.getPylonBlock();
+            if (block == null) return true;
+            if (PylonRegistry.BLOCKS.get(block) == null) return true;
+            if (isPylonBlockDisabledToBreak(block)) return true;
+        }
+
+        Material material = itemStack.getType();
         if (
                 material.isAir()
                         || !material.isBlock()
@@ -455,7 +469,7 @@ public class WandUtil {
     }
 
     @Nullable
-    public static Axis getAxis(@NotNull ItemStack item) {
+    public static Axis getAxis(ItemStack item) {
         String axis = PersistentUtil.getOrDefault(item, PersistentDataType.STRING, KeyUtil.AXIS, null);
         if (axis == null) {
             return null;
@@ -468,7 +482,7 @@ public class WandUtil {
         }
     }
 
-    public static void setAxis(@NotNull ItemStack item, @Nullable Axis axis) {
+    public static void setAxis(ItemStack item, @Nullable Axis axis) {
         if (axis == null) {
             PersistentUtil.set(item, PersistentDataType.STRING, KeyUtil.AXIS, "null");
         } else {
@@ -477,7 +491,7 @@ public class WandUtil {
     }
 
     @NotNull
-    private static BlockFace getBlockFaceAsCartesian(@NotNull BlockFace originalFacing) {
+    private static BlockFace getBlockFaceAsCartesian(BlockFace originalFacing) {
         // Seems here's a bug, but it works fine...
         BlockFace lookingFacing = originalFacing.getOppositeFace();
         if (!originalFacing.isCartesian()) {
@@ -493,7 +507,11 @@ public class WandUtil {
         return lookingFacing;
     }
 
-    public static boolean isMaterialStateCopyableToBuild(@NotNull Material material) {
+    public static boolean isMaterialStateCopyableToBuild(ItemStack itemStack) {
+        PylonItem item = PylonItem.fromStack(itemStack);
+        if (item != null) return false;
+
+        Material material = itemStack.getType();
         return // Items that be allowed to copy state
                 MaterialTags.FENCE_GATES.isTagged(material)
                         || material.name().endsWith("_SLAB")
@@ -514,7 +532,17 @@ public class WandUtil {
     }
 
     @SuppressWarnings({"RedundantIfStatement", "DuplicatedCode"})
-    public static boolean isMaterialDisabledToBuild(@NotNull Material material) {
+    public static boolean isItemDisabledToBuild(@Nullable ItemStack itemStack) {
+        if (itemStack == null) return true;
+        PylonItem item = PylonItem.fromStack(itemStack);
+        if (item != null) {
+            NamespacedKey block = item.getPylonBlock();
+            if (block == null) return true;
+            if (PylonRegistry.BLOCKS.get(block) == null) return true;
+            if (isPylonBlockDisabledToBuild(block)) return true;
+        }
+
+        Material material = itemStack.getType();
         if (// Items that can store items
                 MaterialTags.SHULKER_BOXES.isTagged(material)
                         || (material.name().endsWith("CHEST") && material != Material.ENDER_CHEST)
@@ -706,8 +734,8 @@ public class WandUtil {
                         || material == Material.CLOSED_EYEBLOSSOM
                         || material == Material.PALE_HANGING_MOSS
                         || material == Material.MANGROVE_PROPAGULE
-                        || material == materialValueOf("WILDFLOWERS")
-                        || material == materialValueOf("LEAF_LITTER")
+                        || material == Material.WILDFLOWERS
+                        || material == Material.LEAF_LITTER
                         || material.name().endsWith("_WALL_FAN")
                         || material == Material.RESIN_CLUMP
         ) {
@@ -717,12 +745,58 @@ public class WandUtil {
         return false;
     }
 
-    @NotNull
-    private static Material materialValueOf(@NotNull String name) {
-        try {
-            return Material.valueOf(name);
-        } catch (IllegalArgumentException | NullPointerException e) {
-            return Material.AIR;
+    @Nullable
+    public static ItemStack getItemType(Wand wand, Block block) {
+        if (wand.isAllowHandlePylonBlock()) {
+            PylonBlock pylon = BlockStorage.get(block);
+            if (pylon != null) {
+                PylonItemSchema schema = pylon.getDefaultItem();
+                if (schema != null) {
+                    return schema.getItemStack();
+                }
+            }
         }
+
+        Material blockType = block.getType();
+        if (!blockType.isItem()) {
+            ItemType type = blockType.asItemType();
+            if (type != null) {
+                Material converted = type.asMaterial();
+                if (converted != null) {
+                    return ItemStack.of(converted);
+                }
+            }
+            return null;
+        } else {
+            return ItemStack.of(blockType);
+        }
+    }
+
+    private static void setBlock(Block block, ItemStack itemStack) {
+        PylonItem item = PylonItem.fromStack(itemStack);
+        if (item != null) {
+            if (BlockStorage.get(block) != null) return;
+            NamespacedKey key = item.getPylonBlock();
+            if (key != null) {
+                PylonBlockSchema schema = PylonRegistry.BLOCKS.get(key);
+                if (schema != null) {
+                    block.setType(schema.getMaterial());
+                    BlockStorage.placeBlock(block, key);
+                    return;
+                }
+            }
+        }
+
+        if (block.getType().isAir()) block.setType(itemStack.getType());
+    }
+
+    private static boolean isPylonBlockDisabledToBuild(NamespacedKey block) {
+        // todo
+        return false;
+    }
+
+    private static boolean isPylonBlockDisabledToBreak(NamespacedKey block) {
+        // todo
+        return false;
     }
 }

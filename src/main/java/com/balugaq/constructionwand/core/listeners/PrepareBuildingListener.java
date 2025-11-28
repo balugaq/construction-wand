@@ -9,7 +9,6 @@ import com.balugaq.constructionwand.utils.Debug;
 import com.balugaq.constructionwand.utils.PermissionUtil;
 import com.balugaq.constructionwand.utils.WandUtil;
 import dev.sefiraat.sefilib.entity.display.DisplayGroup;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -48,22 +47,22 @@ public class PrepareBuildingListener implements Listener {
         if (buildingWand.isOpOnly() && !player.isOp()) {
             return;
         }
-        showBuildingBlocksFor(player, event.getLookingAtBlock(), buildingWand.getLimitBlocks(), event.getBuildingWand());
+        showBuildingBlocksFor(player, event.getLookingAtBlock(), buildingWand.getHandleableBlocks(), event.getBuildingWand());
     }
 
     private void showBuildingBlocksFor(Player player, Block lookingAtBlock, int limitBlocks, BuildingWand buildingWand) {
         if (!player.isOp() && !PermissionUtil.canPlaceBlock(player, lookingAtBlock)) {
             return;
         }
-        Material material = lookingAtBlock.getType();
-        int playerHas = ItemProvider.getItemAmount(player, material, limitBlocks);
+        ItemStack item = WandUtil.getItemType(buildingWand, lookingAtBlock);
+        int playerHas = ItemProvider.getItemAmount(player, item, limitBlocks);
 
         Set<Location> showingBlocks = WandUtil.getBuildingLocations(player, Math.min(limitBlocks, playerHas), WandUtil.getAxis(player.getInventory().getItemInMainHand()), buildingWand.isBlockStrict());
         DisplayGroup displayGroup = new DisplayGroup(player.getLocation(), 0.0F, 0.0F);
         for (Location location : showingBlocks) {
             String ls = location.getBlockX() + "_" + location.getBlockY() + "_" + location.getBlockZ();
             Location displayLocation = location.clone().add(0.5, 0.5, 0.5);
-            displayGroup.addDisplay("m" + ls, BLOCK_BASE.material(material).build(displayLocation));
+            displayGroup.addDisplay("m" + ls, BLOCK_BASE.material(item.getType()).build(displayLocation));
             displayGroup.addDisplay("b" + ls, BORDER.build(displayLocation));
         }
 

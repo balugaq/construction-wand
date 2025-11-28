@@ -53,7 +53,7 @@ public class PrepareBreakingListener implements Listener {
         if (breakingWand.isOpOnly() && !player.isOp()) {
             return;
         }
-        showBreakingBlocksFor(player, event.getLookingAtBlock(), breakingWand.getLimitBlocks(), breakingWand);
+        showBreakingBlocksFor(player, event.getLookingAtBlock(), breakingWand.getHandleableBlocks(), breakingWand);
     }
 
     private void showBreakingBlocksFor(Player player, Block lookingAtBlock, int limitBlocks, BreakingWand breakingWand) {
@@ -66,8 +66,8 @@ public class PrepareBreakingListener implements Listener {
             return;
         }
 
-        Material material = lookingAtBlock.getType();
-        if (WandUtil.isMaterialDisabledToBreak(material)) {
+        ItemStack item = WandUtil.getItemType(breakingWand, lookingAtBlock);
+        if (WandUtil.isItemDisabledToBreak(item)) {
             return;
         }
 

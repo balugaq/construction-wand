@@ -3,8 +3,8 @@ package com.balugaq.constructionwand.api.providers;
 import com.balugaq.constructionwand.core.managers.ConfigManager;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import org.bukkit.GameMode;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Range;
 import org.jspecify.annotations.NullMarked;
@@ -35,16 +35,16 @@ public interface ItemProvider {
      * If the player is in creative mode, then it will return {@link #MODIFICATION_BLOCK_LIMIT}
      *
      * @param player        The player
-     * @param material      The item material, item must be a pure vanilla item.
+     * @param target        The item, item must be one amount
      * @param requireAmount The max amount to consume
      * @return The amount of items the player has
      */
-    static @Range(from = 0, to = Integer.MAX_VALUE) int getItemAmount(Player player, Material material, @Range(from = 1, to = Integer.MAX_VALUE) int requireAmount) {
+    static @Range(from = 0, to = Integer.MAX_VALUE) int getItemAmount(Player player, ItemStack target, @Range(from = 1, to = Integer.MAX_VALUE) int requireAmount) {
         if (player.getGameMode() == GameMode.CREATIVE) return MODIFICATION_BLOCK_LIMIT;
 
         int total = 0;
         for (ItemProvider provider : PROVIDERS) {
-            int got = provider.getAmount(player, material, requireAmount);
+            int got = provider.getAmount(player, target, requireAmount);
             requireAmount -= got;
             total += got;
             if (requireAmount <= 0) {
@@ -58,16 +58,16 @@ public interface ItemProvider {
      * Consume items when player uses filling wand / building wand
      * Call {@link Player#updateInventory()} after calling this method.
      *
-     * @param player   The player
-     * @param material The item material, item must be a pure vanilla item.
-     * @param amount   The amount to consume
+     * @param player The player
+     * @param target The item
+     * @param amount The amount to consume
      * @return The amount of items consumed
      */
     @CanIgnoreReturnValue
-    static @Range(from = 0, to = Integer.MAX_VALUE) int consumeItems(Player player, Material material, @Range(from = 1, to = Integer.MAX_VALUE) int amount) {
+    static @Range(from = 0, to = Integer.MAX_VALUE) int consumeItems(Player player, ItemStack target, @Range(from = 1, to = Integer.MAX_VALUE) int amount) {
         int total = 0;
         for (ItemProvider provider : PROVIDERS) {
-            int consumed = provider.consumeItem(player, material, amount);
+            int consumed = provider.consumeItem(player, target, amount);
             amount -= consumed;
             total += consumed;
             if (amount <= 0) {
@@ -88,7 +88,7 @@ public interface ItemProvider {
      * Counts the amount of items the player has
      *
      * @param player        The player
-     * @param material      The item material, item must be a pure vanilla item.
+     * @param target        The item
      * @param requireAmount The max amount to consume
      * @return The amount of items the player has
      */
@@ -96,23 +96,23 @@ public interface ItemProvider {
     @Range(from = 0, to = Integer.MAX_VALUE)
     int getAmount(
             Player player,
-            Material material,
+            ItemStack target,
             @Range(from = 1, to = Integer.MAX_VALUE) int requireAmount
     );
 
     /**
      * Consume items when player uses filling wand / building wand
      *
-     * @param player   The player
-     * @param material The item material, item must be a pure vanilla item.
-     * @param amount   The amount to consume
+     * @param player The player
+     * @param target The item
+     * @param amount The amount to consume
      * @return The amount of items consumed
      */
     @CanIgnoreReturnValue
     @Range(from = 0, to = Integer.MAX_VALUE)
     int consumeItem(
             Player player,
-            Material material,
+            ItemStack target,
             @Range(from = 1, to = Integer.MAX_VALUE) int amount
     );
 }

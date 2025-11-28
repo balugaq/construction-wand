@@ -20,25 +20,25 @@ item:
       <attr>Max Range:</attr> %range% Blocks
       <green>Selected area can be formed by any block
   building-wand-block-strict-common:
-    name: "<green>Build Wand | <blue>Common"
+    name: "<green>Build Wand | <red> Block Strict | <blue>Common"
     lore: |-
       <gray><insn>Right click</insn> to place blocks
       <attr>Max Range:</attr> %range% Blocks
       <red>Selected area can be formed only by one kind of block
   building-wand-block-strict-rare:
-    name: "<green>Build Wand | <gold>Rare"
+    name: "<green>Build Wand | <red> Block Strict | <gold>Rare"
     lore: |-
       <gray><insn>Right click</insn> to place blocks
       <attr>Max Range:</attr> %range% Blocks
       <red>Selected area can be formed only by one kind of block
   building-wand-block-strict-epic:
-    name: "<green>Build Wand | <yellow>Epic"
+    name: "<green>Build Wand | <red> Block Strict | <yellow>Epic"
     lore: |-
       <gray><insn>Right click</insn> to place blocks
       <attr>Max Range:</attr> %range% Blocks
       <red>Selected area can be formed only by one kind of block
   building-wand-cheat:
-    name: "<green>Build Wand | <dark_red>Cheat"
+    name: "<green>Build Wand | <red> Block Strict | <dark_red>Cheat"
     lore: |-
       <gray><insn>Right click</insn> to place blocks
       <attr>Max Range:</attr> %range% Blocks
