@@ -1,0 +1,135 @@
+addon: "ConstructionWand"
+
+item:
+  building-wand-common:
+    name: "<green>설치 지팡이 | <blue>일반"
+    lore: |-
+      <gray><insn>오른쪽 클릭</insn>으로 블록 설치
+      <attr>최대 범위:</attr> %range%블록
+      <green>선택한 영역이 아무 블록으로나 채워집니다
+  building-wand-rare:
+    name: "<green>설치 지팡이 | <gold>희귀"
+    lore: |-
+      <gray><insn>오른쪽 클릭</insn>으로 블록 설치
+      <attr>최대 범위:</attr> %range%블록
+      <green>선택한 영역이 아무 블록으로나 채워집니다
+  building-wand-epic:
+    name: "<green>설치 지팡이 | <yellow>특급"
+    lore: |-
+      <gray><insn>오른쪽 클릭</insn>으로 블록 설치
+      <attr>최대 범위:</attr> %range%블록
+      <green>선택한 영역이 아무 블록으로나 채워집니다
+  building-wand-block-strict-common:
+    name: "<green>설치 지팡이 | <blue>일반"
+    lore: |-
+      <gray><insn>오른쪽 클릭</insn>으로 블록 설치
+      <attr>최대 범위:</attr> %range%블록
+      <red>선택한 영역이 한 종류의 블록으로만 채워집니다
+  building-wand-block-strict-rare:
+    name: "<green>설치 지팡이 | <gold>희귀"
+    lore: |-
+      <gray><insn>오른쪽 클릭</insn>으로 블록 설치
+      <attr>최대 범위:</attr> %range%블록
+      <red>선택한 영역이 한 종류의 블록으로만 채워집니다
+  building-wand-block-strict-epic:
+    name: "<green>설치 지팡이 | <yellow>특급"
+    lore: |-
+      <gray><insn>오른쪽 클릭</insn>으로 블록 설치
+      <attr>최대 범위:</attr> %range%블록
+      <red>선택한 영역이 한 종류의 블록으로만 채워집니다
+  building-wand-cheat:
+    name: "<green>설치 지팡이 | <dark_red>치트"
+    lore: |-
+      <gray><insn>오른쪽 클릭</insn>으로 블록 설치
+      <attr>최대 범위:</attr> %range%블록
+      <green>선택한 영역이 아무 블록으로나 채워집니다
+      <red>관리자 전용
+  building-wand-block-strict-cheat:
+    name: "<green>설치 지팡이 | <dark_red>치트"
+    lore: |-
+      <gray><insn>오른쪽 클릭</insn>으로 블록 설치
+      <attr>최대 범위:</attr> %range%블록
+      <red>선택한 영역이 한 종류의 블록으로만 채워집니다
+      <red>관리자 전용
+  breaking-wand-common:
+    name: "<red>파괴 지팡이 | <blue>일반"
+    lore: |-
+      <gray><insn>오른쪽 클릭</insn>으로 블록 파괴
+      <attr>최대 범위:</attr> %range%블록
+      <red>선택한 영역이 한 종류의 블록으로만 채워집니다
+  breaking-wand-rare:
+    name: "<red>파괴 지팡이 | <gold>희귀"
+    lore: |-
+      <gray><insn>오른쪽 클릭</insn>으로 블록 파괴
+      <attr>최대 범위:</attr> %range%블록
+      <red>선택한 영역이 한 종류의 블록으로만 채워집니다
+  breaking-wand-epic:
+    name: "<red>파괴 지팡이 | <yellow>특급"
+    lore: |-
+      <gray><insn>오른쪽 클릭</insn>으로 블록 파괴
+      <attr>최대 범위:</attr> %range%블록
+      <red>선택한 영역이 한 종류의 블록으로만 채워집니다
+  breaking-wand-cheat:
+    name: "<red>파괴 지팡이 | <dark_red>치트"
+    lore: |-
+      <gray><insn>오른쪽 클릭</insn>으로 블록 파괴
+      <attr>최대 범위:</attr> %range%블록
+      <red>선택한 영역이 한 종류의 블록으로만 채워집니다
+      <red>관리자 전용
+  fill-wand-common:
+    name: "<red>채움 지팡이 | <blue>일반"
+    lore: |-
+      <green>왼쪽 클릭으로 시작 위치 설정
+      <green><insn>오른쪽 클릭</insn>으로 종료 위치 설정
+      <green><insn>쉬프트 오른쪽 클릭</insn>으로 채울 블록 설정
+      <green>공중에 <insn>오른쪽 클릭</insn>으로 블록 채우기
+      <attr>최대 범위:</attr> %range%블록
+  fill-wand-rare:
+    name: "<red>채움 지팡이 | <gold>희귀"
+    lore: |-
+      <green>왼쪽 클릭으로 시작 위치 설정
+      <green><insn>오른쪽 클릭</insn>으로 종료 위치 설정
+      <green><insn>쉬프트 오른쪽 클릭</insn>으로 채울 블록 설정
+      <green>공중에 <insn>오른쪽 클릭</insn>으로 블록 채우기
+      <attr>최대 범위:</attr> %range%블록
+  fill-wand-epic:
+    name: "<red>채움 지팡이 | <yellow>특급"
+    lore: |-
+      <green>왼쪽 클릭으로 시작 위치 설정
+      <green><insn>오른쪽 클릭</insn>으로 종료 위치 설정
+      <green><insn>쉬프트 오른쪽 클릭</insn>으로 채울 블록 설정
+      <green>공중에 <insn>오른쪽 클릭</insn>으로 블록 채우기
+      <attr>최대 범위:</attr> %range%블록
+  fill-wand-cheat:
+    name: "<red>채움 지팡이 | <dark_red>치트"
+    lore: |-
+      <green>왼쪽 클릭으로 시작 위치 설정
+      <green><insn>오른쪽 클릭</insn>으로 종료 위치 설정
+      <green><insn>쉬프트 오른쪽 클릭</insn>으로 채울 블록 설정
+      <green>공중에 <insn>오른쪽 클릭</insn>으로 블록 채우기
+      <attr>최대 범위:</attr> %range%블록
+      <red>관리자 전용
+
+guide:
+  page:
+    construction-wand: "건설 지팡이"
+
+message:
+  common:
+    set-start-location: "<green>시작 위치 설정: %start-location%"
+    set-end-location: "<green>종료 위치 설정: %end-location%"
+    set-start-location-with-range: "<green>시작 위치 설정: %start-location% <gray>(<yellow>%total%블록<gray>)"
+    set-end-location-with-range: "<green>종료 위치 설정: %end-location% <gray>(<yellow>%total%블록<gray>)"
+    set-material: "<green>재료 설정: %material%"
+    not-set-start-location: "<red>시작 위치가 설정되지 않았습니다!"
+    not-set-end-location: "<red>종료 위치가 설정되지 않았습니다!"
+    not-set-material: "<red>재료가 설정되지 않았습니다!"
+    locations-in-different-worlds: "<red>위치가 다른 월드에 있습니다!"
+    too-many-blocks: "<red>블록이 너무 많습니다!"
+    invalid-block: "<red>유효하지 않은 블록입니다!"
+    disabled-block: "<red>비활성화된 블록입니다!"
+    no-enough-items: "<red>충분한 %material%이(가) 없습니다!"
+    start-location: "<attr>시작 위치:</attr> %start-location%"
+    end-location: "<attr>종료 위치:</attr> %end-location%"
+  fill-wand:
+    filled-blocks: "<green>채운 블록: %blocks%블록"
