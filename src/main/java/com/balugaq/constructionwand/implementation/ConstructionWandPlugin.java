@@ -99,7 +99,11 @@ public class ConstructionWandPlugin extends JavaPlugin implements PylonAddon {
     @Override
     public Set<Locale> getLanguages() {
         return Set.of(
-                Locale.US
+                Locale.US,
+                Locale.of("ko", "KR"),
+                Locale.of("zh", "CN"),
+                Locale.of("zh", "TW"),
+                Locale.of("zh", "HK")
         );
     }
 

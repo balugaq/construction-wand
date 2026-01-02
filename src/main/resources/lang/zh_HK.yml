@@ -1,0 +1,135 @@
+addon: "建築魔杖"
+
+item:
+  building-wand-common:
+    name: "<green>建築魔杖 | <blue>普通品質"
+    lore: |-
+      <gray><insn>右鍵點擊</insn>放置方塊
+      <attr>最大範圍:</attr> %range% 格
+      <green>可選擇任意方塊填充目標區域
+  building-wand-rare:
+    name: "<green>建築魔杖 | <gold>稀有品質"
+    lore: |-
+      <gray><insn>右鍵點擊</insn>放置方塊
+      <attr>最大範圍:</attr> %range% 格
+      <green>可選擇任意方塊填充目標區域
+  building-wand-epic:
+    name: "<green>建築魔杖 | <yellow>史詩品質"
+    lore: |-
+      <gray><insn>右鍵點擊</insn>放置方塊
+      <attr>最大範圍:</attr> %range% 格
+      <green>可選擇任意方塊填充目標區域
+  building-wand-block-strict-common:
+    name: "<green>建築魔杖 | <red>方塊限制 | <blue>普通品質"
+    lore: |-
+      <gray><insn>右鍵點擊</insn>放置方塊
+      <attr>最大範圍:</attr> %range% 格
+      <red>僅可選擇單一類型方塊填充目標區域
+  building-wand-block-strict-rare:
+    name: "<green>建築魔杖 | <red>方塊限制 | <gold>稀有品質"
+    lore: |-
+      <gray><insn>右鍵點擊</insn>放置方塊
+      <attr>最大範圍:</attr> %range% 格
+      <red>僅可選擇單一類型方塊填充目標區域
+  building-wand-block-strict-epic:
+    name: "<green>建築魔杖 | <red>方塊限制 | <yellow>史詩品質"
+    lore: |-
+      <gray><insn>右鍵點擊</insn>放置方塊
+      <attr>最大範圍:</attr> %range% 格
+      <red>僅可選擇單一類型方塊填充目標區域
+  building-wand-cheat:
+    name: "<green>建築魔杖 | <red>方塊限制 | <dark_red>作弊模式"
+    lore: |-
+      <gray><insn>右鍵點擊</insn>放置方塊
+      <attr>最大範圍:</attr> %range% 格
+      <green>可選擇任意方塊填充目標區域
+      <red>只限管理員使用
+  building-wand-block-strict-cheat:
+    name: "<green>建築魔杖 | <dark_red>作弊模式"
+    lore: |-
+      <gray><insn>右鍵點擊</insn>放置方塊
+      <attr>最大範圍:</attr> %range% 格
+      <red>僅可選擇單一類型方塊填充目標區域
+      <red>只限管理員使用
+  breaking-wand-common:
+    name: "<red>拆除魔杖 | <blue>普通品質"
+    lore: |-
+      <gray><insn>右鍵點擊</insn>拆除方塊
+      <attr>最大範圍:</attr> %range% 格
+      <red>僅可拆除單一類型方塊的目標區域
+  breaking-wand-rare:
+    name: "<red>拆除魔杖 | <gold>稀有品質"
+    lore: |-
+      <gray><insn>右鍵點擊</insn>拆除方塊
+      <attr>最大範圍:</attr> %range% 格
+      <red>僅可拆除單一類型方塊的目標區域
+  breaking-wand-epic:
+    name: "<red>拆除魔杖 | <yellow>史詩品質"
+    lore: |-
+      <gray><insn>右鍵點擊</insn>拆除方塊
+      <attr>最大範圍:</attr> %range% 格
+      <red>僅可拆除單一類型方塊的目標區域
+  breaking-wand-cheat:
+    name: "<red>拆除魔杖 | <dark_red>作弊模式"
+    lore: |-
+      <gray><insn>右鍵點擊</insn>拆除方塊
+      <attr>最大範圍:</attr> %range% 格
+      <red>僅可拆除單一類型方塊的目標區域
+      <red>只限管理員使用
+  fill-wand-common:
+    name: "<red>填充魔杖 | <blue>普通品質"
+    lore: |-
+      <green><insn>左鍵點擊</insn>方塊設定起始點
+      <green><insn>右鍵點擊</insn>方塊設定結束點
+      <green><insn>按住潛行鍵+右鍵點擊</insn>方塊選擇填充材料
+      <green><insn>右鍵點擊</insn>空氣執行填充操作
+      <attr>最大範圍:</attr> %range% 格
+  fill-wand-rare:
+    name: "<red>填充魔杖 | <gold>稀有品質"
+    lore: |-
+      <green><insn>左鍵點擊</insn>方塊設定起始點
+      <green><insn>右鍵點擊</insn>方塊設定結束點
+      <green><insn>按住潛行鍵+右鍵點擊</insn>方塊選擇填充材料
+      <green><insn>右鍵點擊</insn>空氣執行填充操作
+      <attr>最大範圍:</attr> %range% 格
+  fill-wand-epic:
+    name: "<red>填充魔杖 | <yellow>史詩品質"
+    lore: |-
+      <green><insn>左鍵點擊</insn>方塊設定起始點
+      <green><insn>右鍵點擊</insn>方塊設定結束點
+      <green><insn>按住潛行鍵+右鍵點擊</insn>方塊選擇填充材料
+      <green><insn>右鍵點擊</insn>空氣執行填充操作
+      <attr>最大範圍:</attr> %range% 格
+  fill-wand-cheat:
+    name: "<red>填充魔杖 | <dark_red>作弊模式"
+    lore: |-
+      <green><insn>左鍵點擊</insn>方塊設定起始點
+      <green><insn>右鍵點擊</insn>方塊設定結束點
+      <green><insn>按住潛行鍵+右鍵點擊</insn>方塊選擇填充材料
+      <green><insn>右鍵點擊</insn>空氣執行填充操作
+      <attr>最大範圍:</attr> %range% 格
+      <red>只限管理員使用
+
+guide:
+  page:
+    construction-wand: "建築魔杖指南"
+
+message:
+  common:
+    set-start-location: "<green>已設定起始點: %start-location%"
+    set-end-location: "<green>已設定結束點: %end-location%"
+    set-start-location-with-range: "<green>已設定起始點: %start-location% <gray>( <yellow>總計 %total% 格 <gray>)"
+    set-end-location-with-range: "<green>已設定結束點: %end-location% <gray>( <yellow>總計 %total% 格 <gray>)"
+    set-material: "<green>已選擇填充材料: %material%"
+    not-set-start-location: "<red>尚未設定起始點!"
+    not-set-end-location: "<red>尚未設定結束點!"
+    not-set-material: "<red>尚未選擇填充材料!"
+    locations-in-different-worlds: "<red>起始點與結束點不在同一個世界!"
+    too-many-blocks: "<red>方塊數量超出上限!"
+    invalid-block: "<red>無效方塊!"
+    disabled-block: "<red>該方塊已被禁用!"
+    no-enough-items: "<red>%material% 數量不足!"
+    start-location: "<attr>起始點:</attr> %start-location%"
+    end-location: "<attr>結束點:</attr> %end-location%"
+  fill-wand:
+    filled-blocks: "<green>已填充 %blocks% 個方塊"

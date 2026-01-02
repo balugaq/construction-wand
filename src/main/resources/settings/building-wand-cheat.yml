@@ -3,3 +3,4 @@ block-strict: false
 op-only: true
 allow-handle-pylon-block: true
 durability: -1
+cooldown-ticks: 0

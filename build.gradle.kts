@@ -71,7 +71,7 @@ tasks.runServer {
         github("pylonmc", "pylon-core", coreVersion, "pylon-core-$coreVersion.jar")
     }
     maxHeapSize = "4G"
-    minecraftVersion("1.21.4")
+    minecraftVersion("1.21.10")
 }
 
 tasks.build {

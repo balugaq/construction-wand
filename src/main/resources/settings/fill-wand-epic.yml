@@ -2,3 +2,4 @@ limit-blocks: 1024
 op-only: false
 allow-handle-pylon-block: false
 durability: 19608
+cooldown-ticks: 0
