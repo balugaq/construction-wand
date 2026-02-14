@@ -2,11 +2,11 @@ package com.balugaq.constructionwand.api.items;
 
 import com.balugaq.constructionwand.implementation.ConstructionWandPlugin;
 import com.balugaq.constructionwand.utils.WandUtil;
-import io.github.pylonmc.pylon.core.config.adapter.ConfigAdapter;
-import io.github.pylonmc.pylon.core.i18n.PylonArgument;
-import io.github.pylonmc.pylon.core.item.PylonItem;
-import io.github.pylonmc.pylon.core.item.base.PylonBlockInteractor;
-import io.github.pylonmc.pylon.core.util.gui.unit.UnitFormat;
+import io.github.pylonmc.rebar.config.adapter.ConfigAdapter;
+import io.github.pylonmc.rebar.i18n.RebarArgument;
+import io.github.pylonmc.rebar.item.RebarItem;
+import io.github.pylonmc.rebar.item.base.RebarBlockInteractor;
+import io.github.pylonmc.rebar.util.gui.unit.UnitFormat;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import lombok.Getter;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -22,11 +22,11 @@ import java.util.List;
  */
 @NullMarked
 @Getter
-public class BuildingWand extends PylonItem implements Wand, PylonBlockInteractor {
+public class BuildingWand extends RebarItem implements Wand, RebarBlockInteractor {
     private final int limitBlocks = getOrThrow("limit-blocks", ConfigAdapter.INT);
     private final boolean blockStrict = getOrThrow("block-strict", ConfigAdapter.BOOLEAN);
     private final boolean opOnly = getOrThrow("op-only", ConfigAdapter.BOOLEAN);
-    private final boolean allowHandlePylonBlock = getOrThrow("allow-handle-pylon-block", ConfigAdapter.BOOLEAN);
+    private final boolean allowHandleRebarBlock = getOrThrow("allow-handle-pylon-block", ConfigAdapter.BOOLEAN);
     private final int durability = getOrThrow("durability", ConfigAdapter.INT);
     private final int cooldownTicks = getOrThrow("cooldown-ticks", ConfigAdapter.INT);
 
@@ -49,9 +49,9 @@ public class BuildingWand extends PylonItem implements Wand, PylonBlockInteracto
     }
 
     @Override
-    public List<PylonArgument> getPlaceholders() {
+    public List<RebarArgument> getPlaceholders() {
         return List.of(
-                PylonArgument.of("range", UnitFormat.BLOCKS.format(getLimitBlocks()))
+                RebarArgument.of("range", UnitFormat.BLOCKS.format(getLimitBlocks()))
         );
     }
 }

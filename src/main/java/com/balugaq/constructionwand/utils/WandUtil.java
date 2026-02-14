@@ -4,12 +4,12 @@ import com.balugaq.constructionwand.api.events.FakeBlockBreakEvent;
 import com.balugaq.constructionwand.api.items.Wand;
 import com.balugaq.constructionwand.api.providers.ItemProvider;
 import com.destroystokyo.paper.MaterialTags;
-import io.github.pylonmc.pylon.core.block.BlockStorage;
-import io.github.pylonmc.pylon.core.block.PylonBlock;
-import io.github.pylonmc.pylon.core.block.PylonBlockSchema;
-import io.github.pylonmc.pylon.core.item.PylonItem;
-import io.github.pylonmc.pylon.core.item.PylonItemSchema;
-import io.github.pylonmc.pylon.core.registry.PylonRegistry;
+import io.github.pylonmc.rebar.block.BlockStorage;
+import io.github.pylonmc.rebar.block.RebarBlock;
+import io.github.pylonmc.rebar.block.RebarBlockSchema;
+import io.github.pylonmc.rebar.item.RebarItem;
+import io.github.pylonmc.rebar.item.RebarItemSchema;
+import io.github.pylonmc.rebar.registry.RebarRegistry;
 import org.bukkit.Axis;
 import org.bukkit.Bukkit;
 import org.bukkit.FluidCollisionMode;
@@ -389,7 +389,7 @@ public class WandUtil {
                     continue;
                 }
 
-                PylonBlock pylon = BlockStorage.get(block);
+                RebarBlock pylon = BlockStorage.get(block);
                 if (pylon != null) {
                     BlockStorage.breakBlock(block);
                     block.setType(Material.AIR);
@@ -451,12 +451,12 @@ public class WandUtil {
     @SuppressWarnings({"RedundantIfStatement", "DuplicatedCode"})
     public static boolean isItemDisabledToBreak(@Nullable ItemStack itemStack) {
         if (itemStack == null) return true;
-        PylonItem item = PylonItem.fromStack(itemStack);
+        RebarItem item = RebarItem.fromStack(itemStack);
         if (item != null) {
-            NamespacedKey block = item.getPylonBlock();
+            NamespacedKey block = item.getRebarBlock();
             if (block == null) return true;
-            if (PylonRegistry.BLOCKS.get(block) == null) return true;
-            if (isPylonBlockDisabledToBreak(block)) return true;
+            if (RebarRegistry.BLOCKS.get(block) == null) return true;
+            if (isRebarBlockDisabledToBreak(block)) return true;
         }
 
         Material material = itemStack.getType();
@@ -524,7 +524,7 @@ public class WandUtil {
     }
 
     public static boolean isMaterialStateCopyableToBuild(ItemStack itemStack) {
-        PylonItem item = PylonItem.fromStack(itemStack);
+        RebarItem item = RebarItem.fromStack(itemStack);
         if (item != null) return false;
 
         Material material = itemStack.getType();
@@ -550,12 +550,12 @@ public class WandUtil {
     @SuppressWarnings({"RedundantIfStatement", "DuplicatedCode"})
     public static boolean isItemDisabledToBuild(@Nullable ItemStack itemStack) {
         if (itemStack == null) return true;
-        PylonItem item = PylonItem.fromStack(itemStack);
+        RebarItem item = RebarItem.fromStack(itemStack);
         if (item != null) {
-            NamespacedKey block = item.getPylonBlock();
+            NamespacedKey block = item.getRebarBlock();
             if (block == null) return true;
-            if (PylonRegistry.BLOCKS.get(block) == null) return true;
-            if (isPylonBlockDisabledToBuild(block)) return true;
+            if (RebarRegistry.BLOCKS.get(block) == null) return true;
+            if (isRebarBlockDisabledToBuild(block)) return true;
         }
 
         Material material = itemStack.getType();
@@ -763,10 +763,10 @@ public class WandUtil {
 
     @Nullable
     public static ItemStack getItemType(Wand wand, Block block) {
-        if (wand.isAllowHandlePylonBlock()) {
-            PylonBlock pylon = BlockStorage.get(block);
+        if (wand.isAllowHandleRebarBlock()) {
+            RebarBlock pylon = BlockStorage.get(block);
             if (pylon != null) {
-                PylonItemSchema schema = pylon.getDefaultItem();
+                RebarItemSchema schema = pylon.getDefaultItem();
                 if (schema != null) {
                     return schema.getItemStack();
                 }
@@ -789,12 +789,12 @@ public class WandUtil {
     }
 
     private static void setBlock(Block block, ItemStack itemStack) {
-        PylonItem item = PylonItem.fromStack(itemStack);
+        RebarItem item = RebarItem.fromStack(itemStack);
         if (item != null) {
             if (BlockStorage.get(block) != null) return;
-            NamespacedKey key = item.getPylonBlock();
+            NamespacedKey key = item.getRebarBlock();
             if (key != null) {
-                PylonBlockSchema schema = PylonRegistry.BLOCKS.get(key);
+                RebarBlockSchema schema = RebarRegistry.BLOCKS.get(key);
                 if (schema != null) {
                     block.setType(schema.getMaterial());
                     BlockStorage.placeBlock(block, key);
@@ -806,12 +806,12 @@ public class WandUtil {
         if (block.getType().isAir()) block.setType(itemStack.getType());
     }
 
-    private static boolean isPylonBlockDisabledToBuild(NamespacedKey block) {
+    private static boolean isRebarBlockDisabledToBuild(NamespacedKey block) {
         // todo
         return false;
     }
 
-    private static boolean isPylonBlockDisabledToBreak(NamespacedKey block) {
+    private static boolean isRebarBlockDisabledToBreak(NamespacedKey block) {
         // todo
         return false;
     }

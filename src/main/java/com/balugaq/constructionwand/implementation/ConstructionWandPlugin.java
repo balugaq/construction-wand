@@ -8,7 +8,7 @@ import com.balugaq.constructionwand.core.managers.DisplayManager;
 import com.balugaq.constructionwand.core.managers.ListenerManager;
 import com.balugaq.constructionwand.core.managers.WandSetup;
 import com.balugaq.constructionwand.utils.Debug;
-import io.github.pylonmc.pylon.core.addon.PylonAddon;
+import io.github.pylonmc.rebar.addon.RebarAddon;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -24,7 +24,7 @@ import java.util.Set;
  */
 @SuppressWarnings({"unused", "NotNullFieldNotInitialized"})
 @NullMarked
-public class ConstructionWandPlugin extends JavaPlugin implements PylonAddon {
+public class ConstructionWandPlugin extends JavaPlugin implements RebarAddon {
     @Getter
     private static ConstructionWandPlugin instance;
     private @Getter ConfigManager configManager;
@@ -39,13 +39,9 @@ public class ConstructionWandPlugin extends JavaPlugin implements PylonAddon {
     private String branch;
 
     @Override
-    public void onLoad() {
-        instance = this;
-    }
-
-    @Override
     public void onEnable() {
-        registerWithPylon();
+        instance = this;
+        registerWithRebar();
 
         this.username = "balugaq";
         this.repo = "construction-wand";

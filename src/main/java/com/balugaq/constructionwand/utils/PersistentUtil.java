@@ -5,7 +5,6 @@ import lombok.experimental.UtilityClass;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataHolder;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Contract;
@@ -34,13 +33,9 @@ public class PersistentUtil {
             return;
         }
 
-        ItemMeta meta = itemStack.getItemMeta();
-        if (meta == null) {
-            return;
-        }
-
-        set(meta, dataType, key, value);
-        itemStack.setItemMeta(meta);
+        itemStack.editPersistentDataContainer(pdc -> {
+            pdc.set(key, dataType, value);
+        });
     }
 
 
@@ -57,13 +52,9 @@ public class PersistentUtil {
             return;
         }
 
-        ItemMeta meta = itemStack.getItemMeta();
-        if (meta == null) {
-            return;
-        }
-
-        remove(meta, key);
-        itemStack.setItemMeta(meta);
+        itemStack.editPersistentDataContainer(pdc -> {
+            pdc.remove(key);
+        });
     }
 
     public static void remove(@Nullable PersistentDataHolder holder, NamespacedKey key) {

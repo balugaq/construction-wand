@@ -1,7 +1,7 @@
 package com.balugaq.constructionwand.api.items;
 
-import io.github.pylonmc.pylon.core.config.Settings;
-import io.github.pylonmc.pylon.core.config.adapter.ConfigAdapter;
+import io.github.pylonmc.rebar.config.Settings;
+import io.github.pylonmc.rebar.config.adapter.ConfigAdapter;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -29,7 +29,7 @@ public interface Wand extends Keyed {
 
     int getLimitBlocks();
 
-    boolean isAllowHandlePylonBlock();
+    boolean isAllowHandleRebarBlock();
 
     @Range(from = -1, to = Integer.MAX_VALUE)
     int getDurability();

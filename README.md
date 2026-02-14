@@ -49,7 +49,7 @@ The plugin supports multiple languages, including:
 
 - Minecraft Paper server (1.21+)
 - Java 21 or higher
-- [PylonCore](https://github.com/pylonmc/pylon-core) prerequisite plugin
+- [Rebar](https://github.com/pylonmc/rebar) prerequisite plugin
 
 ## Notes
 

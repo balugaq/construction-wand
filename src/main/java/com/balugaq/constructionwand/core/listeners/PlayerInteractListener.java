@@ -1,7 +1,7 @@
 package com.balugaq.constructionwand.core.listeners;
 
 import com.balugaq.constructionwand.api.items.Wand;
-import io.github.pylonmc.pylon.core.item.PylonItem;
+import io.github.pylonmc.rebar.item.RebarItem;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -27,7 +27,7 @@ public class PlayerInteractListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
-        PylonItem pyItem = PylonItem.fromStack(itemInMainHand);
+        RebarItem pyItem = RebarItem.fromStack(itemInMainHand);
         if (pyItem instanceof Wand) {
             ItemStack itemInOffHand = player.getInventory().getItemInOffHand();
             if (itemInOffHand != null && itemInOffHand.getType() != Material.AIR && itemInOffHand.getType().isBlock()) {

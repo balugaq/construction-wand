@@ -28,11 +28,11 @@ repositories {
     maven("https://repo.xenondevs.xyz/releases")
 }
 
-val coreVersion = project.properties["pylon-core.version"] as String
+val rebarVersion = project.properties["rebar.version"] as String
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT")
-    compileOnly("io.github.pylonmc:pylon-core:$coreVersion")
+    compileOnly("io.github.pylonmc:rebar:$rebarVersion")
     implementation("org.metamechanists:DisplayModelLib:35")
     shadow("org.metamechanists:DisplayModelLib:35")
 }
@@ -62,13 +62,13 @@ bukkit {
     main = project.properties["main-class"] as String
     version = project.version.toString()
     apiVersion = "1.21"
-    depend = listOf("PylonCore")
+    depend = listOf("Rebar")
     load = BukkitPluginDescription.PluginLoadOrder.STARTUP
 }
 
 tasks.runServer {
     downloadPlugins {
-        github("pylonmc", "pylon-core", coreVersion, "pylon-core-$coreVersion.jar")
+        github("pylonmc", "rebar", rebarVersion, "rebar-$rebarVersion.jar")
     }
     maxHeapSize = "4G"
     minecraftVersion("1.21.10")

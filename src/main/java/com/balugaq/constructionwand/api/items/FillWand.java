@@ -6,13 +6,13 @@ import com.balugaq.constructionwand.utils.Messages;
 import com.balugaq.constructionwand.utils.PersistentUtil;
 import com.balugaq.constructionwand.utils.WandUtil;
 import com.balugaq.constructionwand.utils.WorldUtils;
-import io.github.pylonmc.pylon.core.config.adapter.ConfigAdapter;
-import io.github.pylonmc.pylon.core.i18n.PylonArgument;
-import io.github.pylonmc.pylon.core.item.PylonItem;
-import io.github.pylonmc.pylon.core.item.PylonItemSchema;
-import io.github.pylonmc.pylon.core.item.base.PylonInteractor;
-import io.github.pylonmc.pylon.core.registry.PylonRegistry;
-import io.github.pylonmc.pylon.core.util.gui.unit.UnitFormat;
+import io.github.pylonmc.rebar.config.adapter.ConfigAdapter;
+import io.github.pylonmc.rebar.i18n.RebarArgument;
+import io.github.pylonmc.rebar.item.RebarItem;
+import io.github.pylonmc.rebar.item.RebarItemSchema;
+import io.github.pylonmc.rebar.item.base.RebarInteractor;
+import io.github.pylonmc.rebar.registry.RebarRegistry;
+import io.github.pylonmc.rebar.util.gui.unit.UnitFormat;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ItemLore;
 import io.papermc.paper.persistence.PersistentDataContainerView;
@@ -43,13 +43,13 @@ import java.util.List;
  */
 @Getter
 @NullMarked
-public class FillWand extends PylonItem implements Wand, PylonInteractor {
+public class FillWand extends RebarItem implements Wand, RebarInteractor {
     public static final NamespacedKey START_LOCATION_KEY = KeyUtil.newKey("start-location");
     public static final NamespacedKey END_LOCATION_KEY = KeyUtil.newKey("end-location");
     public static final NamespacedKey ITEM_KEY = KeyUtil.newKey("item");
     private final int limitBlocks = getOrThrow("limit-blocks", ConfigAdapter.INT);
     private final boolean opOnly = getOrThrow("op-only", ConfigAdapter.BOOLEAN);
-    private final boolean allowHandlePylonBlock = getOrThrow("allow-handle-pylon-block", ConfigAdapter.BOOLEAN);
+    private final boolean allowHandleRebarBlock = getOrThrow("allow-handle-pylon-block", ConfigAdapter.BOOLEAN);
     private final int durability = getOrThrow("durability", ConfigAdapter.INT);
     private final int cooldownTicks = getOrThrow("cooldown-ticks", ConfigAdapter.INT);
 
@@ -110,7 +110,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
         NamespacedKey key = NamespacedKey.fromString(str);
         if (key == null) return null;
 
-        PylonItemSchema schema = PylonRegistry.ITEMS.get(key);
+        RebarItemSchema schema = RebarRegistry.ITEMS.get(key);
         if (schema != null) return schema.getItemStack();
         return null;
     }
@@ -122,11 +122,11 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
             return null;
         }
 
-        PylonItem item = PylonItem.fromStack(itemStack);
+        RebarItem item = RebarItem.fromStack(itemStack);
         if (item != null) {
-            NamespacedKey block = item.getPylonBlock();
+            NamespacedKey block = item.getRebarBlock();
             if (block != null) {
-                if (PylonRegistry.BLOCKS.get(block) != null) {
+                if (RebarRegistry.BLOCKS.get(block) != null) {
                     return item.getKey().toString();
                 }
             }
@@ -168,7 +168,7 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
     }
 
     public static Component humanizeItemName(Player player, ItemStack itemStack) {
-        PylonItem item = PylonItem.fromStack(itemStack);
+        RebarItem item = RebarItem.fromStack(itemStack);
         if (item != null) {
             return GlobalTranslator.render(itemStack.displayName(), player.locale());
         } else {
@@ -339,9 +339,9 @@ public class FillWand extends PylonItem implements Wand, PylonInteractor {
     }
 
     @Override
-    public List<PylonArgument> getPlaceholders() {
+    public List<RebarArgument> getPlaceholders() {
         return List.of(
-                PylonArgument.of("range", UnitFormat.BLOCKS.format(getLimitBlocks()))
+                RebarArgument.of("range", UnitFormat.BLOCKS.format(getLimitBlocks()))
         );
     }
 

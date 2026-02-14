@@ -4,10 +4,11 @@ import com.balugaq.constructionwand.api.items.BreakingWand;
 import com.balugaq.constructionwand.api.items.BuildingWand;
 import com.balugaq.constructionwand.api.items.FillWand;
 import com.balugaq.constructionwand.utils.KeyUtil;
-import io.github.pylonmc.pylon.core.content.guide.PylonGuide;
-import io.github.pylonmc.pylon.core.guide.pages.base.SimpleStaticGuidePage;
-import io.github.pylonmc.pylon.core.item.PylonItem;
-import io.github.pylonmc.pylon.core.item.builder.ItemStackBuilder;
+import io.github.pylonmc.rebar.content.guide.RebarGuide;
+import io.github.pylonmc.rebar.guide.button.PageButton;
+import io.github.pylonmc.rebar.guide.pages.base.SimpleStaticGuidePage;
+import io.github.pylonmc.rebar.item.RebarItem;
+import io.github.pylonmc.rebar.item.builder.ItemStackBuilder;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -20,10 +21,12 @@ import org.jspecify.annotations.NullMarked;
  */
 @NullMarked
 public class WandSetup implements IManager {
-    public static final SimpleStaticGuidePage MAIN;
+    public static final PageButton MAIN_BUTTON;
+    public static final SimpleStaticGuidePage MAIN_PAGE;
 
     static {
-        MAIN = new SimpleStaticGuidePage(key("construction-wand"), Material.BLAZE_ROD);
+        MAIN_PAGE = new SimpleStaticGuidePage(key("construction-wand"));
+        MAIN_BUTTON = new PageButton(Material.BLAZE_ROD, MAIN_PAGE);
     }
 
     public static NamespacedKey key(String key) {
@@ -31,12 +34,12 @@ public class WandSetup implements IManager {
     }
 
     public static void registerWand(
-            Class<? extends PylonItem> clazz,
+            Class<? extends RebarItem> clazz,
             NamespacedKey key,
             Material material) {
-        ItemStack item = ItemStackBuilder.pylon(material, key).build();
-        PylonItem.register(clazz, item);
-        MAIN.addItem(item);
+        ItemStack item = ItemStackBuilder.rebar(material, key).build();
+        RebarItem.register(clazz, item);
+        MAIN_PAGE.addItem(item);
     }
 
     public static void registerBuildingWand(
@@ -68,12 +71,12 @@ public class WandSetup implements IManager {
                 material
         );
 
-        PylonItem.fromStack(ItemStackBuilder.pylon(material, key).build());
+        RebarItem.fromStack(ItemStackBuilder.rebar(material, key).build());
     }
 
     @Override
     public void setup() {
-        PylonGuide.getRootPage().addPage(MAIN);
+        RebarGuide.getRootPage().addButton(MAIN_BUTTON);
 
         registerBuildingWand(
                 key("building-wand-common"),

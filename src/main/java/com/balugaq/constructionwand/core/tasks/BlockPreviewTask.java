@@ -7,7 +7,7 @@ import com.balugaq.constructionwand.api.items.BuildingWand;
 import com.balugaq.constructionwand.core.managers.DisplayManager;
 import com.balugaq.constructionwand.implementation.ConstructionWandPlugin;
 import com.balugaq.constructionwand.utils.WandUtil;
-import io.github.pylonmc.pylon.core.item.PylonItem;
+import io.github.pylonmc.rebar.item.RebarItem;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.FluidCollisionMode;
@@ -71,7 +71,7 @@ public class BlockPreviewTask extends BukkitRunnable {
                 manager.getLookingAts().put(uuid, location);
                 manager.getLookingFaces().put(uuid, originalFacing);
 
-                PylonItem wandLike = PylonItem.fromStack(player.getInventory().getItemInMainHand());
+                RebarItem wandLike = RebarItem.fromStack(player.getInventory().getItemInMainHand());
                 if (wandLike instanceof BuildingWand buildingWand) {
                     if (buildingWand.isDisabled()) {
                         continue;

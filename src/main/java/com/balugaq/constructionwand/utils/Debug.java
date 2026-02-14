@@ -20,8 +20,8 @@ import java.util.Arrays;
 @UtilityClass
 @NullMarked
 public class Debug {
-    private static final JavaPlugin plugin = ConstructionWandPlugin.getInstance();
     private static final String debugPrefix = "[Debug] ";
+    private static @Nullable JavaPlugin plugin = null;
 
     public static void debug(@Nullable Object... objects) {
         StringBuilder sb = new StringBuilder();
@@ -70,7 +70,7 @@ public class Debug {
     }
 
     public static void sendMessage(@NotNull Player player, String message) {
-        player.sendMessage("[" + plugin.getLogger().getName() + "]" + message);
+        player.sendMessage("[" + getPlugin().getLogger().getName() + "]" + message);
     }
 
     public static void dumpStack() {
@@ -90,7 +90,7 @@ public class Debug {
     }
 
     public static void log(String message) {
-        plugin.getLogger().info(ChatColor.translateAlternateColorCodes('&', message));
+        getPlugin().getLogger().info(ChatColor.translateAlternateColorCodes('&', message));
     }
 
     public static void log(Throwable e) {
@@ -99,5 +99,12 @@ public class Debug {
 
     public static void log() {
         log("");
+    }
+
+    public static JavaPlugin getPlugin() {
+        if (plugin == null) {
+            plugin = ConstructionWandPlugin.getInstance();
+        }
+        return plugin;
     }
 }

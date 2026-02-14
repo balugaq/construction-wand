@@ -5,7 +5,7 @@ import com.balugaq.constructionwand.core.managers.DisplayManager;
 import com.balugaq.constructionwand.implementation.ConstructionWandPlugin;
 import com.balugaq.constructionwand.utils.ParticleUtil;
 import com.balugaq.constructionwand.utils.WorldUtils;
-import io.github.pylonmc.pylon.core.item.PylonItem;
+import io.github.pylonmc.rebar.item.RebarItem;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -38,7 +38,7 @@ public class FillWandSUITask extends BukkitRunnable {
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             ItemStack wand = player.getInventory().getItemInMainHand();
-            PylonItem wandInstance = PylonItem.fromStack(wand);
+            RebarItem wandInstance = RebarItem.fromStack(wand);
             if (!(wandInstance instanceof FillWand fw)) {
                 continue;
             }

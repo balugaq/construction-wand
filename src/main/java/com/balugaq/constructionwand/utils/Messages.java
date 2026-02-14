@@ -1,6 +1,6 @@
 package com.balugaq.constructionwand.utils;
 
-import io.github.pylonmc.pylon.core.i18n.PylonArgument;
+import io.github.pylonmc.rebar.i18n.RebarArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.translation.GlobalTranslator;
@@ -55,20 +55,20 @@ public class Messages {
     public static final String KEY_NO_ENOUGH_ITEMS = PREFIX + "common.no-enough-items";
 
     public static Component arguments(@Nullable Locale locale, String translationKey, Object... args) {
-        List<PylonArgument> pargs = new ArrayList<>();
+        List<RebarArgument> pargs = new ArrayList<>();
         for (int i = 0; i <= args.length / 2; i += 2) {
             String argkey = args[i].toString();
             Object object = args[i + 1];
             switch (object) {
-                case ComponentLike componentLike -> pargs.add(PylonArgument.of(argkey, componentLike));
-                case String string -> pargs.add(PylonArgument.of(argkey, string));
-                case Integer integer -> pargs.add(PylonArgument.of(argkey, integer));
-                case Long longValue -> pargs.add(PylonArgument.of(argkey, longValue));
-                case Double doubleValue -> pargs.add(PylonArgument.of(argkey, doubleValue));
-                case Float floatValue -> pargs.add(PylonArgument.of(argkey, floatValue));
-                case Boolean booleanValue -> pargs.add(PylonArgument.of(argkey, booleanValue));
-                case Character character -> pargs.add(PylonArgument.of(argkey, character));
-                case Number number -> pargs.add(PylonArgument.of(argkey, number.intValue()));
+                case ComponentLike componentLike -> pargs.add(RebarArgument.of(argkey, componentLike));
+                case String string -> pargs.add(RebarArgument.of(argkey, string));
+                case Integer integer -> pargs.add(RebarArgument.of(argkey, integer));
+                case Long longValue -> pargs.add(RebarArgument.of(argkey, longValue));
+                case Double doubleValue -> pargs.add(RebarArgument.of(argkey, doubleValue));
+                case Float floatValue -> pargs.add(RebarArgument.of(argkey, floatValue));
+                case Boolean booleanValue -> pargs.add(RebarArgument.of(argkey, booleanValue));
+                case Character character -> pargs.add(RebarArgument.of(argkey, character));
+                case Number number -> pargs.add(RebarArgument.of(argkey, number.intValue()));
                 default -> {
                 }
             }
