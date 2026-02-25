@@ -9,6 +9,7 @@ import io.github.pylonmc.rebar.item.base.RebarBlockInteractor;
 import io.github.pylonmc.rebar.util.gui.unit.UnitFormat;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import lombok.Getter;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -23,12 +24,12 @@ import java.util.List;
 @NullMarked
 @Getter
 public class BuildingWand extends RebarItem implements Wand, RebarBlockInteractor {
-    private final int limitBlocks = getOrThrow("limit-blocks", ConfigAdapter.INT);
+    private final int limitBlocks = getOrThrow("limit-blocks", ConfigAdapter.INTEGER);
     private final boolean blockStrict = getOrThrow("block-strict", ConfigAdapter.BOOLEAN);
     private final boolean opOnly = getOrThrow("op-only", ConfigAdapter.BOOLEAN);
     private final boolean allowHandleRebarBlock = getOrThrow("allow-handle-pylon-block", ConfigAdapter.BOOLEAN);
-    private final int durability = getOrThrow("durability", ConfigAdapter.INT);
-    private final int cooldownTicks = getOrThrow("cooldown-ticks", ConfigAdapter.INT);
+    private final int durability = getOrThrow("durability", ConfigAdapter.INTEGER);
+    private final int cooldownTicks = getOrThrow("cooldown-ticks", ConfigAdapter.INTEGER);
 
     public BuildingWand(ItemStack stack) {
         super(stack);
@@ -40,7 +41,7 @@ public class BuildingWand extends RebarItem implements Wand, RebarBlockInteracto
     }
 
     @Override
-    public void onUsedToClickBlock(PlayerInteractEvent event) {
+    public void onUsedToClickBlock(PlayerInteractEvent event, EventPriority priority) {
         if (event.getHand() != EquipmentSlot.HAND) {
             return;
         }

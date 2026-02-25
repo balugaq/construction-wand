@@ -26,6 +26,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -47,11 +48,11 @@ public class FillWand extends RebarItem implements Wand, RebarInteractor {
     public static final NamespacedKey START_LOCATION_KEY = KeyUtil.newKey("start-location");
     public static final NamespacedKey END_LOCATION_KEY = KeyUtil.newKey("end-location");
     public static final NamespacedKey ITEM_KEY = KeyUtil.newKey("item");
-    private final int limitBlocks = getOrThrow("limit-blocks", ConfigAdapter.INT);
+    private final int limitBlocks = getOrThrow("limit-blocks", ConfigAdapter.INTEGER);
     private final boolean opOnly = getOrThrow("op-only", ConfigAdapter.BOOLEAN);
     private final boolean allowHandleRebarBlock = getOrThrow("allow-handle-pylon-block", ConfigAdapter.BOOLEAN);
-    private final int durability = getOrThrow("durability", ConfigAdapter.INT);
-    private final int cooldownTicks = getOrThrow("cooldown-ticks", ConfigAdapter.INT);
+    private final int durability = getOrThrow("durability", ConfigAdapter.INTEGER);
+    private final int cooldownTicks = getOrThrow("cooldown-ticks", ConfigAdapter.INTEGER);
 
     public FillWand(ItemStack stack) {
         super(stack);
@@ -177,8 +178,12 @@ public class FillWand extends RebarItem implements Wand, RebarInteractor {
     }
 
     @Override
-    public void onUsedToRightClick(PlayerInteractEvent event) {
+    public void onUsedToClick(PlayerInteractEvent event, EventPriority priority) {
         if (isDisabled()) {
+            return;
+        }
+
+        if (!event.getAction().isRightClick()) {
             return;
         }
 
