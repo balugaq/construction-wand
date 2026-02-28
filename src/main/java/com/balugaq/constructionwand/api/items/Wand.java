@@ -2,10 +2,13 @@ package com.balugaq.constructionwand.api.items;
 
 import io.github.pylonmc.rebar.config.Settings;
 import io.github.pylonmc.rebar.config.adapter.ConfigAdapter;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import org.bukkit.GameMode;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.checkerframework.checker.index.qual.Positive;
 import org.jetbrains.annotations.Range;
 import org.jspecify.annotations.NullMarked;
 
@@ -38,14 +41,27 @@ public interface Wand extends Keyed {
 
     int getCooldownTicks();
 
+    @Positive
     default int getHandleableBlocks() {
-        return Math.min(getLimitBlocks(), getDurability());
+        if (getDurability() > 0) {
+            return Math.min(getLimitBlocks(), getDurability());
+        } else {
+            return getLimitBlocks();
+        }
     }
 
     default void handleInteract(Player player, int blocks) {
-        getStack().damage(blocks, player);
+        if (!player.isOp() && player.getGameMode() != GameMode.CREATIVE) {
+            getStack().damage(blocks, player);
+        }
         if (getCooldownTicks() > 0) {
             player.setCooldown(getStack(), getCooldownTicks());
+        }
+    }
+
+    default void addDurability(int durability) {
+        if (getStack().hasData(DataComponentTypes.DAMAGE)) {
+            getStack().setData(DataComponentTypes.DAMAGE, Math.max(0, getStack().getData(DataComponentTypes.DAMAGE) - durability));
         }
     }
 

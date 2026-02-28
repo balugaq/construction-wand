@@ -9,6 +9,7 @@ import io.github.pylonmc.rebar.block.RebarBlock;
 import io.github.pylonmc.rebar.block.RebarBlockSchema;
 import io.github.pylonmc.rebar.item.RebarItem;
 import io.github.pylonmc.rebar.item.RebarItemSchema;
+import io.github.pylonmc.rebar.item.research.Research;
 import io.github.pylonmc.rebar.registry.RebarRegistry;
 import org.bukkit.Axis;
 import org.bukkit.Bukkit;
@@ -190,28 +191,33 @@ public class WandUtil {
             }
 
             Location queuedLocation = currentBlock.getLocation();
-            if (!locations.contains(queuedLocation)) {
-                locations.add(queuedLocation);
+            if (locations.contains(queuedLocation)) {
+                continue;
+            }
+            locations.add(queuedLocation);
 
-                for (BlockFace face : faces) {
-                    Block block = currentBlock.getRelative(face);
-                    if (!blockStrict || block.getType() == type) {
-                        Location location = block.getLocation();
-                        if (!locations.contains(location)) {
-                            if (checkOutward) {
-                                Block outwardBlock = block.getRelative(lookingFacing.getOppositeFace());
-                                Material outwardType = outwardBlock.getType();
-                                if (!outwardType.isAir() && outwardType != Material.WATER && outwardType != Material.LAVA) {
-                                    continue;
-                                }
-                            }
+            for (BlockFace face : faces) {
+                Block block = currentBlock.getRelative(face);
+                if (blockStrict && block.getType() != type) {
+                    continue;
+                }
 
-                            Location blockLocation = block.getLocation();
-                            if (manhattanDistance(lookingLocation, blockLocation) < limitBlocks) {
-                                queue.offer(blockLocation);
-                            }
-                        }
+                Location location = block.getLocation();
+                if (locations.contains(location)) {
+                    continue;
+                }
+
+                if (checkOutward) {
+                    Block outwardBlock = block.getRelative(lookingFacing.getOppositeFace());
+                    Material outwardType = outwardBlock.getType();
+                    if (!outwardType.isAir() && outwardType != Material.WATER && outwardType != Material.LAVA) {
+                        continue;
                     }
+                }
+
+                Location blockLocation = block.getLocation();
+                if (manhattanDistance(lookingLocation, blockLocation) < limitBlocks) {
+                    queue.offer(blockLocation);
                 }
             }
         }
@@ -228,21 +234,10 @@ public class WandUtil {
 
     @SuppressWarnings("DuplicatedCode")
     public static void placeBlocks(Plugin plugin, @Nullable EquipmentSlot hand, Player player, Wand wand) {
-        if (hand != null && hand != EquipmentSlot.HAND) {
-            return;
-        }
-
-        if (wand.isOpOnly() && !player.isOp()) {
-            return;
-        }
-
-        if (player.getGameMode() == GameMode.SPECTATOR) {
-            return;
-        }
-
-        if (wand.isDisabled()) {
-            return;
-        }
+        if ((hand != null && hand != EquipmentSlot.HAND)
+                || (wand.isOpOnly() && !player.isOp())
+                || (player.getGameMode() == GameMode.SPECTATOR)
+                || (wand.isDisabled())) return;
 
         Block lookingAtBlock = player.getTargetBlockExact(6, FluidCollisionMode.NEVER);
         if (lookingAtBlock == null || lookingAtBlock.getType() == Material.AIR) {
@@ -286,59 +281,43 @@ public class WandUtil {
         }
 
         // I don't know why, but it must be run later, or it will create PlayerInteractEvent AGAIN!
-        Bukkit.getScheduler().runTaskLater(
-                plugin, () -> {
-                    for (Block block : blocks) {
-                        if (isMaterialStateCopyableToBuild(itemInHand)) {
-                            WorldUtils.copyBlockState(lookingAtBlock.getState(), block);
-                        } else {
-                            setBlock(block, itemInHand);
-                        }
-                        block.getState().update(true, true);
-                    }
-                }, 2
-        ); // The lagger the server is, the more delay it should take.
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            for (Block block : blocks) {
+                if (isMaterialStateCopyableToBuild(itemInHand)) {
+                    WorldUtils.copyBlockState(lookingAtBlock.getState(), block);
+                } else {
+                    setBlock(block, itemInHand);
+                }
+                block.getState().update(true, true);
+            }
+        }, 2); // The lagger the server is, the more delay it should take.
 
-        if (player.getGameMode() == GameMode.CREATIVE) {
+        if (player.getGameMode() == GameMode.CREATIVE)
             return;
-        }
 
+        wand.handleInteract(player, consumed);
         ItemProvider.consumeItems(player, itemInHand, consumed);
         player.updateInventory();
     }
 
-    @SuppressWarnings({"ConstantValue", "DuplicatedCode"})
+    @SuppressWarnings("DuplicatedCode")
     public static void breakBlocks(Plugin plugin, @Nullable EquipmentSlot hand, Player player, Wand wand) {
-        if (hand != null && hand != EquipmentSlot.HAND) {
-            return;
-        }
-
-        if (wand.isOpOnly() && !player.isOp()) {
-            return;
-        }
-
-        if (player.getGameMode() == GameMode.SPECTATOR) {
-            return;
-        }
-
-        if (wand.isDisabled()) {
-            return;
-        }
+        if ((hand != null && hand != EquipmentSlot.HAND)
+                || (wand.isOpOnly() && !player.isOp())
+                || (player.getGameMode() == GameMode.SPECTATOR)
+                || (wand.isDisabled())) return;
 
         Block lookingAtBlock = player.getTargetBlockExact(6, FluidCollisionMode.NEVER);
-        if (lookingAtBlock == null || lookingAtBlock.getType() == Material.AIR) {
+        if (lookingAtBlock == null || lookingAtBlock.getType() == Material.AIR)
             return;
-        }
 
         ItemStack item = getItemType(wand, lookingAtBlock);
-        if (isItemDisabledToBreak(item)) {
+        if (isItemDisabledToBreak(item))
             return;
-        }
 
         BlockFace originalFacing = player.getTargetBlockFace(6, FluidCollisionMode.NEVER);
-        if (originalFacing == null) {
+        if (originalFacing == null)
             return;
-        }
 
         Location lookingLocation = lookingAtBlock.getLocation();
         BlockFace lookingFacing = getBlockFaceAsCartesian(originalFacing);
@@ -360,39 +339,31 @@ public class WandUtil {
         // sort by shortest distance
         Set<Location> locations = new HashSet<>(distances.keySet());
         List<Location> sortedLocations = locations.stream().sorted(Comparator.comparingDouble(distances::get)).toList();
-        Set<Location> result = new HashSet<>();
-        AtomicInteger count = new AtomicInteger(0);
-        sortedLocations.forEach(location -> {
-            if (count.incrementAndGet() > wand.getHandleableBlocks()) {
-                return;
-            }
-            result.add(location);
-        });
+        Set<BlockBreakEvent> result = new HashSet<>();
+        int count = 0;
+        for (Location location : sortedLocations) {
+            if (!canPlayerBreak(player, location)) continue;
 
-        Set<BlockBreakEvent> locationsToBreak = new HashSet<>();
-        for (Location location : result) {
             FakeBlockBreakEvent e2 = PermissionUtil.simulateBlockBreak(player, location.getBlock());
-            if (!e2.isCancelled()) {
-                locationsToBreak.add(e2);
+            if (e2.isCancelled()) continue;
+
+            if (count++ > wand.getHandleableBlocks()) {
+                break;
             }
+            result.add(e2);
         }
+        wand.handleInteract(player, count);
 
         // I don't know why, but it must be run later, or it will create PlayerInteractEvent AGAIN!
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            for (BlockBreakEvent e2 : locationsToBreak) {
-                if (e2.isCancelled()) {
-                    continue;
-                }
-
+            for (BlockBreakEvent e2 : result) {
                 Block block = e2.getBlock();
-                if (block == null) {
-                    continue;
-                }
-
                 RebarBlock pylon = BlockStorage.get(block);
                 if (pylon != null) {
-                    BlockStorage.breakBlock(block);
-                    block.setType(Material.AIR);
+                    if (BlockStorage.breakBlock(block) == null) {
+                        wand.addDurability(1);
+                        continue;
+                    }
                 } else {
                     if (e2.isDropItems()) {
                         block.breakNaturally();
@@ -404,7 +375,7 @@ public class WandUtil {
                 BlockState state = block.getState();
                 state.update(true, true);
             }
-        }, 2);
+        }, 2); // The lagger the server is, the more delay it should take.
     }
 
     @Range(from = -1, to = Integer.MAX_VALUE)
@@ -667,7 +638,7 @@ public class WandUtil {
                         || material == Material.TRIPWIRE
                         || material == Material.CREAKING_HEART
 
-                        // Needs side block
+                        // Needs side block (sensitive blocks)
                         || material == Material.POINTED_DRIPSTONE
                         || material.name().endsWith("_BANNER")
                         || material == Material.LEVER
@@ -814,5 +785,28 @@ public class WandUtil {
     private static boolean isRebarBlockDisabledToBreak(NamespacedKey block) {
         // todo
         return false;
+    }
+
+    @Nullable
+    private static RebarItem getRebarItem(RebarItemSchema schema) {
+        try {
+            return (RebarItem) schema.getLoadConstructor$rebar().invoke(schema.getItemStack());
+        } catch (Throwable ignored) {
+            return null;
+        }
+    }
+
+    private static boolean canPlayerBreak(Player player, Location location) {
+        var pylon = BlockStorage.get(location);
+        if (pylon != null) {
+            var defaultItem = pylon.getDefaultItem();
+            if (defaultItem != null) {
+                var rebarItem = getRebarItem(defaultItem);
+                if (rebarItem != null && !Research.canPlayerUse(player, rebarItem, false)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

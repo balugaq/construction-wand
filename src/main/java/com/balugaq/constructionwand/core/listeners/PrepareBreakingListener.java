@@ -19,6 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+import org.checkerframework.checker.index.qual.Positive;
 import org.jspecify.annotations.NullMarked;
 import org.metamechanists.displaymodellib.models.components.ModelCuboid;
 
@@ -56,7 +57,7 @@ public class PrepareBreakingListener implements Listener {
         showBreakingBlocksFor(player, event.getLookingAtBlock(), breakingWand.getHandleableBlocks(), breakingWand);
     }
 
-    private void showBreakingBlocksFor(Player player, Block lookingAtBlock, int limitBlocks,
+    private void showBreakingBlocksFor(Player player, Block lookingAtBlock, @Positive int limitBlocks,
                                        BreakingWand breakingWand) {
         if (!player.isOp() && !PermissionUtil.canBreakBlock(player, lookingAtBlock)) {
             return;
