@@ -67,7 +67,7 @@ public class WandSetup implements IManager {
             Material material) {
         registerWand(
                 BreakingWand.class,
-                key,
+                "breaking-wand-" + key,
                 material
         );
     }
@@ -94,7 +94,7 @@ public class WandSetup implements IManager {
         registerBuildingWand("block-strict-common", Material.STONE_SWORD);
         registerBuildingWand("block-strict-rare", Material.IRON_SWORD);
         registerBuildingWand("block-strict-epic", Material.GOLDEN_SWORD);
-        registerBuildingWand("block-strict", Material.NETHERITE_SWORD);
+        registerBuildingWand("block-strict-cheat", Material.NETHERITE_SWORD);
 
         registerBreakingWand("common", Material.STONE_SWORD);
         registerBreakingWand("rare", Material.IRON_SWORD);
