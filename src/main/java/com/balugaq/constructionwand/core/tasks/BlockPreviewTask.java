@@ -1,5 +1,6 @@
 package com.balugaq.constructionwand.core.tasks;
 
+import com.balugaq.constructionwand.api.DisplayType;
 import com.balugaq.constructionwand.api.events.PrepareBreakingEvent;
 import com.balugaq.constructionwand.api.events.PrepareBuildingEvent;
 import com.balugaq.constructionwand.api.items.BreakingWand;
@@ -16,6 +17,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jspecify.annotations.NullMarked;
 
@@ -67,35 +69,41 @@ public class BlockPreviewTask extends BukkitRunnable {
                     || !manager.getLookingAts().get(uuid).equals(location)
                     || !manager.getLookingFaces().containsKey(uuid)
                     || !manager.getLookingFaces().get(uuid).equals(originalFacing)) {
-                manager.killDisplays(uuid);
                 manager.getLookingAts().put(uuid, location);
                 manager.getLookingFaces().put(uuid, originalFacing);
 
                 RebarItem wandLike = RebarItem.fromStack(player.getInventory().getItemInMainHand());
                 if (wandLike instanceof BuildingWand buildingWand) {
-                    if (buildingWand.isDisabled()) {
+                    ItemStack item = WandUtil.getItemType(buildingWand, block);
+                    if (buildingWand.isDisabled()
+                            || WandUtil.isItemDisabledToBuild(item))
                         continue;
-                    }
-
-                    if (WandUtil.isItemDisabledToBuild(WandUtil.getItemType(buildingWand, block))) {
-                        continue;
-                    }
 
                     PrepareBuildingEvent event = new PrepareBuildingEvent(player, buildingWand, block);
-                    Bukkit.getPluginManager().callEvent(event);
+                    event.callEvent();
+                    ConstructionWandPlugin.getInstance().getDisplayManager().updateDisplays(
+                            player,
+                            event.getDisplayLocations(),
+                            item.getType(),
+                            DisplayType.BUILD
+                    );
                 }
 
                 if (wandLike instanceof BreakingWand breakingWand) {
-                    if (breakingWand.isDisabled()) {
+                    ItemStack item = WandUtil.getItemType(breakingWand, block);
+                    if (breakingWand.isDisabled()
+                            || WandUtil.isItemDisabledToBreak(item)) {
                         continue;
                     }
 
-                    if (WandUtil.isItemDisabledToBreak(WandUtil.getItemType(breakingWand, block))) {
-                        continue;
-                    }
-
-                    PrepareBreakingEvent event = new PrepareBreakingEvent(player, breakingWand, block);
-                    Bukkit.getPluginManager().callEvent(event);
+                    var event = new PrepareBreakingEvent(player, breakingWand, block);
+                    event.callEvent();
+                    ConstructionWandPlugin.getInstance().getDisplayManager().updateDisplays(
+                            player,
+                            event.getDisplayLocations(),
+                            item.getType(),
+                            DisplayType.BREAK
+                    );
                 }
             }
         }

@@ -65,7 +65,7 @@ public class WandUtil {
 
 
     public static Set<Location> getBuildingLocations(Player player, int limitBlocks, @Nullable Axis onlyAxis,
-                                                     boolean blockStrict) {
+                                                     boolean blockStrict, boolean isAllowHandleRebarBlock) {
         if (limitBlocks <= 0) {
             return new HashSet<>();
         }
@@ -81,7 +81,7 @@ public class WandUtil {
         }
         BlockFace lookingFacing = getLookingFacing(originalFacing);
 
-        return getLocations(lookingBlock, lookingFacing, limitBlocks, onlyAxis, blockStrict);
+        return getLocations(lookingBlock, lookingFacing, limitBlocks, onlyAxis, blockStrict, isAllowHandleRebarBlock);
     }
 
     public static BlockFace getLookingFacing(BlockFace originalFacing) {
@@ -100,8 +100,8 @@ public class WandUtil {
 
     @SuppressWarnings("DuplicatedCode")
     public static Set<Location> getLocations(Block lookingBlock, BlockFace lookingFacing, int limitBlocks,
-                                             @Nullable Axis onlyAxis, boolean blockStrict) {
-        Set<Location> rawLocations = getRawLocations(lookingBlock, lookingFacing, limitBlocks, onlyAxis, blockStrict);
+                                             @Nullable Axis onlyAxis, boolean blockStrict, boolean isAllowHandleRebarBlock) {
+        Set<Location> rawLocations = getRawLocations(lookingBlock, lookingFacing, limitBlocks, onlyAxis, blockStrict, true, isAllowHandleRebarBlock);
         Set<Location> outwardLocations = new HashSet<>();
         for (Location location : rawLocations) {
             Location outwardLocation = location.clone().add(lookingFacing.getOppositeFace().getDirection());
@@ -130,22 +130,8 @@ public class WandUtil {
         return new HashSet<>(sortedLocations);
     }
 
-    public static Set<Location> getRawLocations(Block lookingBlock, BlockFace lookingFacing, int limitBlocks) {
-        return getRawLocations(lookingBlock, lookingFacing, limitBlocks, null);
-    }
-
     public static Set<Location> getRawLocations(Block lookingBlock, BlockFace lookingFacing, int limitBlocks,
-                                                @Nullable Axis onlyAxis) {
-        return getRawLocations(lookingBlock, lookingFacing, limitBlocks, onlyAxis, true);
-    }
-
-    public static Set<Location> getRawLocations(Block lookingBlock, BlockFace lookingFacing, int limitBlocks,
-                                                @Nullable Axis onlyAxis, boolean blockStrict) {
-        return getRawLocations(lookingBlock, lookingFacing, limitBlocks, onlyAxis, blockStrict, true);
-    }
-
-    public static Set<Location> getRawLocations(Block lookingBlock, BlockFace lookingFacing, int limitBlocks,
-                                                @Nullable Axis onlyAxis, boolean blockStrict, boolean checkOutward) {
+                                                @Nullable Axis onlyAxis, boolean blockStrict, boolean checkOutward, boolean allowRebar) {
         Set<Location> locations = new HashSet<>();
         Queue<Location> queue = new LinkedList<>();
         Location lookingLocation = lookingBlock.getLocation();
@@ -192,6 +178,9 @@ public class WandUtil {
 
             Location queuedLocation = currentBlock.getLocation();
             if (locations.contains(queuedLocation)) {
+                continue;
+            }
+            if (!allowRebar && BlockStorage.get(queuedLocation) != null) {
                 continue;
             }
             locations.add(queuedLocation);
@@ -265,7 +254,8 @@ public class WandUtil {
         Set<Location> buildingLocations = WandUtil.getBuildingLocations(player, Math.min(wand.getHandleableBlocks(),
                                                                                          playerHas),
                                                                         WandUtil.getAxis(wandItem),
-                                                                        wand.isBlockStrict());
+                                                                        wand.isBlockStrict(),
+                                                                        wand.isAllowHandleRebarBlock());
 
         int consumed = 0;
 
@@ -325,7 +315,7 @@ public class WandUtil {
 
         Set<Location> rawLocations = WandUtil.getRawLocations(lookingAtBlock, lookingFacing,
                                                               wand.getHandleableBlocks(), getAxis(wandItem),
-                                                              wand.isBlockStrict(), true);
+                                                              wand.isBlockStrict(), true, wand.isAllowHandleRebarBlock());
 
         World world = lookingLocation.getWorld();
         Map<Location, Double> distances = new HashMap<>();

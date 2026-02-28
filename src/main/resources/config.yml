@@ -2,7 +2,7 @@ modification-block-limit: 40960
 display-projection: true
 tasks:
   block-preview:
-    period: 1 # game tick
+    period: 5 # game tick
   displays-clear:
     period: 6000 # game tick
   fill-wand-sui:
