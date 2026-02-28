@@ -39,7 +39,7 @@ public interface Wand extends Keyed {
     int getCooldownTicks();
 
     default int getHandleableBlocks() {
-        return Math.max(getLimitBlocks(), getDurability());
+        return Math.min(getLimitBlocks(), getDurability());
     }
 
     default void handleInteract(Player player, int blocks) {

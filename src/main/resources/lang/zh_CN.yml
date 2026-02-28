@@ -5,75 +5,75 @@ item:
     name: "<green>建筑魔杖 | <blue>普通品质"
     lore: |-
       <gray><insn>右键点击</insn>放置方块
-      <attr>最大范围:</attr> %range% 格
+      <attr>最大范围:</attr> %range%
       <green>可选择任意方块填充目标区域
   building-wand-rare:
     name: "<green>建筑魔杖 | <gold>稀有品质"
     lore: |-
       <gray><insn>右键点击</insn>放置方块
-      <attr>最大范围:</attr> %range% 格
+      <attr>最大范围:</attr> %range%
       <green>可选择任意方块填充目标区域
   building-wand-epic:
     name: "<green>建筑魔杖 | <yellow>史诗品质"
     lore: |-
       <gray><insn>右键点击</insn>放置方块
-      <attr>最大范围:</attr> %range% 格
+      <attr>最大范围:</attr> %range%
       <green>可选择任意方块填充目标区域
   building-wand-block-strict-common:
     name: "<green>建筑魔杖 | <red>方块限制 | <blue>普通品质"
     lore: |-
       <gray><insn>右键点击</insn>放置方块
-      <attr>最大范围:</attr> %range% 格
+      <attr>最大范围:</attr> %range%
       <red>仅可选择单一类型方块填充目标区域
   building-wand-block-strict-rare:
     name: "<green>建筑魔杖 | <red>方块限制 | <gold>稀有品质"
     lore: |-
       <gray><insn>右键点击</insn>放置方块
-      <attr>最大范围:</attr> %range% 格
+      <attr>最大范围:</attr> %range%
       <red>仅可选择单一类型方块填充目标区域
   building-wand-block-strict-epic:
     name: "<green>建筑魔杖 | <red>方块限制 | <yellow>史诗品质"
     lore: |-
       <gray><insn>右键点击</insn>放置方块
-      <attr>最大范围:</attr> %range% 格
+      <attr>最大范围:</attr> %range%
       <red>仅可选择单一类型方块填充目标区域
   building-wand-cheat:
     name: "<green>建筑魔杖 | <red>方块限制 | <dark_red>作弊模式"
     lore: |-
       <gray><insn>右键点击</insn>放置方块
-      <attr>最大范围:</attr> %range% 格
+      <attr>最大范围:</attr> %range%
       <green>可选择任意方块填充目标区域
       <red>仅限管理员使用
   building-wand-block-strict-cheat:
     name: "<green>建筑魔杖 | <dark_red>作弊模式"
     lore: |-
       <gray><insn>右键点击</insn>放置方块
-      <attr>最大范围:</attr> %range% 格
+      <attr>最大范围:</attr> %range%
       <red>仅可选择单一类型方块填充目标区域
       <red>仅限管理员使用
   breaking-wand-common:
     name: "<red>拆除魔杖 | <blue>普通品质"
     lore: |-
       <gray><insn>右键点击</insn>拆除方块
-      <attr>最大范围:</attr> %range% 格
+      <attr>最大范围:</attr> %range%
       <red>仅可拆除单一类型方块的目标区域
   breaking-wand-rare:
     name: "<red>拆除魔杖 | <gold>稀有品质"
     lore: |-
       <gray><insn>右键点击</insn>拆除方块
-      <attr>最大范围:</attr> %range% 格
+      <attr>最大范围:</attr> %range%
       <red>仅可拆除单一类型方块的目标区域
   breaking-wand-epic:
     name: "<red>拆除魔杖 | <yellow>史诗品质"
     lore: |-
       <gray><insn>右键点击</insn>拆除方块
-      <attr>最大范围:</attr> %range% 格
+      <attr>最大范围:</attr> %range%
       <red>仅可拆除单一类型方块的目标区域
   breaking-wand-cheat:
     name: "<red>拆除魔杖 | <dark_red>作弊模式"
     lore: |-
       <gray><insn>右键点击</insn>拆除方块
-      <attr>最大范围:</attr> %range% 格
+      <attr>最大范围:</attr> %range%
       <red>仅可拆除单一类型方块的目标区域
       <red>仅限管理员使用
   fill-wand-common:
@@ -83,7 +83,7 @@ item:
       <green><insn>右键点击</insn>方块设置结束点
       <green><insn>按住潜行键+右键点击</insn>方块选择填充材料
       <green><insn>右键点击</insn>空气执行填充操作
-      <attr>最大范围:</attr> %range% 格
+      <attr>最大范围:</attr> %range%
   fill-wand-rare:
     name: "<red>填充魔杖 | <gold>稀有品质"
     lore: |-
@@ -91,7 +91,7 @@ item:
       <green><insn>右键点击</insn>方块设置结束点
       <green><insn>按住潜行键+右键点击</insn>方块选择填充材料
       <green><insn>右键点击</insn>空气执行填充操作
-      <attr>最大范围:</attr> %range% 格
+      <attr>最大范围:</attr> %range%
   fill-wand-epic:
     name: "<red>填充魔杖 | <yellow>史诗品质"
     lore: |-
@@ -99,7 +99,7 @@ item:
       <green><insn>右键点击</insn>方块设置结束点
       <green><insn>按住潜行键+右键点击</insn>方块选择填充材料
       <green><insn>右键点击</insn>空气执行填充操作
-      <attr>最大范围:</attr> %range% 格
+      <attr>最大范围:</attr> %range%
   fill-wand-cheat:
     name: "<red>填充魔杖 | <dark_red>作弊模式"
     lore: |-
@@ -107,7 +107,7 @@ item:
       <green><insn>右键点击</insn>方块设置结束点
       <green><insn>按住潜行键+右键点击</insn>方块选择填充材料
       <green><insn>右键点击</insn>空气执行填充操作
-      <attr>最大范围:</attr> %range% 格
+      <attr>最大范围:</attr> %range%
       <red>仅限管理员使用
 
 guide:
@@ -118,8 +118,8 @@ message:
   common:
     set-start-location: "<green>已设置起始点: %start-location%"
     set-end-location: "<green>已设置结束点: %end-location%"
-    set-start-location-with-range: "<green>已设置起始点: %start-location% <gray>( <yellow>总计 %total% 格 <gray>)"
-    set-end-location-with-range: "<green>已设置结束点: %end-location% <gray>( <yellow>总计 %total% 格 <gray>)"
+    set-start-location-with-range: "<green>已设置起始点: %start-location% <gray>( <yellow>总计 %total% <gray>)"
+    set-end-location-with-range: "<green>已设置结束点: %end-location% <gray>( <yellow>总计 %total% <gray>)"
     set-material: "<green>已选择填充材料: %material%"
     not-set-start-location: "<red>尚未设置起始点!"
     not-set-end-location: "<red>尚未设置结束点!"
