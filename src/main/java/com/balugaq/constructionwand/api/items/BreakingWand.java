@@ -33,11 +33,6 @@ public class BreakingWand extends RebarItem implements Wand, RebarBlockInteracto
 
     public BreakingWand(ItemStack stack) {
         super(stack);
-        if (durability > 0) {
-            stack.setData(DataComponentTypes.MAX_DAMAGE, durability);
-        } else {
-            stack.unsetData(DataComponentTypes.MAX_DAMAGE);
-        }
     }
 
     @Override

@@ -33,11 +33,6 @@ public class BuildingWand extends RebarItem implements Wand, RebarBlockInteracto
 
     public BuildingWand(ItemStack stack) {
         super(stack);
-        if (durability > 0) {
-            stack.setData(DataComponentTypes.MAX_DAMAGE, durability);
-        } else {
-            stack.unsetData(DataComponentTypes.MAX_DAMAGE);
-        }
     }
 
     @Override

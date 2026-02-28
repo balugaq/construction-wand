@@ -1,5 +1,5 @@
 limit-blocks: 64
-block-strict: false
+block-strict: true
 op-only: false
 allow-handle-pylon-block: false
 durability: 1561

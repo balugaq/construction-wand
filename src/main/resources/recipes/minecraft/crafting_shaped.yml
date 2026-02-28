@@ -1,8 +1,8 @@
 constructionwand:building-wand-common:
   pattern:
     - "  I"
-    - " S "
-    - "S  "
+    - "SS "
+    - "SS "
   key:
     I: minecraft:iron_ingot
     S: minecraft:stick
@@ -33,8 +33,8 @@ constructionwand:building-wand-epic:
 constructionwand:building-wand-block-strict-common:
   pattern:
     - "I  "
-    - " S "
-    - "  S"
+    - " SS"
+    - " SS"
   key:
     I: minecraft:iron_ingot
     S: minecraft:stick
@@ -100,32 +100,29 @@ constructionwand:breaking-wand-epic:
 constructionwand:fill-wand-common:
   pattern:
     - "  D"
-    - " N "
-    - "S  "
+    - " B "
+    - "B  "
   key:
     D: minecraft:diamond
-    N: minecraft:nether_star
-    S: minecraft:stick
+    B: minecraft:blaze_rod
   result: constructionwand:fill-wand-common
 
 constructionwand:fill-wand-rare:
   pattern:
-    - "  N"
-    - " A "
-    - "S  "
+    - "  A"
+    - " B "
+    - "B  "
   key:
     A: constructionwand:fill-wand-common
-    N: minecraft:nether_star
-    S: minecraft:stick
+    B: minecraft:blaze_rod
   result: constructionwand:fill-wand-rare
 
 constructionwand:fill-wand-epic:
   pattern:
-    - "  N"
-    - " A "
-    - "S  "
+    - "  A"
+    - " B "
+    - "B  "
   key:
     A: constructionwand:fill-wand-rare
-    N: minecraft:nether_star
-    S: minecraft:stick
+    B: minecraft:blaze_rod
   result: constructionwand:fill-wand-epic

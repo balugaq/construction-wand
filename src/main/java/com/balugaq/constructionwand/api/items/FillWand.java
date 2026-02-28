@@ -56,11 +56,6 @@ public class FillWand extends RebarItem implements Wand, RebarInteractor {
 
     public FillWand(ItemStack stack) {
         super(stack);
-        if (durability > 0) {
-            stack.setData(DataComponentTypes.MAX_DAMAGE, durability);
-        } else {
-            stack.unsetData(DataComponentTypes.MAX_DAMAGE);
-        }
     }
 
     @SuppressWarnings({"UnstableApiUsage", "DataFlowIssue"})
