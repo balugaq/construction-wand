@@ -38,7 +38,9 @@ public class PrepareBreakingListener implements Listener {
         }
 
         Player player = event.getPlayer();
-        Debug.debug("Preparing breaking blocks...");
+        if (ConfigManager.debug()) {
+            Debug.debug("Preparing breaking blocks for " + event.getPlayer().getName());
+        }
         BreakingWand breakingWand = event.getBreakingWand();
         if (breakingWand.isOpOnly() && !player.isOp()) {
             return;

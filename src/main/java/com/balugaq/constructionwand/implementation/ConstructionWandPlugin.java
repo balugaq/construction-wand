@@ -46,6 +46,7 @@ public class ConstructionWandPlugin extends JavaPlugin implements RebarAddon {
         this.repo = "construction-wand";
         this.branch = "master";
 
+        Debug.init();
         Debug.log("Loading config");
         configManager = new ConfigManager(this);
         configManager.setup();

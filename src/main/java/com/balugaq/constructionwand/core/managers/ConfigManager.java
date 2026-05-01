@@ -54,6 +54,18 @@ public class ConfigManager implements IManager {
         return ConstructionWandPlugin.getInstance().getConfigManager().isDebug();
     }
 
+    public static int blockPreviewTaskPeriod() {
+        return ConstructionWandPlugin.getInstance().getConfigManager().getBlockPreviewTaskPeriod();
+    }
+
+    public static int displaysClearTaskPeriod() {
+        return ConstructionWandPlugin.getInstance().getConfigManager().getDisplaysClearTaskPeriod();
+    }
+
+    public static int fillWandSUITaskPeriod() {
+        return ConstructionWandPlugin.getInstance().getConfigManager().getFillWandSUITaskPeriod();
+    }
+
     @Override
     public void setup() {
         loadConfig();

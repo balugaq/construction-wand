@@ -1,5 +1,6 @@
 package com.balugaq.constructionwand.core.tasks;
 
+import com.balugaq.constructionwand.core.managers.ConfigManager;
 import com.balugaq.constructionwand.core.managers.DisplayManager;
 import com.balugaq.constructionwand.implementation.ConstructionWandPlugin;
 import lombok.Getter;
@@ -35,6 +36,9 @@ public class DisplaysClearTask extends BukkitRunnable {
                     }
                 }
             });
+        }
+        if (ConfigManager.debug()) {
+            ConstructionWandPlugin.getInstance().getLogger().info("Displays cleared.");
         }
     }
 }

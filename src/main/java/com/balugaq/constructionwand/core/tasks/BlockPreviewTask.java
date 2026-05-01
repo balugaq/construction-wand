@@ -5,8 +5,10 @@ import com.balugaq.constructionwand.api.events.PrepareBreakingEvent;
 import com.balugaq.constructionwand.api.events.PrepareBuildingEvent;
 import com.balugaq.constructionwand.api.items.BreakingWand;
 import com.balugaq.constructionwand.api.items.BuildingWand;
+import com.balugaq.constructionwand.core.managers.ConfigManager;
 import com.balugaq.constructionwand.core.managers.DisplayManager;
 import com.balugaq.constructionwand.implementation.ConstructionWandPlugin;
+import com.balugaq.constructionwand.utils.Debug;
 import com.balugaq.constructionwand.utils.WandUtil;
 import io.github.pylonmc.rebar.item.RebarItem;
 import lombok.Getter;
@@ -92,7 +94,7 @@ public class BlockPreviewTask extends BukkitRunnable {
 
                     var event = new PrepareBreakingEvent(player, breakingWand, block);
                     event.callEvent();
-                    ConstructionWandPlugin.getInstance().getDisplayManager().updateDisplays(
+                    manager.updateDisplays(
                             player,
                             event.getDisplayLocations(),
                             item.getType(),
@@ -102,10 +104,12 @@ public class BlockPreviewTask extends BukkitRunnable {
             }
         }
 
-        ConstructionWandPlugin.getInstance().getDisplayManager().getRequests().forEach((uuid, requests) -> {
-            requests.values().stream().limit(18).forEach(request -> {
-                requests.remove(request.getLocation());
+        manager.getRequests().forEach((uuid, requests) -> {
+            requests.values()
+                    .stream()
+                    .limit(9L).forEach(request -> {
                 request.execute();
+                requests.remove(request.getLocation());
             });
         });
     }

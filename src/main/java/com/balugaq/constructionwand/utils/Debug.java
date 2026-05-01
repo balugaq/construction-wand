@@ -3,6 +3,7 @@ package com.balugaq.constructionwand.utils;
 import com.balugaq.constructionwand.core.managers.ConfigManager;
 import com.balugaq.constructionwand.implementation.ConstructionWandPlugin;
 import lombok.experimental.UtilityClass;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -11,16 +12,26 @@ import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.Arrays;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * @author balugaq
  */
-@SuppressWarnings({"unused", "CallToPrintStackTrace", "deprecation"})
+@SuppressWarnings({"unused", "CallToPrintStackTrace"})
 @UtilityClass
 @NullMarked
 public class Debug {
-    private static final String debugPrefix = "[Debug] ";
     private static @Nullable JavaPlugin plugin = null;
+    private static final Queue<String> buffer = new ConcurrentLinkedQueue<>();
+
+    public static void init() {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(ConstructionWandPlugin.getInstance(), () -> {
+            while (!buffer.isEmpty()) {
+                log0(buffer.poll());
+            }
+        }, 1, 1);
+    }
 
     public static void debug(@Nullable Object... objects) {
         StringBuilder sb = new StringBuilder();
@@ -46,7 +57,7 @@ public class Debug {
 
     public static void debug(String message) {
         if (ConfigManager.debug()) {
-            log(debugPrefix + message);
+            log("[Debug] " + message);
         }
     }
 
@@ -89,7 +100,11 @@ public class Debug {
     }
 
     public static void log(String message) {
-        getPlugin().getLogger().info(ChatColor.translateAlternateColorCodes('&', message));
+        buffer.add(message);
+    }
+
+    private static void log0(String message) {
+        getPlugin().getLogger().info(message);
     }
 
     public static void log(Throwable e) {

@@ -1,5 +1,6 @@
 package com.balugaq.constructionwand.core.managers;
 
+import com.balugaq.constructionwand.core.listeners.BlockPreviewUpdateListener;
 import com.balugaq.constructionwand.core.listeners.PlayerInteractListener;
 import com.balugaq.constructionwand.core.listeners.PrepareBreakingListener;
 import com.balugaq.constructionwand.core.listeners.PrepareBuildingListener;
@@ -33,6 +34,9 @@ public class ListenerManager implements IManager {
         listeners.add(new PrepareBreakingListener());
         listeners.add(new PlayerInteractListener());
         listeners.add(new WandModeSwitchListener());
+        if (ConfigManager.displayProjection()) {
+            listeners.add(new BlockPreviewUpdateListener());
+        }
         for (Listener listener : listeners) {
             Bukkit.getServer().getPluginManager().registerEvents(listener, plugin);
         }

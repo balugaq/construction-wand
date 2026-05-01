@@ -32,7 +32,9 @@ public class PrepareBuildingListener implements Listener {
         if (!ConfigManager.displayProjection()) return;
 
         Player player = event.getPlayer();
-        Debug.debug("Preparing building blocks...");
+        if (ConfigManager.debug()) {
+            Debug.debug("Preparing building blocks for " + event.getPlayer().getName());
+        }
         BuildingWand buildingWand = event.getBuildingWand();
         if (buildingWand.isOpOnly() && !player.isOp()) return;
 

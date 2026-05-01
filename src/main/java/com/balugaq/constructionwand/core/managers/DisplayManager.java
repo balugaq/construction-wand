@@ -6,7 +6,9 @@ import com.balugaq.constructionwand.core.tasks.BlockPreviewTask;
 import com.balugaq.constructionwand.core.tasks.DisplaysClearTask;
 import com.balugaq.constructionwand.core.tasks.FillWandSUITask;
 import com.balugaq.constructionwand.implementation.ConstructionWandPlugin;
+import com.balugaq.constructionwand.utils.Debug;
 import com.balugaq.constructionwand.utils.WandUtil;
+import com.google.common.collect.MapMaker;
 import dev.sefiraat.sefilib.entity.display.DisplayGroup;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -28,7 +30,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 /**
  * @author balugaq
@@ -48,7 +49,8 @@ public class DisplayManager implements IManager {
     private final Map<UUID, Location> lookingAts = new HashMap<>();
     private final Map<UUID, DisplayGroup> displays = new HashMap<>();
     private final JavaPlugin plugin;
-    private final Map<UUID, Map<Location, PreviewUpdateRequest>> requests = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, Map<Location, PreviewUpdateRequest>> requests = new ConcurrentHashMap<>();
+    private final Map<UUID, Set<Location>> locations = new HashMap<>();
     private boolean running = true;
 
     public DisplayManager(JavaPlugin plugin) {
@@ -63,7 +65,6 @@ public class DisplayManager implements IManager {
                                            config.getBlockPreviewTaskPeriod());
         Bukkit.getScheduler().runTaskTimer(plugin, () -> new DisplaysClearTask().run(), 1,
                                            config.getDisplaysClearTaskPeriod());
-        
         Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> new FillWandSUITask().run(), 1,
                                                          config.getFillWandSUITaskPeriod());
     }
@@ -84,25 +85,22 @@ public class DisplayManager implements IManager {
         DisplayGroup group = displays.get(uuid);
         if (group != null) {
             group.remove();
+            Debug.debug("Killed displays for " + uuid);
         }
         displays.remove(uuid);
         lookingAts.remove(uuid);
         lookingFaces.remove(uuid);
+        locations.remove(uuid);
     }
 
-    public void updateDisplays(Player player, Set<Location> locations, Material material, DisplayType displayType) {
+    public void updateDisplays(Player player, Set<Location> coming, Material material, DisplayType displayType) {
         UUID uuid = player.getUniqueId();
         DisplayGroup group = displays.getOrDefault(uuid, new DisplayGroup(player.getLocation(), 0.0F, 0.0F));
 
-        Set<Location> origin = group.getDisplays().keySet().stream().filter(name -> name.startsWith("b")).map(
-                name -> {
-                    var split = name.split("_");
-                    return new Location(group.getLocation().getWorld(), Integer.parseInt(split[1]), Integer.parseInt(split[2]), Integer.parseInt(split[3]));
-                }
-        ).collect(Collectors.toSet());
+        Set<Location> origin = locations.getOrDefault(uuid, ConcurrentHashMap.newKeySet());
 
         // Find the origin that does not exist in locations and call group.removeDisplay()
-        origin.stream().filter(location -> !locations.contains(location)).forEach(location -> {
+        origin.stream().filter(location -> !coming.contains(location)).toList().forEach(location -> {
             requestRemoveDisplay(player, group, location);
         });
         Location lookingAt = lookingAts.get(uuid);
@@ -112,12 +110,9 @@ public class DisplayManager implements IManager {
         BlockFace originFacing = player.getTargetBlockFace(6, FluidCollisionMode.NEVER);
         if (originFacing != null) {
             // Find the locations that do not exist in origin and call group.addDisplay()
-            locations.stream().filter(location -> !origin.contains(location)).forEach(location -> {
+            coming.stream().filter(location -> !origin.contains(location)).forEach(location -> {
                 requestAddDisplay(player, group, location, displayType, material, originFacing);
             });
-            if (lookingAt != null) {
-                requestAddDisplay(player, group, lookingAt, displayType, material, originFacing);
-            }
         }
 
         if (!displays.containsKey(uuid)) {
@@ -126,28 +121,48 @@ public class DisplayManager implements IManager {
     }
 
     public void requestRemoveDisplay(Player player, DisplayGroup group, Location location) {
-        requests.putIfAbsent(player.getUniqueId(), new ConcurrentHashMap<>());
-        requests.get(player.getUniqueId()).compute(location, (loc, old) -> {
-            if (old instanceof PreviewUpdateRequest.Add) {
-                return null;
-            } else {
-                return new PreviewUpdateRequest.Remove(player, group, location);
-            }
-        });
+        requests.putIfAbsent(player.getUniqueId(), createMap());
+        requests.putIfAbsent(player.getUniqueId(), createMap());
+        if (requests.get(player.getUniqueId()).remove(location) == null) {
+            requests.get(player.getUniqueId()).put(location, new PreviewUpdateRequest.Remove(player, group, location));
+        }
+        locations.putIfAbsent(player.getUniqueId(), ConcurrentHashMap.newKeySet());
+        locations.get(player.getUniqueId()).remove(location);
+        if (ConfigManager.debug()) {
+            Debug.debug("Scheduled to remove displays at " + location.getBlockX() + ";" + location.getBlockY() + ";" + location.getBlockZ());
+        }
+    }
+
+    private <K, V> Map<K, V> createMap() {
+        return new MapMaker().concurrencyLevel(4).makeMap();
     }
 
     public void requestAddDisplay(Player player, DisplayGroup group, Location location, DisplayType displayType, Material material, BlockFace originFacing) {
-        requests.putIfAbsent(player.getUniqueId(), new ConcurrentHashMap<>());
-        requests.get(player.getUniqueId()).compute(location, (loc, old) ->
-            new PreviewUpdateRequest.Add(player, group, location, displayType, material, originFacing)
-        );
+        requests.putIfAbsent(player.getUniqueId(), createMap());
+        requests.putIfAbsent(player.getUniqueId(), createMap());
+
+        requests.get(player.getUniqueId()).put(location, new PreviewUpdateRequest.Add(player, group, location, displayType, material, originFacing));
+
+        locations.putIfAbsent(player.getUniqueId(), ConcurrentHashMap.newKeySet());
+        locations.get(player.getUniqueId()).add(location);
+        if (ConfigManager.debug()) {
+            Debug.debug("Scheduled to add displays at " + location.getBlockX() + ";" + location.getBlockY() + ";" + location.getBlockZ());
+        }
     }
 
-    public void removeDisplay(DisplayGroup group, Location location) {
+    public boolean removeDisplay(DisplayGroup group, Location location) {
+        boolean result = false;
         var display = group.removeDisplay("b_" + location.getBlockX() + "_" + location.getBlockY() + "_" + location.getBlockZ());
-        if (display != null) display.remove();
+        if (display != null) {
+            display.remove();
+            result = true;
+        }
         display = group.removeDisplay("m_" + location.getBlockX() + "_" + location.getBlockY() + "_" + location.getBlockZ());
         if (display != null) display.remove();
+        if (ConfigManager.debug()) {
+            Debug.debug("Removed display at " + location.getBlockX() + ";" + location.getBlockY() + ";" + location.getBlockZ());
+        }
+        return result;
     }
 
     public void addDisplay(DisplayGroup group, Location location, DisplayType displayType, Material material, BlockFace originFacing) {
@@ -162,6 +177,9 @@ public class DisplayManager implements IManager {
                 Vector vector = WandUtil.getLookingFacing(originFacing).getOppositeFace().getDirection().multiply(0.6).add(new Vector(0, 0.1F, 0));
                 group.addDisplay("b_" + ls, tagMeta(BREAK_BORDER.build(displayLocation.clone().add(vector))));
             }
+        }
+        if (ConfigManager.debug()) {
+            Debug.debug("Added display at " + location.getBlockX() + ";" + location.getBlockY() + ";" + location.getBlockZ());
         }
     }
 

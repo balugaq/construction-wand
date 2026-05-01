@@ -18,7 +18,7 @@ public sealed abstract class PreviewUpdateRequest permits PreviewUpdateRequest.A
     private final DisplayGroup group;
     private final Location location;
 
-    public abstract void execute();
+    public abstract boolean execute();
 
     public PreviewUpdateRequest(Player player, DisplayGroup group, Location location) {
         this.player = player;
@@ -43,14 +43,18 @@ public sealed abstract class PreviewUpdateRequest permits PreviewUpdateRequest.A
         }
 
         @Override
-        public void execute() {
-            ConstructionWandPlugin.getInstance().getDisplayManager().addDisplay(
-                    getGroup(),
+        public boolean execute() {
+            var manager = ConstructionWandPlugin.getInstance().getDisplayManager();
+            var group = manager.getDisplays().get(getPlayer().getUniqueId());
+            if (group == null) return false;
+            manager.addDisplay(
+                    group,
                     getLocation(),
                     getDisplayType(),
                     getMaterial(),
                     getOriginFacing()
             );
+            return true;
         }
     }
 
@@ -63,9 +67,12 @@ public sealed abstract class PreviewUpdateRequest permits PreviewUpdateRequest.A
         }
 
         @Override
-        public void execute() {
-            ConstructionWandPlugin.getInstance().getDisplayManager().removeDisplay(
-                    getGroup(),
+        public boolean execute() {
+            var manager = ConstructionWandPlugin.getInstance().getDisplayManager();
+            var group = manager.getDisplays().get(getPlayer().getUniqueId());
+            if (group == null) return false;
+            return manager.removeDisplay(
+                    group,
                     getLocation()
             );
         }
