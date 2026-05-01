@@ -13,7 +13,6 @@ import java.util.Locale;
 
 /**
  * @author balugaq
- * @since 1.0
  */
 @NullMarked
 public class Messages {

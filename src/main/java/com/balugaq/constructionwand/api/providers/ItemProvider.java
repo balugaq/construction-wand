@@ -14,7 +14,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author balugaq
- * @since 1.0
  */
 @NullMarked
 public interface ItemProvider {

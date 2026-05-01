@@ -19,7 +19,6 @@ import org.jspecify.annotations.NullMarked;
  * will make player interact with main hand again. So this listener is important for playing building wand.
  *
  * @author balugaq
- * @since 1.0
  */
 @NullMarked
 public class PlayerInteractListener implements Listener {

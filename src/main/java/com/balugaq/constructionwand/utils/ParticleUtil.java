@@ -12,7 +12,6 @@ import java.util.List;
 /**
  * @author Final_ROOT
  * @author balugaq
- * @since 1.0
  */
 @NullMarked
 public class ParticleUtil {

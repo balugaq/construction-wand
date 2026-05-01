@@ -16,7 +16,6 @@ import java.util.Objects;
 /**
  * @author Final_ROOT
  * @author balugaq
- * @since 1.0
  */
 @SuppressWarnings({"unchecked", "unused", "CallToPrintStackTrace"})
 @UtilityClass

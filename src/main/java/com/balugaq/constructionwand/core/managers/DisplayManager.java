@@ -1,6 +1,7 @@
 package com.balugaq.constructionwand.core.managers;
 
 import com.balugaq.constructionwand.api.DisplayType;
+import com.balugaq.constructionwand.api.display.PreviewUpdateRequest;
 import com.balugaq.constructionwand.core.tasks.BlockPreviewTask;
 import com.balugaq.constructionwand.core.tasks.DisplaysClearTask;
 import com.balugaq.constructionwand.core.tasks.FillWandSUITask;
@@ -26,11 +27,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
  * @author balugaq
- * @since 1.0
  */
 @Getter
 @NullMarked
@@ -47,6 +48,7 @@ public class DisplayManager implements IManager {
     private final Map<UUID, Location> lookingAts = new HashMap<>();
     private final Map<UUID, DisplayGroup> displays = new HashMap<>();
     private final JavaPlugin plugin;
+    private final Map<UUID, Map<Location, PreviewUpdateRequest>> requests = new ConcurrentHashMap<>();
     private boolean running = true;
 
     public DisplayManager(JavaPlugin plugin) {
@@ -56,13 +58,12 @@ public class DisplayManager implements IManager {
     @Override
     public void setup() {
         ConfigManager config = ConstructionWandPlugin.getInstance().getConfigManager();
-        // Entities needs to running on the main thread
+
         Bukkit.getScheduler().runTaskTimer(plugin, () -> new BlockPreviewTask().run(), 1,
                                            config.getBlockPreviewTaskPeriod());
         Bukkit.getScheduler().runTaskTimer(plugin, () -> new DisplaysClearTask().run(), 1,
                                            config.getDisplaysClearTaskPeriod());
-
-        // Particles are asyncable
+        
         Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> new FillWandSUITask().run(), 1,
                                                          config.getFillWandSUITaskPeriod());
     }
@@ -102,26 +103,44 @@ public class DisplayManager implements IManager {
 
         // Find the origin that does not exist in locations and call group.removeDisplay()
         origin.stream().filter(location -> !locations.contains(location)).forEach(location -> {
-            removeDisplay(group, location);
+            requestRemoveDisplay(player, group, location);
         });
         Location lookingAt = lookingAts.get(uuid);
         if (lookingAt != null)
-            removeDisplay(group, lookingAt);
+            requestRemoveDisplay(player, group, lookingAt);
 
         BlockFace originFacing = player.getTargetBlockFace(6, FluidCollisionMode.NEVER);
         if (originFacing != null) {
             // Find the locations that do not exist in origin and call group.addDisplay()
             locations.stream().filter(location -> !origin.contains(location)).forEach(location -> {
-                addDisplay(group, location, displayType, material, originFacing);
+                requestAddDisplay(player, group, location, displayType, material, originFacing);
             });
             if (lookingAt != null) {
-                addDisplay(group, lookingAt, displayType, material, originFacing);
+                requestAddDisplay(player, group, lookingAt, displayType, material, originFacing);
             }
         }
 
         if (!displays.containsKey(uuid)) {
-            registerDisplayGroup(uuid, group);
+            displays.put(uuid, group);
         }
+    }
+
+    public void requestRemoveDisplay(Player player, DisplayGroup group, Location location) {
+        requests.putIfAbsent(player.getUniqueId(), new ConcurrentHashMap<>());
+        requests.get(player.getUniqueId()).compute(location, (loc, old) -> {
+            if (old instanceof PreviewUpdateRequest.Add) {
+                return null;
+            } else {
+                return new PreviewUpdateRequest.Remove(player, group, location);
+            }
+        });
+    }
+
+    public void requestAddDisplay(Player player, DisplayGroup group, Location location, DisplayType displayType, Material material, BlockFace originFacing) {
+        requests.putIfAbsent(player.getUniqueId(), new ConcurrentHashMap<>());
+        requests.get(player.getUniqueId()).compute(location, (loc, old) ->
+            new PreviewUpdateRequest.Add(player, group, location, displayType, material, originFacing)
+        );
     }
 
     public void removeDisplay(DisplayGroup group, Location location) {
@@ -150,9 +169,5 @@ public class DisplayManager implements IManager {
         entity.setMetadata(plugin.getName(),
                             new FixedMetadataValue(ConstructionWandPlugin.getInstance(), true));
         return entity;
-    }
-
-    public void registerDisplayGroup(UUID uuid, DisplayGroup group) {
-        displays.put(uuid, group);
     }
 }

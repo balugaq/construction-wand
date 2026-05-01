@@ -18,20 +18,12 @@ import org.jspecify.annotations.NullMarked;
 
 /**
  * @author balugaq
- * @since 1.0
  */
 @NullMarked
 public class FillWandSUITask extends BukkitRunnable {
-    @Getter
-    private final DisplayManager manager;
-
-    public FillWandSUITask() {
-        manager = ConstructionWandPlugin.getInstance().getDisplayManager();
-    }
-
     @Override
     public void run() {
-        if (!manager.isRunning()) {
+        if (!ConstructionWandPlugin.getInstance().getDisplayManager().isRunning()) {
             this.cancel();
             return;
         }

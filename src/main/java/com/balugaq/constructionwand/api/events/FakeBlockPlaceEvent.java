@@ -10,7 +10,6 @@ import org.jspecify.annotations.NullMarked;
 
 /**
  * @author balugaq
- * @since 1.0
  */
 @NullMarked
 public class FakeBlockPlaceEvent extends BlockPlaceEvent implements FakeEvent {

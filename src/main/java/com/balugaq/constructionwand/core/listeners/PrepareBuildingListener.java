@@ -23,7 +23,6 @@ import java.util.UUID;
 
 /**
  * @author balugaq
- * @since 1.0
  */
 @NullMarked
 public class PrepareBuildingListener implements Listener {

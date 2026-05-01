@@ -20,7 +20,6 @@ import java.util.Set;
 
 /**
  * @author balugaq
- * @since 1.0
  */
 @SuppressWarnings({"unused", "NotNullFieldNotInitialized"})
 @NullMarked

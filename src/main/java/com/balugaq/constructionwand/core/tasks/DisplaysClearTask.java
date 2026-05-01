@@ -14,20 +14,12 @@ import java.util.List;
 
 /**
  * @author balugaq
- * @since 1.0
  */
 @NullMarked
 public class DisplaysClearTask extends BukkitRunnable {
-    @Getter
-    private final DisplayManager manager;
-
-    public DisplaysClearTask() {
-        manager = ConstructionWandPlugin.getInstance().getDisplayManager();
-    }
-
     @Override
     public void run() {
-        if (!manager.isRunning()) {
+        if (!ConstructionWandPlugin.getInstance().getDisplayManager().isRunning()) {
             this.cancel();
             return;
         }

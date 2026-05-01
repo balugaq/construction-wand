@@ -25,19 +25,13 @@ import java.util.UUID;
 
 /**
  * @author balugaq
- * @since 1.0
  */
 @Getter
 @NullMarked
 public class BlockPreviewTask extends BukkitRunnable {
-    private final DisplayManager manager;
-
-    public BlockPreviewTask() {
-        manager = ConstructionWandPlugin.getInstance().getDisplayManager();
-    }
-
     @Override
     public void run() {
+        DisplayManager manager = ConstructionWandPlugin.getInstance().getDisplayManager();
         if (!manager.isRunning()) {
             this.cancel();
             return;
@@ -107,5 +101,12 @@ public class BlockPreviewTask extends BukkitRunnable {
                 }
             }
         }
+
+        ConstructionWandPlugin.getInstance().getDisplayManager().getRequests().forEach((uuid, requests) -> {
+            requests.values().stream().limit(18).forEach(request -> {
+                requests.remove(request.getLocation());
+                request.execute();
+            });
+        });
     }
 }

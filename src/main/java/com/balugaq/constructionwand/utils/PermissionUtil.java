@@ -12,7 +12,6 @@ import org.jspecify.annotations.NullMarked;
 
 /**
  * @author balugaq
- * @since 1.0
  */
 @UtilityClass
 @NullMarked

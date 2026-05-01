@@ -14,7 +14,6 @@ import java.util.Arrays;
 
 /**
  * @author balugaq
- * @since 1.0
  */
 @SuppressWarnings({"unused", "CallToPrintStackTrace", "deprecation"})
 @UtilityClass

@@ -47,7 +47,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author balugaq
- * @since 1.0
  */
 @NullMarked
 @SuppressWarnings({"unused", "deprecation"})

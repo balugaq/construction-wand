@@ -23,7 +23,6 @@ import java.util.ArrayList;
 
 /**
  * @author balugaq
- * @since 1.0
  */
 @SuppressWarnings("deprecation")
 @NullMarked

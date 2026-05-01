@@ -13,7 +13,6 @@ import org.jspecify.annotations.NullMarked;
 
 /**
  * @author balugaq
- * @since 1.0
  */
 @SuppressWarnings("unused")
 @UtilityClass

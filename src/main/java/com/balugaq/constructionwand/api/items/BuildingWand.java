@@ -19,7 +19,6 @@ import java.util.List;
 
 /**
  * @author balugaq
- * @since 1.0
  */
 @NullMarked
 @Getter

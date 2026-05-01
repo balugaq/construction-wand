@@ -17,7 +17,6 @@ import java.io.Reader;
 
 /**
  * @author balugaq
- * @since 1.0
  */
 @Getter
 @NullMarked

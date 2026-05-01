@@ -18,7 +18,6 @@ import java.util.function.Consumer;
  * This class is for {@link #copyBlockState(BlockState, Block)}
  *
  * @author m1919810
- * @since 1.0
  */
 @ApiStatus.Experimental
 @SuppressWarnings({"unused", "SequencedCollectionMethodCanBeUsed", "DataFlowIssue", "DuplicatedCode"})

@@ -17,7 +17,6 @@ import java.util.Map;
 
 /**
  * @author balugaq
- * @since 1.0
  */
 @SuppressWarnings("SameReturnValue")
 @NullMarked
