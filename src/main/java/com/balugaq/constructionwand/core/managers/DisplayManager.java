@@ -122,10 +122,7 @@ public class DisplayManager implements IManager {
 
     public void requestRemoveDisplay(Player player, DisplayGroup group, Location location) {
         requests.putIfAbsent(player.getUniqueId(), createMap());
-        requests.putIfAbsent(player.getUniqueId(), createMap());
-        if (requests.get(player.getUniqueId()).remove(location) == null) {
-            requests.get(player.getUniqueId()).put(location, new PreviewUpdateRequest.Remove(player, group, location));
-        }
+        requests.get(player.getUniqueId()).put(location, new PreviewUpdateRequest.Remove(player, group, location));
         locations.putIfAbsent(player.getUniqueId(), ConcurrentHashMap.newKeySet());
         locations.get(player.getUniqueId()).remove(location);
         if (ConfigManager.debug()) {
@@ -139,14 +136,14 @@ public class DisplayManager implements IManager {
 
     public void requestAddDisplay(Player player, DisplayGroup group, Location location, DisplayType displayType, Material material, BlockFace originFacing) {
         requests.putIfAbsent(player.getUniqueId(), createMap());
-        requests.putIfAbsent(player.getUniqueId(), createMap());
-
-        requests.get(player.getUniqueId()).put(location, new PreviewUpdateRequest.Add(player, group, location, displayType, material, originFacing));
-
-        locations.putIfAbsent(player.getUniqueId(), ConcurrentHashMap.newKeySet());
-        locations.get(player.getUniqueId()).add(location);
-        if (ConfigManager.debug()) {
-            Debug.debug("Scheduled to add displays at " + location.getBlockX() + ";" + location.getBlockY() + ";" + location.getBlockZ());
+        var currentRequest = requests.get(player.getUniqueId()).get(location);
+        if (!(currentRequest instanceof PreviewUpdateRequest.Remove)) {
+            requests.get(player.getUniqueId()).put(location, new PreviewUpdateRequest.Add(player, group, location, displayType, material, originFacing));
+            locations.putIfAbsent(player.getUniqueId(), ConcurrentHashMap.newKeySet());
+            locations.get(player.getUniqueId()).add(location);
+            if (ConfigManager.debug()) {
+                Debug.debug("Scheduled to add displays at " + location.getBlockX() + ";" + location.getBlockY() + ";" + location.getBlockZ());
+            }
         }
     }
 
