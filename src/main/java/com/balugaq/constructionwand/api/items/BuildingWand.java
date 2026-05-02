@@ -9,6 +9,7 @@ import io.github.pylonmc.rebar.item.base.RebarBlockInteractor;
 import io.github.pylonmc.rebar.util.gui.unit.UnitFormat;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import lombok.Getter;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -29,6 +30,7 @@ public class BuildingWand extends RebarItem implements Wand, RebarBlockInteracto
     private final boolean allowHandleRebarBlock = getOrThrow("allow-handle-pylon-block", ConfigAdapter.BOOLEAN);
     private final int durability = getOrThrow("durability", ConfigAdapter.INTEGER);
     private final int cooldownTicks = getOrThrow("cooldown-ticks", ConfigAdapter.INTEGER);
+    private final Sound sound = getOrThrow("sound", ConfigAdapter.SOUND);
 
     public BuildingWand(ItemStack stack) {
         super(stack);

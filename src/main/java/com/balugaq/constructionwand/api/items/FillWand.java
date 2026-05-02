@@ -17,6 +17,7 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ItemLore;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import lombok.Getter;
+import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.Bukkit;
@@ -52,6 +53,7 @@ public class FillWand extends RebarItem implements Wand, RebarInteractor {
     private final boolean allowHandleRebarBlock = getOrThrow("allow-handle-pylon-block", ConfigAdapter.BOOLEAN);
     private final int durability = getOrThrow("durability", ConfigAdapter.INTEGER);
     private final int cooldownTicks = getOrThrow("cooldown-ticks", ConfigAdapter.INTEGER);
+    private final Sound sound = getOrThrow("sound", ConfigAdapter.SOUND);
 
     public FillWand(ItemStack stack) {
         super(stack);
@@ -177,10 +179,6 @@ public class FillWand extends RebarItem implements Wand, RebarInteractor {
             return;
         }
 
-        if (!event.getAction().isRightClick()) {
-            return;
-        }
-
         Player player = event.getPlayer();
         if (isOpOnly() && !player.isOp()) {
             return;
@@ -210,7 +208,7 @@ public class FillWand extends RebarItem implements Wand, RebarInteractor {
 
             Location location = block.getLocation();
             if (leftClick) {
-                // Set end location
+                // Set start location
                 Location startLocation = resolveStr2Loc(PersistentUtil.get(wand, PersistentDataType.STRING, END_LOCATION_KEY));
                 if (startLocation != null) {
                     player.sendMessage(Messages.arguments(
@@ -332,6 +330,7 @@ public class FillWand extends RebarItem implements Wand, RebarInteractor {
                         "blocks",
                         filled
                 ));
+                player.playSound(sound);
                 resolveWandLore(player, wand);
             }
         }

@@ -279,6 +279,7 @@ public class WandUtil {
                 }
                 block.getState().update(true, true);
             }
+            player.playSound(wand.getSound());
         }, 2); // The lagger the server is, the more delay it should take.
 
         if (player.getGameMode() == GameMode.CREATIVE)
@@ -364,6 +365,7 @@ public class WandUtil {
                 BlockState state = block.getState();
                 state.update(true, true);
             }
+            player.playSound(wand.getSound());
         }, 2); // The lagger the server is, the more delay it should take.
     }
 

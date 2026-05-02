@@ -117,9 +117,9 @@ public class DisplayManager implements IManager {
         BlockFace originFacing = player.getTargetBlockFace(6, FluidCollisionMode.NEVER);
         if (originFacing != null) {
             Set<Location> origin = locations.getOrDefault(uuid, ConcurrentHashMap.newKeySet());
+            Vector vector = WandUtil.getLookingFacing(originFacing).getOppositeFace().getDirection();
             if (displayType == DisplayType.BREAK) {
                 Set<Location> fixedComing = new HashSet<>();
-                Vector vector = WandUtil.getLookingFacing(originFacing).getOppositeFace().getDirection();
                 coming.forEach(location -> {
                     fixedComing.add(location.clone().add(vector));
                 });
@@ -129,12 +129,12 @@ public class DisplayManager implements IManager {
 
             // Find the origin that does not exist in locations and call group.removeDisplay()
             origin.stream().filter(location -> !coming.contains(location)).toList().forEach(location -> {
-                requestRemoveDisplay(player, group, location);
+                requestRemoveDisplay(player, group, displayType == DisplayType.BREAK ? location.add(vector.multiply(-1)) : location);
             });
 
             // Find the locations that do not exist in origin and call group.addDisplay()
             coming.stream().filter(location -> !origin.contains(location)).forEach(location -> {
-                requestAddDisplay(player, group, location, displayType, material, originFacing);
+                requestAddDisplay(player, group, displayType == DisplayType.BREAK ? location.add(vector.multiply(-1)) : location, displayType, material, originFacing);
             });
         }
 

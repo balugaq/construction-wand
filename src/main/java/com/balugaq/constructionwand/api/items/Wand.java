@@ -3,6 +3,7 @@ package com.balugaq.constructionwand.api.items;
 import io.github.pylonmc.rebar.config.Settings;
 import io.github.pylonmc.rebar.config.adapter.ConfigAdapter;
 import io.papermc.paper.datacomponent.DataComponentTypes;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.GameMode;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
@@ -39,6 +40,8 @@ public interface Wand extends Keyed {
     ItemStack getStack();
 
     int getCooldownTicks();
+
+    Sound getSound();
 
     @Positive
     default int getHandleableBlocks() {

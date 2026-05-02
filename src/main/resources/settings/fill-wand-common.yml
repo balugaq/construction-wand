@@ -3,3 +3,8 @@ op-only: false
 allow-handle-pylon-block: false
 durability: 1047
 cooldown-ticks: 0
+sound:
+  sound: minecraft:block.creaking_heart.fall
+  source: block
+  volume: 1.0
+  pitch: 1.0
