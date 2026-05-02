@@ -8,17 +8,19 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * @author balugaq
  */
 @Getter
+@NullMarked
 public sealed abstract class PreviewEntityUpdateRequest permits PreviewEntityUpdateRequest.Add, PreviewEntityUpdateRequest.Remove {
     private final Player player;
     private final DisplayGroup group;
     private final Location location;
 
-    public abstract boolean execute();
+    public abstract void execute();
 
     public PreviewEntityUpdateRequest(Player player, DisplayGroup group, Location location) {
         this.player = player;
@@ -30,6 +32,7 @@ public sealed abstract class PreviewEntityUpdateRequest permits PreviewEntityUpd
      * @author balugaq
      */
     @Getter
+    @NullMarked
     public static non-sealed class Add extends PreviewEntityUpdateRequest {
         private final DisplayType displayType;
         private final Material material;
@@ -43,10 +46,10 @@ public sealed abstract class PreviewEntityUpdateRequest permits PreviewEntityUpd
         }
 
         @Override
-        public boolean execute() {
+        public void execute() {
             var manager = ConstructionWandPlugin.getInstance().getDisplayManager();
             var group = manager.getDisplays().get(getPlayer().getUniqueId());
-            if (group == null) return false;
+            if (group == null) return;
             manager.addDisplay(
                     group,
                     getLocation(),
@@ -54,24 +57,24 @@ public sealed abstract class PreviewEntityUpdateRequest permits PreviewEntityUpd
                     getMaterial(),
                     getOriginFacing()
             );
-            return true;
         }
     }
 
     /**
      * @author balugaq
      */
+    @NullMarked
     public static non-sealed class Remove extends PreviewEntityUpdateRequest {
         public Remove(Player player, DisplayGroup group, Location location) {
             super(player, group, location);
         }
 
         @Override
-        public boolean execute() {
+        public void execute() {
             var manager = ConstructionWandPlugin.getInstance().getDisplayManager();
             var group = manager.getDisplays().get(getPlayer().getUniqueId());
-            if (group == null) return false;
-            return manager.removeDisplay(
+            if (group == null) return;
+            manager.removeDisplay(
                     group,
                     getLocation()
             );

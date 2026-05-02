@@ -5,7 +5,7 @@ allow-handle-pylon-block: false
 durability: 349
 cooldown-ticks: 0
 sound:
-  sound: minecraft:block.creaking_heart.break
+  name: minecraft:block.creaking_heart.break
   source: block
   volume: 1.0
   pitch: 1.0

@@ -128,12 +128,18 @@ public class DisplayManager implements IManager {
             }
 
             // Find the origin that does not exist in locations and call group.removeDisplay()
-            origin.stream().filter(location -> !coming.contains(location)).toList().forEach(location -> {
+            origin.stream()
+                    .filter(location -> !coming.contains(location))
+                    .filter(location -> locationInDisplayRange(player, location))
+                    .forEach(location -> {
                 requestRemoveDisplay(player, group, displayType == DisplayType.BREAK ? location.add(vector.multiply(-1)) : location);
             });
 
             // Find the locations that do not exist in origin and call group.addDisplay()
-            coming.stream().filter(location -> !origin.contains(location)).forEach(location -> {
+            coming.stream().filter(location -> !origin.contains(location))
+                    .filter(location -> locationInDisplayRange(player, location))
+                    .limit(ConfigManager.maxBlocksToBePreview())
+                    .forEach(location -> {
                 requestAddDisplay(player, group, displayType == DisplayType.BREAK ? location.add(vector.multiply(-1)) : location, displayType, material, originFacing);
             });
         }
@@ -204,8 +210,11 @@ public class DisplayManager implements IManager {
     }
 
     public <T extends Entity> T tagMeta(T entity) {
-        entity.setMetadata(plugin.getName(),
-                            new FixedMetadataValue(ConstructionWandPlugin.getInstance(), true));
+        entity.setMetadata(plugin.getName(), new FixedMetadataValue(ConstructionWandPlugin.getInstance(), true));
         return entity;
+    }
+
+    public static boolean locationInDisplayRange(Player player, Location location) {
+        return player.getLocation().distanceSquared(location) < ConfigManager.previewRange() * ConfigManager.previewRange();
     }
 }

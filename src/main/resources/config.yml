@@ -1,5 +1,7 @@
 modification-block-limit: 40960
 display-projection: true
+max-blocks-to-be-preview: 320
+preview-range: 20
 tasks:
   block-preview:
     period: 5 # game tick

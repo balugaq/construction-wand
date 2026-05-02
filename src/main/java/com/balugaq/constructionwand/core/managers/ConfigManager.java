@@ -29,6 +29,8 @@ public class ConfigManager implements IManager {
     private final int displaysClearTaskPeriod;
     private final int fillWandSUITaskPeriod;
     private final int modificationBlockLimit;
+    private final int maxBlocksToBePreview;
+    private final int previewRange;
 
     public ConfigManager(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -39,6 +41,8 @@ public class ConfigManager implements IManager {
         displaysClearTaskPeriod = config.getInt("tasks.displays-clear.period", 6000);
         fillWandSUITaskPeriod = config.getInt("tasks.fill-wand-sui.period", 10);
         modificationBlockLimit = config.getInt("modification-block-limit", 40960);
+        maxBlocksToBePreview = config.getInt("max-blocks-to-be-preview", 320);
+        previewRange = config.getInt("preview-range", 20);
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -64,6 +68,14 @@ public class ConfigManager implements IManager {
 
     public static int fillWandSUITaskPeriod() {
         return ConstructionWandPlugin.getInstance().getConfigManager().getFillWandSUITaskPeriod();
+    }
+
+    public static int maxBlocksToBePreview() {
+        return ConstructionWandPlugin.getInstance().getConfigManager().getMaxBlocksToBePreview();
+    }
+
+    public static int previewRange() {
+        return ConstructionWandPlugin.getInstance().getConfigManager().getPreviewRange();
     }
 
     @Override

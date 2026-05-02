@@ -9,15 +9,15 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Range;
 import org.jspecify.annotations.NullMarked;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author balugaq
  */
 @NullMarked
 public interface ItemProvider {
-    List<ItemProvider> PROVIDERS = new CopyOnWriteArrayList<>();
+    List<ItemProvider> PROVIDERS = new ArrayList<>();
     int MODIFICATION_BLOCK_LIMIT = ConfigManager.modificationBlockLimit();
 
     /**

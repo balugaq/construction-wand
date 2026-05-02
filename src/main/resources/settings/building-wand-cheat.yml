@@ -5,7 +5,7 @@ allow-handle-pylon-block: true
 durability: -1
 cooldown-ticks: 0
 sound:
-  sound: minecraft:block.creaking_heart.fall
+  name: minecraft:block.creaking_heart.fall
   source: block
   volume: 1.0
   pitch: 1.0
