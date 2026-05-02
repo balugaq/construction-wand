@@ -21,6 +21,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 import org.jspecify.annotations.NullMarked;
 import org.metamechanists.displaymodellib.models.components.ModelCuboid;
@@ -55,22 +56,25 @@ public class DisplayManager implements IManager {
     private final ConcurrentHashMap<UUID, ConcurrentLinkedQueue<PreviewUpdateRequest>> requests = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, ConcurrentMap<Location, PreviewEntityUpdateRequest>> entityRequests = new ConcurrentHashMap<>();
     private final Map<UUID, Set<Location>> locations = new HashMap<>();
+    private final BukkitTask blockPreviewTask;
+    private final BukkitTask displaysClearTask;
+    private final BukkitTask fillWandSUITask;
     private boolean running = true;
 
     public DisplayManager(JavaPlugin plugin) {
         this.plugin = plugin;
+        ConfigManager config = ConstructionWandPlugin.getInstance().getConfigManager();
+
+        blockPreviewTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> new BlockPreviewTask().run(), 1,
+                                           config.getBlockPreviewTaskPeriod());
+        displaysClearTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> new DisplaysClearTask().run(), 1,
+                                           config.getDisplaysClearTaskPeriod());
+        fillWandSUITask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> new FillWandSUITask().run(), 1,
+                                                         config.getFillWandSUITaskPeriod());
     }
 
     @Override
     public void setup() {
-        ConfigManager config = ConstructionWandPlugin.getInstance().getConfigManager();
-
-        Bukkit.getScheduler().runTaskTimer(plugin, () -> new BlockPreviewTask().run(), 1,
-                                           config.getBlockPreviewTaskPeriod());
-        Bukkit.getScheduler().runTaskTimer(plugin, () -> new DisplaysClearTask().run(), 1,
-                                           config.getDisplaysClearTaskPeriod());
-        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> new FillWandSUITask().run(), 1,
-                                                         config.getFillWandSUITaskPeriod());
     }
 
     @Override
@@ -80,6 +84,9 @@ public class DisplayManager implements IManager {
 
     public void stopTasks() {
         running = false;
+        blockPreviewTask.cancel();
+        displaysClearTask.cancel();
+        fillWandSUITask.cancel();
         for (UUID uuid : new HashSet<>(displays.keySet())) {
             killDisplays(uuid);
         }
@@ -107,18 +114,24 @@ public class DisplayManager implements IManager {
         UUID uuid = player.getUniqueId();
         DisplayGroup group = displays.getOrDefault(uuid, new DisplayGroup(player.getLocation(), 0.0F, 0.0F));
 
-        Set<Location> origin = locations.getOrDefault(uuid, ConcurrentHashMap.newKeySet());
-
-        // Find the origin that does not exist in locations and call group.removeDisplay()
-        origin.stream().filter(location -> !coming.contains(location)).toList().forEach(location -> {
-            requestRemoveDisplay(player, group, location);
-        });
-        Location lookingAt = lookingAts.get(uuid);
-        if (lookingAt != null)
-            requestRemoveDisplay(player, group, lookingAt);
-
         BlockFace originFacing = player.getTargetBlockFace(6, FluidCollisionMode.NEVER);
         if (originFacing != null) {
+            Set<Location> origin = locations.getOrDefault(uuid, ConcurrentHashMap.newKeySet());
+            if (displayType == DisplayType.BREAK) {
+                Set<Location> fixedComing = new HashSet<>();
+                Vector vector = WandUtil.getLookingFacing(originFacing).getOppositeFace().getDirection();
+                coming.forEach(location -> {
+                    fixedComing.add(location.clone().add(vector));
+                });
+                coming.clear();
+                coming.addAll(fixedComing);
+            }
+
+            // Find the origin that does not exist in locations and call group.removeDisplay()
+            origin.stream().filter(location -> !coming.contains(location)).toList().forEach(location -> {
+                requestRemoveDisplay(player, group, location);
+            });
+
             // Find the locations that do not exist in origin and call group.addDisplay()
             coming.stream().filter(location -> !origin.contains(location)).forEach(location -> {
                 requestAddDisplay(player, group, location, displayType, material, originFacing);

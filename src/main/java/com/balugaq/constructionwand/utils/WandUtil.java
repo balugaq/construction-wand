@@ -336,7 +336,7 @@ public class WandUtil {
             FakeBlockBreakEvent e2 = PermissionUtil.simulateBlockBreak(player, location.getBlock());
             if (e2.isCancelled()) continue;
 
-            if (count++ > wand.getHandleableBlocks()) {
+            if (++count > wand.getHandleableBlocks()) {
                 break;
             }
             result.add(e2);
