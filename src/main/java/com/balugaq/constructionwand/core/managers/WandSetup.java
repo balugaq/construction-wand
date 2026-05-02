@@ -3,7 +3,7 @@ package com.balugaq.constructionwand.core.managers;
 import com.balugaq.constructionwand.api.items.BreakingWand;
 import com.balugaq.constructionwand.api.items.BuildingWand;
 import com.balugaq.constructionwand.api.items.FillWand;
-import com.balugaq.constructionwand.api.items.Wand;
+import com.balugaq.constructionwand.api.items.IWand;
 import com.balugaq.constructionwand.utils.KeyUtil;
 import io.github.pylonmc.rebar.config.Settings;
 import io.github.pylonmc.rebar.config.adapter.ConfigAdapter;
@@ -36,7 +36,7 @@ public class WandSetup implements IManager {
         return KeyUtil.newKey(key);
     }
 
-    public static <T extends RebarItem & Wand> void registerWand(
+    public static <T extends RebarItem & IWand> void registerWand(
             Class<T> clazz,
             @KeyPattern.Value String key,
             Material material) {

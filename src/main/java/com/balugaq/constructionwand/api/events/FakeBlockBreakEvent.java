@@ -9,7 +9,7 @@ import org.jspecify.annotations.NullMarked;
  * @author balugaq
  */
 @NullMarked
-public class FakeBlockBreakEvent extends BlockBreakEvent implements FakeEvent {
+public class FakeBlockBreakEvent extends BlockBreakEvent implements IFakeEvent {
     @SuppressWarnings("UnstableApiUsage")
     public FakeBlockBreakEvent(Block theBlock, Player player) {
         super(theBlock, player);

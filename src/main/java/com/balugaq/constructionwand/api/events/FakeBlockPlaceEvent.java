@@ -12,7 +12,7 @@ import org.jspecify.annotations.NullMarked;
  * @author balugaq
  */
 @NullMarked
-public class FakeBlockPlaceEvent extends BlockPlaceEvent implements FakeEvent {
+public class FakeBlockPlaceEvent extends BlockPlaceEvent implements IFakeEvent {
     @SuppressWarnings("UnstableApiUsage")
     public FakeBlockPlaceEvent(Block placedBlock, BlockState replacedBlockState, Block placedAgainst,
                                ItemStack itemInHand, Player thePlayer, boolean canBuild, EquipmentSlot hand) {

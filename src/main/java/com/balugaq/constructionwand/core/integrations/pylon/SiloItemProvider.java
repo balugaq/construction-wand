@@ -1,6 +1,9 @@
-package com.balugaq.constructionwand.api.providers;
+package com.balugaq.constructionwand.core.integrations.pylon;
 
+import com.balugaq.constructionwand.api.providers.IItemProvider;
 import com.balugaq.constructionwand.implementation.ConstructionWandPlugin;
+import io.github.pylonmc.pylon.content.machines.storage.Silo;
+import io.github.pylonmc.rebar.item.RebarItem;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ItemContainerContents;
 import org.bukkit.GameMode;
@@ -20,7 +23,7 @@ import java.util.List;
  */
 @SuppressWarnings("DuplicatedCode")
 @NullMarked
-public class ShulkerBoxItemProvider implements IItemProvider {
+public class SiloItemProvider implements IItemProvider {
     /**
      * The plugin that this item provider is from
      *
@@ -53,38 +56,21 @@ public class ShulkerBoxItemProvider implements IItemProvider {
 
         int existing = 0;
         for (ItemStack itemStack : player.getInventory().getContents()) {
-            if (itemStack == null || itemStack.getType() == Material.AIR) {
+            if (!(RebarItem.fromStack(itemStack) instanceof Silo.Item silo)) {
                 continue;
             }
 
-            if (!Tag.SHULKER_BOXES.isTagged(itemStack.getType())) {
+            if (!target.isSimilar(silo.getSiloStack())) {
                 continue;
             }
 
-            ItemContainerContents contents = itemStack.getData(DataComponentTypes.CONTAINER);
-            if (contents == null) {
+            if (silo.getSiloAmount() == null) {
                 continue;
             }
 
-            List<ItemStack> stacks = contents.contents();
-            if (stacks.isEmpty()) {
-                continue;
-            }
-
-            for (ItemStack stack : stacks) {
-                if (stack.isSimilar(target)) {
-                    existing += stack.getAmount();
-                }
-
-                if (existing >= requireAmount) {
-                    // enough
-                    break;
-                }
-            }
-
+            existing += silo.getSiloAmount();
             if (existing >= requireAmount) {
-                // enough
-                break;
+                return requireAmount;
             }
         }
 
@@ -113,52 +99,28 @@ public class ShulkerBoxItemProvider implements IItemProvider {
         }
 
         int total = 0;
-        target = target.asOne();
         for (ItemStack itemStack : player.getInventory().getContents()) {
-            if (itemStack == null || itemStack.getType() == Material.AIR) {
+            if (!(RebarItem.fromStack(itemStack) instanceof Silo.Item silo)) {
                 continue;
             }
 
-            if (!Tag.SHULKER_BOXES.isTagged(itemStack.getType())) {
+            if (!target.isSimilar(silo.getSiloStack())) {
                 continue;
             }
 
-            ItemContainerContents contents = itemStack.getData(DataComponentTypes.CONTAINER);
-            if (contents == null) {
+            if (silo.getSiloAmount() == null) {
                 continue;
             }
 
-            List<ItemStack> stacks = new ArrayList<>(contents.contents());
-            if (stacks.isEmpty()) {
-                continue;
+            if (amount > silo.getSiloAmount()) {
+                total += silo.getSiloAmount();
+                amount -= silo.getSiloAmount();
+                silo.setSiloAmount(0);
+            } else {
+                total += amount;
+                silo.setSiloAmount(silo.getSiloAmount() - amount);
+                amount = 0;
             }
-
-            for (ItemStack stack : stacks) {
-                if (stack.getType() == Material.AIR) {
-                    continue;
-                }
-
-                if (!stack.isSimilar(target)) {
-                    continue;
-                }
-
-                int exist = stack.getAmount();
-                if (amount >= exist) {
-                    stack.setAmount(0);
-                    total += exist;
-                    amount -= exist;
-                } else {
-                    stack.setAmount(exist - amount);
-                    total += amount;
-                    amount = 0;
-                }
-
-                if (amount == 0) {
-                    break;
-                }
-            }
-
-            itemStack.setData(DataComponentTypes.CONTAINER, ItemContainerContents.containerContents(stacks));
 
             if (amount == 0) {
                 break;

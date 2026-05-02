@@ -13,7 +13,7 @@ import org.jspecify.annotations.NullMarked;
  * @author balugaq
  */
 @NullMarked
-public class PlayerInventoryItemProvider implements ItemProvider {
+public class PlayerInventoryItemProvider implements IItemProvider {
     /**
      * The plugin that this item provider is from
      *
@@ -44,7 +44,6 @@ public class PlayerInventoryItemProvider implements ItemProvider {
         }
 
         int existing = 0;
-        target = target.asOne();
         for (ItemStack itemStack : player.getInventory().getContents()) {
             if (itemStack == null || itemStack.getType() == Material.AIR) {
                 continue;

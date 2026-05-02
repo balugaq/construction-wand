@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @SuppressWarnings("SameReturnValue")
 @NullMarked
-public interface Wand extends Keyed {
+public interface IWand extends Keyed {
     Map<NamespacedKey, Map<String, Object>> CACHE = new HashMap<>();
 
     boolean isBlockStrict();

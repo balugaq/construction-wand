@@ -16,8 +16,8 @@ import java.util.List;
  * @author balugaq
  */
 @NullMarked
-public interface ItemProvider {
-    List<ItemProvider> PROVIDERS = new ArrayList<>();
+public interface IItemProvider {
+    List<IItemProvider> PROVIDERS = new ArrayList<>();
     int MODIFICATION_BLOCK_LIMIT = ConfigManager.modificationBlockLimit();
 
     /**
@@ -26,7 +26,7 @@ public interface ItemProvider {
      * @param provider
      *         The item provider
      */
-    static void registerProvider(ItemProvider provider) {
+    static void registerProvider(IItemProvider provider) {
         PROVIDERS.add(provider);
     }
 
@@ -47,7 +47,7 @@ public interface ItemProvider {
         if (player.getGameMode() == GameMode.CREATIVE) return MODIFICATION_BLOCK_LIMIT;
 
         int total = 0;
-        for (ItemProvider provider : PROVIDERS) {
+        for (IItemProvider provider : PROVIDERS) {
             int got = provider.getAmount(player, target, requireAmount);
             requireAmount -= got;
             total += got;
@@ -74,7 +74,7 @@ public interface ItemProvider {
     @CanIgnoreReturnValue
     static @Range(from = 0, to = Integer.MAX_VALUE) int consumeItems(Player player, ItemStack target, @Range(from = 1, to = Integer.MAX_VALUE) int amount) {
         int total = 0;
-        for (ItemProvider provider : PROVIDERS) {
+        for (IItemProvider provider : PROVIDERS) {
             int consumed = provider.consumeItem(player, target, amount);
             amount -= consumed;
             total += consumed;

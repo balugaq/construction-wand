@@ -33,26 +33,8 @@ public class Debug {
         }, 1, 1);
     }
 
-    public static void debug(@Nullable Object... objects) {
-        StringBuilder sb = new StringBuilder();
-        for (Object obj : objects) {
-            if (obj == null) {
-                sb.append("null");
-            } else {
-                sb.append(obj);
-            }
-        }
-        debug(sb.toString());
-    }
-
     public static void debug(Object object) {
         debug(object.toString());
-    }
-
-    public static void debug(String... messages) {
-        for (String message : messages) {
-            debug(message);
-        }
     }
 
     public static void debug(String message) {
@@ -87,24 +69,12 @@ public class Debug {
         Thread.dumpStack();
     }
 
-    public static void log(@Nullable Object @Nullable ... object) {
-        log(Arrays.toString(object));
-    }
-
     public static void log(Object object) {
         log(object.toString());
     }
 
-    public static void log(@Nullable String @Nullable ... messages) {
-        log(Arrays.toString(messages));
-    }
-
     public static void log(String message) {
         buffer.add(message);
-    }
-
-    private static void log0(String message) {
-        getPlugin().getLogger().info(message);
     }
 
     public static void log(Throwable e) {
@@ -113,6 +83,22 @@ public class Debug {
 
     public static void log() {
         log("");
+    }
+
+    public static void severe(Throwable e) {
+        log(e);
+    }
+
+    public static void severe(String message) {
+        log("&c[SEVERE] " + message);
+    }
+
+    public static void severe(Object object) {
+        severe(object.toString());
+    }
+
+    private static void log0(String message) {
+        getPlugin().getLogger().info(message);
     }
 
     public static JavaPlugin getPlugin() {

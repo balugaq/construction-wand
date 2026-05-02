@@ -1,10 +1,11 @@
 package com.balugaq.constructionwand.implementation;
 
-import com.balugaq.constructionwand.api.providers.ItemProvider;
+import com.balugaq.constructionwand.api.providers.IItemProvider;
 import com.balugaq.constructionwand.api.providers.PlayerInventoryItemProvider;
 import com.balugaq.constructionwand.api.providers.ShulkerBoxItemProvider;
 import com.balugaq.constructionwand.core.managers.ConfigManager;
 import com.balugaq.constructionwand.core.managers.DisplayManager;
+import com.balugaq.constructionwand.core.managers.IntegrationManager;
 import com.balugaq.constructionwand.core.managers.ListenerManager;
 import com.balugaq.constructionwand.core.managers.WandSetup;
 import com.balugaq.constructionwand.utils.Debug;
@@ -29,6 +30,7 @@ public class ConstructionWandPlugin extends JavaPlugin implements RebarAddon {
     private @Getter ConfigManager configManager;
     private @Getter DisplayManager displayManager;
     private @Getter ListenerManager listenerManager;
+    private @Getter IntegrationManager integrationManager;
     private @Getter WandSetup wandSetup;
     @Getter
     private String username;
@@ -51,8 +53,8 @@ public class ConstructionWandPlugin extends JavaPlugin implements RebarAddon {
         configManager = new ConfigManager(this);
         configManager.setup();
 
-        ItemProvider.registerProvider(new PlayerInventoryItemProvider());
-        ItemProvider.registerProvider(new ShulkerBoxItemProvider());
+        IItemProvider.registerProvider(new PlayerInventoryItemProvider());
+        IItemProvider.registerProvider(new ShulkerBoxItemProvider());
 
         Debug.log("Loading display manager");
         displayManager = new DisplayManager(this);
@@ -65,6 +67,10 @@ public class ConstructionWandPlugin extends JavaPlugin implements RebarAddon {
         Debug.log("Registering wands");
         wandSetup = new WandSetup();
         wandSetup.setup();
+
+        Debug.log("Loading integration manager");
+        integrationManager = new IntegrationManager();
+        integrationManager.setup();
 
         Debug.log("ConstructionWand Done!");
     }

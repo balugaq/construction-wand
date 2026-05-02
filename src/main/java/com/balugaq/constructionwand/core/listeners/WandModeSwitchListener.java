@@ -1,6 +1,6 @@
 package com.balugaq.constructionwand.core.listeners;
 
-import com.balugaq.constructionwand.api.items.Wand;
+import com.balugaq.constructionwand.api.items.IWand;
 import com.balugaq.constructionwand.implementation.ConstructionWandPlugin;
 import com.balugaq.constructionwand.utils.WandUtil;
 import io.github.pylonmc.rebar.item.RebarItem;
@@ -32,7 +32,7 @@ public class WandModeSwitchListener implements Listener {
         Player player = event.getPlayer();
         ItemStack itemInOffHand = event.getOffHandItem();
         RebarItem wandLike = RebarItem.fromStack(itemInOffHand);
-        if (wandLike instanceof Wand) {
+        if (wandLike instanceof IWand) {
             Axis axis = WandUtil.getAxis(itemInOffHand);
             Axis nextAxis;
             if (axis == null) {

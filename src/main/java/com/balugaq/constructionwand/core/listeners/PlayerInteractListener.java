@@ -1,6 +1,6 @@
 package com.balugaq.constructionwand.core.listeners;
 
-import com.balugaq.constructionwand.api.items.Wand;
+import com.balugaq.constructionwand.api.items.IWand;
 import io.github.pylonmc.rebar.item.RebarItem;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -27,7 +27,7 @@ public class PlayerInteractListener implements Listener {
         Player player = event.getPlayer();
         ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
         RebarItem pyItem = RebarItem.fromStack(itemInMainHand);
-        if (pyItem instanceof Wand) {
+        if (pyItem instanceof IWand) {
             ItemStack itemInOffHand = player.getInventory().getItemInOffHand();
             if (itemInOffHand != null && itemInOffHand.getType() != Material.AIR && itemInOffHand.getType().isBlock()) {
                 event.setCancelled(true);

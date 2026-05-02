@@ -1,8 +1,8 @@
 package com.balugaq.constructionwand.utils;
 
 import com.balugaq.constructionwand.api.events.FakeBlockBreakEvent;
-import com.balugaq.constructionwand.api.items.Wand;
-import com.balugaq.constructionwand.api.providers.ItemProvider;
+import com.balugaq.constructionwand.api.items.IWand;
+import com.balugaq.constructionwand.api.providers.IItemProvider;
 import com.destroystokyo.paper.MaterialTags;
 import io.github.pylonmc.rebar.block.BlockStorage;
 import io.github.pylonmc.rebar.block.RebarBlock;
@@ -221,7 +221,7 @@ public class WandUtil {
     }
 
     @SuppressWarnings("DuplicatedCode")
-    public static void placeBlocks(Plugin plugin, @Nullable EquipmentSlot hand, Player player, Wand wand) {
+    public static void placeBlocks(Plugin plugin, @Nullable EquipmentSlot hand, Player player, IWand wand) {
         if ((hand != null && hand != EquipmentSlot.HAND)
                 || (wand.isOpOnly() && !player.isOp())
                 || (player.getGameMode() == GameMode.SPECTATOR)
@@ -237,7 +237,7 @@ public class WandUtil {
             return;
         }
 
-        int playerHas = ItemProvider.getItemAmount(player, itemInHand, wand.getHandleableBlocks());
+        int playerHas = IItemProvider.getItemAmount(player, itemInHand, wand.getHandleableBlocks());
         if (playerHas == 0) {
             return;
         }
@@ -286,12 +286,12 @@ public class WandUtil {
             return;
 
         wand.handleInteract(player, consumed);
-        ItemProvider.consumeItems(player, itemInHand, consumed);
+        IItemProvider.consumeItems(player, itemInHand, consumed);
         player.updateInventory();
     }
 
     @SuppressWarnings("DuplicatedCode")
-    public static void breakBlocks(Plugin plugin, @Nullable EquipmentSlot hand, Player player, Wand wand) {
+    public static void breakBlocks(Plugin plugin, @Nullable EquipmentSlot hand, Player player, IWand wand) {
         if ((hand != null && hand != EquipmentSlot.HAND)
                 || (wand.isOpOnly() && !player.isOp())
                 || (player.getGameMode() == GameMode.SPECTATOR)
@@ -382,7 +382,7 @@ public class WandUtil {
             return -1;
         }
 
-        int amount = ItemProvider.getItemAmount(player, item, ItemProvider.MODIFICATION_BLOCK_LIMIT);
+        int amount = IItemProvider.getItemAmount(player, item, IItemProvider.MODIFICATION_BLOCK_LIMIT);
         AtomicInteger filled = new AtomicInteger(0);
         WorldUtils.doWorldEdit(
                 startLocation, endLocation, location -> {
@@ -404,7 +404,7 @@ public class WandUtil {
                     filled.incrementAndGet();
                 }
         );
-        ItemProvider.consumeItems(player, item, filled.get());
+        IItemProvider.consumeItems(player, item, filled.get());
         player.updateInventory();
 
         return filled.get();
@@ -724,7 +724,7 @@ public class WandUtil {
     }
 
     @Nullable
-    public static ItemStack getItemType(Wand wand, Block block) {
+    public static ItemStack getItemType(IWand wand, Block block) {
         if (wand.isAllowHandleRebarBlock()) {
             RebarBlock pylon = BlockStorage.get(block);
             if (pylon != null) {

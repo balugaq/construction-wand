@@ -7,7 +7,6 @@ import io.github.pylonmc.rebar.i18n.RebarArgument;
 import io.github.pylonmc.rebar.item.RebarItem;
 import io.github.pylonmc.rebar.item.base.RebarBlockInteractor;
 import io.github.pylonmc.rebar.util.gui.unit.UnitFormat;
-import io.papermc.paper.datacomponent.DataComponentTypes;
 import lombok.Getter;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.event.EventPriority;
@@ -23,7 +22,7 @@ import java.util.List;
  */
 @NullMarked
 @Getter
-public class BreakingWand extends RebarItem implements Wand, RebarBlockInteractor {
+public class BreakingWand extends RebarItem implements IWand, RebarBlockInteractor {
     private final int limitBlocks = getOrThrow("limit-blocks", ConfigAdapter.INTEGER);
     private final boolean blockStrict = getOrThrow("block-strict", ConfigAdapter.BOOLEAN);
     private final boolean opOnly = getOrThrow("op-only", ConfigAdapter.BOOLEAN);
