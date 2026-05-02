@@ -1,6 +1,7 @@
 package com.balugaq.constructionwand.core.tasks;
 
 import com.balugaq.constructionwand.api.DisplayType;
+import com.balugaq.constructionwand.api.display.PreviewUpdateRequest;
 import com.balugaq.constructionwand.api.events.PrepareBreakingEvent;
 import com.balugaq.constructionwand.api.events.PrepareBuildingEvent;
 import com.balugaq.constructionwand.api.items.BreakingWand;
@@ -67,6 +68,9 @@ public class BlockPreviewTask extends BukkitRunnable {
                     || !manager.getLookingFaces().get(uuid).equals(originalFacing)) {
                 manager.getLookingAts().put(uuid, location);
                 manager.getLookingFaces().put(uuid, originalFacing);
+                if (ConfigManager.debug()) {
+                    Debug.debug("Player " + player.getName() + " is now looking at " + location.getBlockX() + ";" + location.getBlockY() + ";" + location.getBlockZ() + " : " + originalFacing);
+                }
 
                 RebarItem wandLike = RebarItem.fromStack(player.getInventory().getItemInMainHand());
                 if (wandLike instanceof BuildingWand buildingWand) {
@@ -77,7 +81,7 @@ public class BlockPreviewTask extends BukkitRunnable {
 
                     PrepareBuildingEvent event = new PrepareBuildingEvent(player, buildingWand, block);
                     event.callEvent();
-                    ConstructionWandPlugin.getInstance().getDisplayManager().updateDisplays(
+                    ConstructionWandPlugin.getInstance().getDisplayManager().requestUpdateDisplays(
                             player,
                             event.getDisplayLocations(),
                             item.getType(),
@@ -94,7 +98,7 @@ public class BlockPreviewTask extends BukkitRunnable {
 
                     var event = new PrepareBreakingEvent(player, breakingWand, block);
                     event.callEvent();
-                    manager.updateDisplays(
+                    manager.requestUpdateDisplays(
                             player,
                             event.getDisplayLocations(),
                             item.getType(),
@@ -105,6 +109,23 @@ public class BlockPreviewTask extends BukkitRunnable {
         }
 
         manager.getRequests().forEach((uuid, requests) -> {
+            if (requests.size() > 64) {
+                manager.killDisplays(uuid);
+                return;
+            }
+
+            while (!requests.isEmpty()) {
+                PreviewUpdateRequest request = requests.poll();
+                request.execute();
+            }
+        });
+
+        manager.getEntityRequests().forEach((uuid, requests) -> {
+            if (requests.size() > 64 * 4096) {
+                manager.killDisplays(uuid);
+                return;
+            }
+
             requests.values()
                     .stream()
                     .limit(9L).forEach(request -> {

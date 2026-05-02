@@ -1,6 +1,7 @@
 package com.balugaq.constructionwand.core.managers;
 
 import com.balugaq.constructionwand.api.DisplayType;
+import com.balugaq.constructionwand.api.display.PreviewEntityUpdateRequest;
 import com.balugaq.constructionwand.api.display.PreviewUpdateRequest;
 import com.balugaq.constructionwand.core.tasks.BlockPreviewTask;
 import com.balugaq.constructionwand.core.tasks.DisplaysClearTask;
@@ -30,6 +31,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author balugaq
@@ -49,7 +52,8 @@ public class DisplayManager implements IManager {
     private final Map<UUID, Location> lookingAts = new HashMap<>();
     private final Map<UUID, DisplayGroup> displays = new HashMap<>();
     private final JavaPlugin plugin;
-    private final ConcurrentHashMap<UUID, Map<Location, PreviewUpdateRequest>> requests = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, ConcurrentLinkedQueue<PreviewUpdateRequest>> requests = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, ConcurrentMap<Location, PreviewEntityUpdateRequest>> entityRequests = new ConcurrentHashMap<>();
     private final Map<UUID, Set<Location>> locations = new HashMap<>();
     private boolean running = true;
 
@@ -91,6 +95,12 @@ public class DisplayManager implements IManager {
         lookingAts.remove(uuid);
         lookingFaces.remove(uuid);
         locations.remove(uuid);
+        entityRequests.remove(uuid);
+    }
+
+    public void requestUpdateDisplays(Player player, Set<Location> coming, Material material, DisplayType displayType) {
+        requests.putIfAbsent(player.getUniqueId(), new ConcurrentLinkedQueue<>());
+        requests.get(player.getUniqueId()).add(new PreviewUpdateRequest(player, coming, material, displayType));
     }
 
     public void updateDisplays(Player player, Set<Location> coming, Material material, DisplayType displayType) {
@@ -121,8 +131,8 @@ public class DisplayManager implements IManager {
     }
 
     public void requestRemoveDisplay(Player player, DisplayGroup group, Location location) {
-        requests.putIfAbsent(player.getUniqueId(), createMap());
-        requests.get(player.getUniqueId()).put(location, new PreviewUpdateRequest.Remove(player, group, location));
+        entityRequests.putIfAbsent(player.getUniqueId(), createMap());
+        entityRequests.get(player.getUniqueId()).put(location, new PreviewEntityUpdateRequest.Remove(player, group, location));
         locations.putIfAbsent(player.getUniqueId(), ConcurrentHashMap.newKeySet());
         locations.get(player.getUniqueId()).remove(location);
         if (ConfigManager.debug()) {
@@ -130,15 +140,15 @@ public class DisplayManager implements IManager {
         }
     }
 
-    private <K, V> Map<K, V> createMap() {
+    private <K, V> ConcurrentMap<K, V> createMap() {
         return new MapMaker().concurrencyLevel(4).makeMap();
     }
 
     public void requestAddDisplay(Player player, DisplayGroup group, Location location, DisplayType displayType, Material material, BlockFace originFacing) {
-        requests.putIfAbsent(player.getUniqueId(), createMap());
-        var currentRequest = requests.get(player.getUniqueId()).get(location);
-        if (!(currentRequest instanceof PreviewUpdateRequest.Remove)) {
-            requests.get(player.getUniqueId()).put(location, new PreviewUpdateRequest.Add(player, group, location, displayType, material, originFacing));
+        entityRequests.putIfAbsent(player.getUniqueId(), createMap());
+        var currentRequest = entityRequests.get(player.getUniqueId()).get(location);
+        if (!(currentRequest instanceof PreviewEntityUpdateRequest.Remove)) {
+            entityRequests.get(player.getUniqueId()).put(location, new PreviewEntityUpdateRequest.Add(player, group, location, displayType, material, originFacing));
             locations.putIfAbsent(player.getUniqueId(), ConcurrentHashMap.newKeySet());
             locations.get(player.getUniqueId()).add(location);
             if (ConfigManager.debug()) {
@@ -171,7 +181,7 @@ public class DisplayManager implements IManager {
                 group.addDisplay("b_" + ls, tagMeta(BUILD_BORDER.build(displayLocation)));
             }
             case BREAK -> {
-                Vector vector = WandUtil.getLookingFacing(originFacing).getOppositeFace().getDirection().multiply(0.6).add(new Vector(0, 0.1F, 0));
+                Vector vector = WandUtil.getLookingFacing(originFacing).getOppositeFace().getDirection().multiply(0.6);
                 group.addDisplay("b_" + ls, tagMeta(BREAK_BORDER.build(displayLocation.clone().add(vector))));
             }
         }

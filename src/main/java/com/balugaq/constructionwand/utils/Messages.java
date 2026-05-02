@@ -16,7 +16,7 @@ import java.util.Locale;
  */
 @NullMarked
 public class Messages {
-    public static final String PREFIX = "pylon.constructionwand.message.";
+    public static final String PREFIX = "constructionwand.message.";
 
     public static final Component NOT_SET_START_LOCATION = Component.translatable(PREFIX + "common.not-set-start-location");
     public static final Component NOT_SET_END_LOCATION = Component.translatable(PREFIX + "common.not-set-end-location");
