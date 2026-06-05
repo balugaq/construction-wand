@@ -3,10 +3,9 @@ import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
 plugins {
     java
     idea
-    id("com.gradleup.shadow") version "8.3.2"
+    id("com.gradleup.shadow") version "9.0.0"
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
     id("xyz.jpenilla.run-paper") version "2.3.0"
-    id("io.freefair.lombok") version "8.13.1"
 }
 
 group = project.properties["group"]!!
@@ -19,13 +18,15 @@ repositories {
     maven("https://repo.papermc.io/repository/maven-public/") {
         name = "papermc"
     }
+    maven("https://repo.xenondevs.xyz/releases") {
+        name = "InvUI"
+    }
     maven("https://repo.metamechanists.org/releases") {
         name = "MetaMechanists Repository"
     }
     maven("https://jitpack.io") {
         name = "JitPack"
     }
-    maven("https://repo.xenondevs.xyz/releases")
 }
 
 val rebarVersion = project.properties["rebar.version"] as String
@@ -37,6 +38,10 @@ dependencies {
     compileOnly("io.github.pylonmc:pylon:$pylonVersion")
     implementation("org.metamechanists:DisplayModelLib:35")
     shadow("org.metamechanists:DisplayModelLib:35")
+    compileOnly("org.projectlombok:lombok:1.18.46")
+    annotationProcessor("org.projectlombok:lombok:1.18.46")
+    testCompileOnly("org.projectlombok:lombok:1.18.46")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.46")
 }
 
 idea {
