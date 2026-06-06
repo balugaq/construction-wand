@@ -120,24 +120,14 @@ public class DisplayManager implements IManager {
         BlockFace originFacing = player.getTargetBlockFace(6, FluidCollisionMode.NEVER);
         if (originFacing != null) {
             Set<Location> origin = locations.getOrDefault(uuid, ConcurrentHashMap.newKeySet());
-            Vector vector = WandUtil.getLookingFacing(originFacing).getOppositeFace().getDirection();
-            if (displayType == DisplayType.BREAK) {
-                Set<Location> fixedComing = new HashSet<>();
-                coming.forEach(location -> {
-                    fixedComing.add(location.clone().add(vector));
-                });
-                coming.clear();
-                coming.addAll(fixedComing);
-            }
 
             // Find the origin that does not exist in coming and call group.removeDisplay()
             final DisplayGroup finalGroup = group;
-            Vector neg_vector = vector.multiply(-1);
             origin.stream()
                     .filter(location -> !coming.contains(location))
                     .filter(location -> locationInDisplayRange(player, location))
                     .forEach(location -> {
-                requestRemoveDisplay(player, finalGroup, displayType == DisplayType.BREAK ? location.add(neg_vector) : location);
+                requestRemoveDisplay(player, finalGroup, location);
             });
 
             // Find the coming that do not exist in origin and call group.addDisplay()
@@ -145,7 +135,7 @@ public class DisplayManager implements IManager {
                     .filter(location -> locationInDisplayRange(player, location))
                     .limit(ConfigManager.maxBlocksToBePreview())
                     .forEach(location -> {
-                requestAddDisplay(player, finalGroup, displayType == DisplayType.BREAK ? location.add(neg_vector) : location, displayType, material, originFacing);
+                requestAddDisplay(player, finalGroup, location, displayType, material, originFacing);
             });
         }
 
@@ -181,17 +171,13 @@ public class DisplayManager implements IManager {
 
     public boolean removeDisplay(DisplayGroup group, Location location) {
         boolean result = false;
-        String ls = location.getBlockX() + "_" + location.getBlockY() + "_" + location.getBlockZ();
-        var display = group.removeDisplay("b_" + ls);
+        var display = group.removeDisplay("b_" + location.getBlockX() + "_" + location.getBlockY() + "_" + location.getBlockZ());
         if (display != null) {
             display.remove();
             result = true;
         }
-        display = group.removeDisplay("m_" + ls);
-        if (display != null) {
-            display.remove();
-            result = true;
-        }
+        display = group.removeDisplay("m_" + location.getBlockX() + "_" + location.getBlockY() + "_" + location.getBlockZ());
+        if (display != null) display.remove();
         if (ConfigManager.debug()) {
             Debug.debug("Removed display at " + location.getBlockX() + ";" + location.getBlockY() + ";" + location.getBlockZ());
         }

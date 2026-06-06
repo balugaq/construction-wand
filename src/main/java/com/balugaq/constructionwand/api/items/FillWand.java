@@ -19,7 +19,7 @@ import io.papermc.paper.persistence.PersistentDataContainerView;
 import lombok.Getter;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.translation.GlobalTranslator;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -47,7 +47,7 @@ import java.util.List;
 public class FillWand extends RebarItem implements IWand, RebarInteractor {
     public static final NamespacedKey START_LOCATION_KEY = KeyUtil.newKey("start-location");
     public static final NamespacedKey END_LOCATION_KEY = KeyUtil.newKey("end-location");
-    public static final NamespacedKey ITEM_KEY = KeyUtil.newKey("item");
+    public static final NamespacedKey MATERIAL_KEY = KeyUtil.newKey("material");
     private final int limitBlocks = getOrThrow("limit-blocks", ConfigAdapter.INTEGER);
     private final boolean opOnly = getOrThrow("op-only", ConfigAdapter.BOOLEAN);
     private final boolean allowHandleRebarBlock = getOrThrow("allow-handle-pylon-block", ConfigAdapter.BOOLEAN);
@@ -67,28 +67,37 @@ public class FillWand extends RebarItem implements IWand, RebarInteractor {
 
         String startLocation = view.get(START_LOCATION_KEY, PersistentDataType.STRING);
         String endLocation = view.get(END_LOCATION_KEY, PersistentDataType.STRING);
-        String material = view.get(ITEM_KEY, PersistentDataType.STRING);
+        String material = view.get(MATERIAL_KEY, PersistentDataType.STRING);
 
         if (startLocation != null || endLocation != null || material != null) {
             lore.addLine(Component.text(" "));
         }
 
         if (startLocation != null) {
-            lore.addLine(Messages.arguments(
+            lore.addLine(Component.text().color(TextColor.color(0x00FF00)).append(Messages.arguments(
                     player.locale(),
                     Messages.KEY_START_LOCATION,
                     "start-location",
                     humanizeLoc(resolveStr2Loc(startLocation))
-            ));
+            )));
         }
 
         if (endLocation != null) {
-            lore.addLine(Messages.arguments(
+            lore.addLine(Component.text().color(TextColor.color(0x00FF00)).append(Messages.arguments(
                     player.locale(),
                     Messages.KEY_END_LOCATION,
                     "end-location",
                     humanizeLoc(resolveStr2Loc(endLocation))
-            ));
+            )));
+        }
+
+        if (material != null) {
+            lore.addLine(Component.text().color(TextColor.color(0x00FF00)).append(Messages.arguments(
+                    player.locale(),
+                    Messages.KEY_MATERIAL,
+                    "material",
+                    resolveStr2Item(material).effectiveName()
+            )));
         }
 
         wand.setData(DataComponentTypes.LORE, lore);
@@ -96,7 +105,7 @@ public class FillWand extends RebarItem implements IWand, RebarInteractor {
 
     @Contract("null -> null")
     @Nullable
-    public static ItemStack resolveStr2item(@Nullable String str) {
+    public static ItemStack resolveStr2Item(@Nullable String str) {
         if (str == null) return null;
         if (str.startsWith("minecraft:")) {
             Material material = Material.matchMaterial(str);
@@ -162,15 +171,6 @@ public class FillWand extends RebarItem implements IWand, RebarInteractor {
 
     public static String humanizeLoc(Location location) {
         return "X: " + location.getBlockX() + " | Y: " + location.getBlockY() + " | Z: " + location.getBlockZ();
-    }
-
-    public static Component humanizeItemName(Player player, ItemStack itemStack) {
-        RebarItem item = RebarItem.fromStack(itemStack);
-        if (item != null) {
-            return GlobalTranslator.render(itemStack.displayName(), player.locale());
-        } else {
-            return GlobalTranslator.render(Component.translatable("block.minecraft." + resolveItem2str(itemStack).toLowerCase()), player.locale());
-        }
     }
 
     @Override
@@ -255,10 +255,10 @@ public class FillWand extends RebarItem implements IWand, RebarInteractor {
                     player.sendMessage(Messages.arguments(
                             player.locale(),
                             Messages.KEY_SET_ITEM,
-                            "item",
-                            humanizeItemName(player, item)
+                            "material",
+                            item.effectiveName()
                     ));
-                    PersistentUtil.set(wand, PersistentDataType.STRING, ITEM_KEY, resolveItem2str(item));
+                    PersistentUtil.set(wand, PersistentDataType.STRING, MATERIAL_KEY, resolveItem2str(item));
                     resolveWandLore(player, wand);
                 } else {
                     // Set end location
@@ -309,7 +309,7 @@ public class FillWand extends RebarItem implements IWand, RebarInteractor {
                     return;
                 }
 
-                ItemStack item = resolveStr2item(PersistentUtil.get(wand, PersistentDataType.STRING, ITEM_KEY));
+                ItemStack item = resolveStr2Item(PersistentUtil.get(wand, PersistentDataType.STRING, MATERIAL_KEY));
                 if (item == null) {
                     player.sendMessage(Messages.NOT_SET_ITEM);
                     return;
@@ -321,7 +321,7 @@ public class FillWand extends RebarItem implements IWand, RebarInteractor {
                             player.locale(),
                             Messages.KEY_NO_ENOUGH_ITEMS,
                             "material",
-                            humanizeItemName(player, item)
+                            item.effectiveName()
                     ));
                 }
                 player.sendMessage(Messages.arguments(

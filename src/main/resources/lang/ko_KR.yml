@@ -131,5 +131,6 @@ message:
     no-enough-items: "<red>충분한 %material%이(가) 없습니다!"
     start-location: "<attr>시작 위치:</attr> %start-location%"
     end-location: "<attr>종료 위치:</attr> %end-location%"
+    material: "<attr>재료:</attr> %material%"
   fill-wand:
     filled-blocks: "<green>채운 블록: %blocks%블록"

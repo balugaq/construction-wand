@@ -38,7 +38,7 @@ public class Messages {
     // arg: %total% - Total selected blocks
     public static final String KEY_SET_END_LOCATION_WITH_RANGE = PREFIX + "common.set-end-location-with-range";
 
-    // arg: %material% - Translated material
+    // arg: %material% - Material
     public static final String KEY_SET_ITEM = PREFIX + "common.set-material";
 
     // arg: %blocks% - The number of blocks filled
@@ -50,8 +50,11 @@ public class Messages {
     // arg: %end-location% - Location
     public static final String KEY_END_LOCATION = PREFIX + "common.end-location";
 
-    // arg: %material% - Translated material
+    // arg: %material% - Material
     public static final String KEY_NO_ENOUGH_ITEMS = PREFIX + "common.no-enough-items";
+
+    // arg: %material% - Material
+    public static final String KEY_MATERIAL = PREFIX + "common.material";
 
     public static Component arguments(@Nullable Locale locale, String translationKey, Object... args) {
         List<RebarArgument> pargs = new ArrayList<>();
