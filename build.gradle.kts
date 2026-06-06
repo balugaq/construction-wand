@@ -58,6 +58,19 @@ java {
 tasks.shadowJar {
     relocate("org.metamechanists", "${project.group}.shaded.org.metamechanists")
 
+    // I have no idea about why these files are being included, so excludes them.
+    exclude("META-INF/maven/**")
+    exclude("edu/")
+    exclude("javax/")
+    exclude("net/")
+    exclude("org/intellij/")
+    exclude("org/jetbrains/")
+    exclude {
+        val isRootPluginYml = it.relativePath.pathString == "plugin.yml"
+        val isFromDisplayModelLib = isRootPluginYml && it.size < 150
+        isFromDisplayModelLib
+    }
+
     mergeServiceFiles()
 
     archiveBaseName = project.name

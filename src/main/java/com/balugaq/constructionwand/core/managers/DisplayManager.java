@@ -112,7 +112,10 @@ public class DisplayManager implements IManager {
 
     public void updateDisplays(Player player, Set<Location> coming, Material material, DisplayType displayType) {
         UUID uuid = player.getUniqueId();
-        DisplayGroup group = displays.getOrDefault(uuid, new DisplayGroup(player.getLocation(), 0.0F, 0.0F));
+        DisplayGroup group = displays.get(uuid);
+        if (group == null) {
+            group = new DisplayGroup(player.getLocation(), 0.0F, 0.0F);
+        }
 
         BlockFace originFacing = player.getTargetBlockFace(6, FluidCollisionMode.NEVER);
         if (originFacing != null) {
@@ -127,26 +130,26 @@ public class DisplayManager implements IManager {
                 coming.addAll(fixedComing);
             }
 
-            // Find the origin that does not exist in locations and call group.removeDisplay()
+            // Find the origin that does not exist in coming and call group.removeDisplay()
+            final DisplayGroup finalGroup = group;
+            Vector neg_vector = vector.multiply(-1);
             origin.stream()
                     .filter(location -> !coming.contains(location))
                     .filter(location -> locationInDisplayRange(player, location))
                     .forEach(location -> {
-                requestRemoveDisplay(player, group, displayType == DisplayType.BREAK ? location.add(vector.multiply(-1)) : location);
+                requestRemoveDisplay(player, finalGroup, displayType == DisplayType.BREAK ? location.add(neg_vector) : location);
             });
 
-            // Find the locations that do not exist in origin and call group.addDisplay()
+            // Find the coming that do not exist in origin and call group.addDisplay()
             coming.stream().filter(location -> !origin.contains(location))
                     .filter(location -> locationInDisplayRange(player, location))
                     .limit(ConfigManager.maxBlocksToBePreview())
                     .forEach(location -> {
-                requestAddDisplay(player, group, displayType == DisplayType.BREAK ? location.add(vector.multiply(-1)) : location, displayType, material, originFacing);
+                requestAddDisplay(player, finalGroup, displayType == DisplayType.BREAK ? location.add(neg_vector) : location, displayType, material, originFacing);
             });
         }
 
-        if (!displays.containsKey(uuid)) {
-            displays.put(uuid, group);
-        }
+        displays.put(uuid, group);
     }
 
     public void requestRemoveDisplay(Player player, DisplayGroup group, Location location) {
@@ -178,13 +181,17 @@ public class DisplayManager implements IManager {
 
     public boolean removeDisplay(DisplayGroup group, Location location) {
         boolean result = false;
-        var display = group.removeDisplay("b_" + location.getBlockX() + "_" + location.getBlockY() + "_" + location.getBlockZ());
+        String ls = location.getBlockX() + "_" + location.getBlockY() + "_" + location.getBlockZ();
+        var display = group.removeDisplay("b_" + ls);
         if (display != null) {
             display.remove();
             result = true;
         }
-        display = group.removeDisplay("m_" + location.getBlockX() + "_" + location.getBlockY() + "_" + location.getBlockZ());
-        if (display != null) display.remove();
+        display = group.removeDisplay("m_" + ls);
+        if (display != null) {
+            display.remove();
+            result = true;
+        }
         if (ConfigManager.debug()) {
             Debug.debug("Removed display at " + location.getBlockX() + ";" + location.getBlockY() + ";" + location.getBlockZ());
         }
