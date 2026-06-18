@@ -1,6 +1,6 @@
 package com.balugaq.constructionwand.api.items;
 
-import io.github.pylonmc.rebar.config.Settings;
+import io.github.pylonmc.rebar.config.ConfigSection;
 import io.github.pylonmc.rebar.config.adapter.ConfigAdapter;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.sound.Sound;
@@ -78,8 +78,10 @@ public interface IWand extends Keyed {
             return (T) CACHE.get(ik).get(key);
         }
 
-        T v = Settings.get(ik).getOrThrow(key, adapter);
+        T v = getSettings().getOrThrow(key, adapter);
         CACHE.get(ik).put(key, v);
         return v;
     }
+
+    ConfigSection getSettings();
 }

@@ -5,7 +5,7 @@ import com.balugaq.constructionwand.utils.WandUtil;
 import io.github.pylonmc.rebar.config.adapter.ConfigAdapter;
 import io.github.pylonmc.rebar.i18n.RebarArgument;
 import io.github.pylonmc.rebar.item.RebarItem;
-import io.github.pylonmc.rebar.item.base.RebarBlockInteractor;
+import io.github.pylonmc.rebar.item.interfaces.BlockInteractRebarItemHandler;
 import io.github.pylonmc.rebar.util.gui.unit.UnitFormat;
 import lombok.Getter;
 import net.kyori.adventure.sound.Sound;
@@ -13,6 +13,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.List;
  */
 @NullMarked
 @Getter
-public class BreakingWand extends RebarItem implements IWand, RebarBlockInteractor {
+public class BreakingWand extends RebarItem implements IWand, BlockInteractRebarItemHandler {
     private final int limitBlocks = getOrThrow("limit-blocks", ConfigAdapter.INTEGER);
     private final boolean blockStrict = getOrThrow("block-strict", ConfigAdapter.BOOLEAN);
     private final boolean opOnly = getOrThrow("op-only", ConfigAdapter.BOOLEAN);
@@ -36,18 +37,18 @@ public class BreakingWand extends RebarItem implements IWand, RebarBlockInteract
     }
 
     @Override
-    public void onUsedToClickBlock(PlayerInteractEvent event, EventPriority priority) {
+    public List<RebarArgument> getPlaceholders() {
+        return List.of(
+                RebarArgument.of("range", UnitFormat.BLOCKS.format(getLimitBlocks()))
+        );
+    }
+
+    @Override
+    public void onInteractWithBlock(@NotNull final PlayerInteractEvent event, @NotNull final EventPriority priority) {
         if (event.getHand() != EquipmentSlot.HAND) {
             return;
         }
 
         WandUtil.breakBlocks(ConstructionWandPlugin.getInstance(), event.getHand(), event.getPlayer(), this);
-    }
-
-    @Override
-    public List<RebarArgument> getPlaceholders() {
-        return List.of(
-                RebarArgument.of("range", UnitFormat.BLOCKS.format(getLimitBlocks()))
-        );
     }
 }

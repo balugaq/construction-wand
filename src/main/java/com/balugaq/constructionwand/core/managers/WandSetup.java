@@ -5,7 +5,7 @@ import com.balugaq.constructionwand.api.items.BuildingWand;
 import com.balugaq.constructionwand.api.items.FillWand;
 import com.balugaq.constructionwand.api.items.IWand;
 import com.balugaq.constructionwand.utils.KeyUtil;
-import io.github.pylonmc.rebar.config.Settings;
+import io.github.pylonmc.rebar.config.ConfigSection;
 import io.github.pylonmc.rebar.config.adapter.ConfigAdapter;
 import io.github.pylonmc.rebar.content.guide.RebarGuide;
 import io.github.pylonmc.rebar.guide.button.PageButton;
@@ -42,7 +42,7 @@ public class WandSetup implements IManager {
             Material material) {
         NamespacedKey nKey = KeyUtil.newKey(key);
         ItemStackBuilder builder = ItemStackBuilder.rebar(material, nKey);
-        int durability = Settings.get(nKey).get("durability", ConfigAdapter.INTEGER, -1);
+        int durability = ConfigSection.fromSettings(nKey).get("durability", ConfigAdapter.INTEGER, -1);
         if (durability > 0) {
             builder.durability(durability);
         }

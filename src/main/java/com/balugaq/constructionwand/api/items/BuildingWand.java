@@ -5,7 +5,7 @@ import com.balugaq.constructionwand.utils.WandUtil;
 import io.github.pylonmc.rebar.config.adapter.ConfigAdapter;
 import io.github.pylonmc.rebar.i18n.RebarArgument;
 import io.github.pylonmc.rebar.item.RebarItem;
-import io.github.pylonmc.rebar.item.base.RebarBlockInteractor;
+import io.github.pylonmc.rebar.item.interfaces.BlockInteractRebarItemHandler;
 import io.github.pylonmc.rebar.util.gui.unit.UnitFormat;
 import lombok.Getter;
 import net.kyori.adventure.sound.Sound;
@@ -22,7 +22,7 @@ import java.util.List;
  */
 @NullMarked
 @Getter
-public class BuildingWand extends RebarItem implements IWand, RebarBlockInteractor {
+public class BuildingWand extends RebarItem implements IWand, BlockInteractRebarItemHandler {
     private final int limitBlocks = getOrThrow("limit-blocks", ConfigAdapter.INTEGER);
     private final boolean blockStrict = getOrThrow("block-strict", ConfigAdapter.BOOLEAN);
     private final boolean opOnly = getOrThrow("op-only", ConfigAdapter.BOOLEAN);
@@ -36,7 +36,7 @@ public class BuildingWand extends RebarItem implements IWand, RebarBlockInteract
     }
 
     @Override
-    public void onUsedToClickBlock(PlayerInteractEvent event, EventPriority priority) {
+    public void onInteractWithBlock(PlayerInteractEvent event, EventPriority priority) {
         if (event.getHand() != EquipmentSlot.HAND) {
             return;
         }

@@ -10,7 +10,7 @@ import io.github.pylonmc.rebar.config.adapter.ConfigAdapter;
 import io.github.pylonmc.rebar.i18n.RebarArgument;
 import io.github.pylonmc.rebar.item.RebarItem;
 import io.github.pylonmc.rebar.item.RebarItemSchema;
-import io.github.pylonmc.rebar.item.base.RebarInteractor;
+import io.github.pylonmc.rebar.item.interfaces.InteractRebarItemHandler;
 import io.github.pylonmc.rebar.registry.RebarRegistry;
 import io.github.pylonmc.rebar.util.gui.unit.UnitFormat;
 import io.papermc.paper.datacomponent.DataComponentTypes;
@@ -44,7 +44,7 @@ import java.util.List;
  */
 @Getter
 @NullMarked
-public class FillWand extends RebarItem implements IWand, RebarInteractor {
+public class FillWand extends RebarItem implements IWand, InteractRebarItemHandler {
     public static final NamespacedKey START_LOCATION_KEY = KeyUtil.newKey("start-location");
     public static final NamespacedKey END_LOCATION_KEY = KeyUtil.newKey("end-location");
     public static final NamespacedKey MATERIAL_KEY = KeyUtil.newKey("material");
@@ -174,7 +174,7 @@ public class FillWand extends RebarItem implements IWand, RebarInteractor {
     }
 
     @Override
-    public void onUsedToClick(PlayerInteractEvent event, EventPriority priority) {
+    public void onInteract(PlayerInteractEvent event, EventPriority priority) {
         if (isDisabled()) {
             return;
         }
