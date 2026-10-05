@@ -1,0 +1,13 @@
+[versions]
+paper = "1.21.8-R0.1-SNAPSHOT"
+rebar = "0.44.2-26.2"
+pylon = "0.42.1-26.2"
+displayModelLib = "35"
+lombok = "1.18.46"
+
+[libraries]
+paper-api = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper" }
+rebar = { group = "io.github.pylonmc", name = "rebar", version.ref = "rebar" }
+pylon = { group = "io.github.pylonmc", name = "pylon", version.ref = "pylon" }
+display-model-lib = { group = "org.metamechanists", name = "DisplayModelLib", version.ref = "displayModelLib" }
+lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }

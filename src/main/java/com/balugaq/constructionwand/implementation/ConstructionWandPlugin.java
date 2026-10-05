@@ -99,18 +99,12 @@ public class ConstructionWandPlugin extends JavaPlugin implements RebarAddon {
     }
 
     @Override
-    public Set<Locale> getLanguages() {
-        return Set.of(
-                Locale.US,
-                Locale.of("ko", "KR"),
-                Locale.of("zh", "CN"),
-                Locale.of("zh", "TW"),
-                Locale.of("zh", "HK")
-        );
+    public Material getMaterial() {
+        return Material.BLAZE_ROD;
     }
 
     @Override
-    public Material getMaterial() {
-        return Material.BLAZE_ROD;
+    public Locale getDefaultLanguage() {
+        return Locale.of("zh", "CN");
     }
 }

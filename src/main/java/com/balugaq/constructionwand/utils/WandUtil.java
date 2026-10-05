@@ -30,7 +30,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 import org.jspecify.annotations.NullMarked;
@@ -410,6 +409,7 @@ public class WandUtil {
         return filled.get();
     }
 
+    // todo: full of shit
     @SuppressWarnings({"RedundantIfStatement", "DuplicatedCode"})
     public static boolean isItemDisabledToBreak(@Nullable ItemStack itemStack) {
         if (itemStack == null) return true;
@@ -468,7 +468,6 @@ public class WandUtil {
         }
     }
 
-    @NotNull
     private static BlockFace getBlockFaceAsCartesian(BlockFace originalFacing) {
         // Seems here's a bug, but it works fine...
         BlockFace lookingFacing = originalFacing.getOppositeFace();
@@ -485,6 +484,7 @@ public class WandUtil {
         return lookingFacing;
     }
 
+    // todo: full of shit
     public static boolean isMaterialStateCopyableToBuild(ItemStack itemStack) {
         RebarItem item = RebarItem.fromStack(itemStack);
         if (item != null) return false;
@@ -509,6 +509,7 @@ public class WandUtil {
                         || material.name().endsWith("_WALL");
     }
 
+    // todo: full of shit
     @SuppressWarnings({"RedundantIfStatement", "DuplicatedCode"})
     public static boolean isItemDisabledToBuild(@Nullable ItemStack itemStack) {
         if (itemStack == null) return true;
@@ -730,7 +731,7 @@ public class WandUtil {
             if (pylon != null) {
                 RebarItemSchema schema = pylon.getDefaultItem();
                 if (schema != null) {
-                    return schema.getItemStack();
+                    return schema.createNewItemStack();
                 }
             }
         }
@@ -781,7 +782,7 @@ public class WandUtil {
     @Nullable
     private static RebarItem getRebarItem(RebarItemSchema schema) {
         try {
-            return (RebarItem) schema.getLoadConstructor$rebar().invoke(schema.getItemStack());
+            return (RebarItem) schema.getLoadConstructor$rebar().invoke(schema.createNewRebarItem());
         } catch (Throwable ignored) {
             return null;
         }

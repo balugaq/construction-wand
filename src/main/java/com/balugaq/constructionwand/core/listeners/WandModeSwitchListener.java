@@ -47,7 +47,7 @@ public class WandModeSwitchListener implements Listener {
             }
 
             WandUtil.setAxis(itemInOffHand, nextAxis);
-            ItemLore defaultLore = RebarRegistry.ITEMS.get(wandLike.getKey()).getItemStack().getData(DataComponentTypes.LORE);
+            ItemLore defaultLore = RebarRegistry.ITEMS.get(wandLike.getKey()).createNewItemStack().getData(DataComponentTypes.LORE);
             if (defaultLore == null || defaultLore.lines().isEmpty()) {
                 return;
             }

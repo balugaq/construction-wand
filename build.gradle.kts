@@ -29,19 +29,19 @@ repositories {
     }
 }
 
-val rebarVersion = project.properties["rebar.version"] as String
-val pylonVersion = project.properties["pylon.version"] as String
+// 版本统一由 gradle/libs.versions.toml 管理
+val rebarVersion = libs.versions.rebar.get()
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT")
-    compileOnly("io.github.pylonmc:rebar:$rebarVersion")
-    compileOnly("io.github.pylonmc:pylon:$pylonVersion")
-    implementation("org.metamechanists:DisplayModelLib:35")
-    shadow("org.metamechanists:DisplayModelLib:35")
-    compileOnly("org.projectlombok:lombok:1.18.46")
-    annotationProcessor("org.projectlombok:lombok:1.18.46")
-    testCompileOnly("org.projectlombok:lombok:1.18.46")
-    testAnnotationProcessor("org.projectlombok:lombok:1.18.46")
+    compileOnly(libs.paper.api)
+    compileOnly(libs.rebar)
+    compileOnly(libs.pylon)
+    implementation(libs.display.model.lib)
+    shadow(libs.display.model.lib)
+    compileOnly(libs.lombok)
+    annotationProcessor(libs.lombok)
+    testCompileOnly(libs.lombok)
+    testAnnotationProcessor(libs.lombok)
 }
 
 idea {

@@ -117,7 +117,7 @@ public class FillWand extends RebarItem implements IWand, InteractRebarItemHandl
         if (key == null) return null;
 
         RebarItemSchema schema = RebarRegistry.ITEMS.get(key);
-        if (schema != null) return schema.getItemStack();
+        if (schema != null) return schema.createNewItemStack();
         return null;
     }
 
